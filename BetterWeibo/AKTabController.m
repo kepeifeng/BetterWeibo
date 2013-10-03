@@ -169,6 +169,15 @@
 }
 
 
+-(void)tabViewController:(AKTabViewController *)aTabViewController goToNewView:(NSView *)newView{
+
+}
+
+-(void)goBackToPreviousView:(AKTabViewController *)aTabViewController{
+
+
+}
+
 
 
 @end

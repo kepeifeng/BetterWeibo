@@ -31,21 +31,27 @@
 }
 
 
--(BOOL)hasReposedWeibo{
+-(BOOL)hasRepostedWeibo{
 
     return _hasRepostedWeibo;
 
 }
 
 
--(void)setHasReposedWeibo:(BOOL)hasRepostedWeibo{
+-(void)setHasRepostedWeibo:(BOOL)hasRepostedWeibo{
 
     _hasRepostedWeibo = hasRepostedWeibo;
     
     [self.repostedWeiboView setHidden:!hasRepostedWeibo];
     
     if(hasRepostedWeibo){
+        
     
+    
+    }else{
+    
+        [self.repostedWeiboView setFrameSize:NSMakeSize(self.repostedWeiboView.frame.size.width , 0)];
+        [self display];
     
     }
 
