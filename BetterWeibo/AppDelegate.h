@@ -7,9 +7,25 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "INAppStoreWindow.h"
+#import "AKWindowController.h"
+#import "INWindowButton.h"
+#import "AKTabController.h"
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate>{
+    
+#pragma mark - Private Variables
 
-@property (assign) IBOutlet NSWindow *window;
+}
+
+@property (assign) IBOutlet INAppStoreWindow *window;
+
+@property (nonatomic, retain) NSMutableArray *windowControllers;
+
+@property (weak) IBOutlet AKTabController *tabController;
+
+
+
+
 
 @end
