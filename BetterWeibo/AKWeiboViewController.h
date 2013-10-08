@@ -10,9 +10,12 @@
 #import "AKTabController.h"
 #import "AKTabViewController.h"
 #import "AKWeiboTableCellView.h"
+#import "PXListViewDelegate.h"
+#import "NS(Attributed)String+Geometrics.h"
 
 
 @interface AKWeiboViewController : AKTabViewController< NSTableViewDataSource,NSTableViewDelegate>
 
+@property (weak) IBOutlet NSTableView *tableView;
 
 @end

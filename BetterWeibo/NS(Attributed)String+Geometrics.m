@@ -23,6 +23,7 @@ NSInteger gNSStringGeometricsTypesetterBehavior = NSTypesetterLatestBehavior ;
 		NSTextContainer *textContainer = [[NSTextContainer alloc] initWithContainerSize:size] ;
 		NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:self] ;
 		NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init] ;
+        layoutManager.usesFontLeading = YES;
 		[layoutManager addTextContainer:textContainer] ;
 		[textStorage addLayoutManager:layoutManager] ;
 		[layoutManager setHyphenationFactor:0.0] ;

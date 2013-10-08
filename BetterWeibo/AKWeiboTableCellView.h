@@ -7,6 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AKTextField.h"
+#import "AKWeibo.h"
 
 @interface AKWeiboTableCellView : NSTableCellView{
 
@@ -16,6 +18,7 @@
 
 //Weibo Contents
 //微博内容
+@property (weak) IBOutlet NSView *weiboView;
 @property (weak) IBOutlet NSImageView *userImage;
 @property (weak) IBOutlet NSTextField *userAlias;
 @property (weak) IBOutlet NSImageView *favMark;
@@ -26,6 +29,7 @@
 @property (weak) IBOutlet NSButtonCell *shareButton;
 @property (weak) IBOutlet NSTextField *weiboTextField;
 @property (weak) IBOutlet NSMatrix *images;
+@property (weak) IBOutlet NSMatrix *toolbar;
 
 //Reposted Weibo
 //转发微博
@@ -40,10 +44,20 @@
 //有没有带转发微博
 @property BOOL hasRepostedWeibo;
 
++(CGFloat)caculateWeiboHeight:(AKWeibo *)weibo forWidth:(CGFloat)width;
+
+
++(CGFloat)caculateWeiboCellHeight:(AKWeibo *)weibo
+                         forWidth:(CGFloat)width
+              repostedWeiboHeight:(CGFloat *)repostedWeiboHeight
+          repostedWeiboViewHeight:(CGFloat *)repostedWeiboViewHeight
+                      weiboHeight:(CGFloat *)weiboHeight
+                  weiboViewHeight:(CGFloat *)weiboViewHeight;
 
 //@property NSString *weiboContent;
 
 -(void)resize;
+-(void)loadImages:(NSArray *)imageURL;
 
 
 

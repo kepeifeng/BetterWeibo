@@ -100,9 +100,18 @@
 		04EBC6A417FD251900A0FA11 /* weibo-toolbar-normal_fav.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EBC69C17FD251900A0FA11 /* weibo-toolbar-normal_fav.png */; };
 		04EBC6A517FD251900A0FA11 /* weibo-toolbar-normal_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EBC69D17FD251900A0FA11 /* weibo-toolbar-normal_share.png */; };
 		04EBC6A617FD251900A0FA11 /* weibo-toolbar-normal_weibo.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EBC69E17FD251900A0FA11 /* weibo-toolbar-normal_weibo.png */; };
-		04EBC6A817FD2CA300A0FA11 /* repost-background-frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EBC6A717FD2CA300A0FA11 /* repost-background-frame.png */; };
 		04EBC6AB17FD4C6100A0FA11 /* fav_mark.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EBC6A917FD4C6100A0FA11 /* fav_mark.png */; };
 		04EBC6AC17FD4C6100A0FA11 /* fav_mark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EBC6AA17FD4C6100A0FA11 /* fav_mark@2x.png */; };
+		37315E8B180122890077E6F4 /* PXListDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37315E80180122890077E6F4 /* PXListDocumentView.m */; };
+		37315E8C180122890077E6F4 /* PXListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37315E82180122890077E6F4 /* PXListView.m */; };
+		37315E8D180122890077E6F4 /* PXListView+UserInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37315E85180122890077E6F4 /* PXListView+UserInteraction.m */; };
+		37315E8E180122890077E6F4 /* PXListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37315E87180122890077E6F4 /* PXListViewCell.m */; };
+		37315E92180176710077E6F4 /* AKWeibo.m in Sources */ = {isa = PBXBuildFile; fileRef = 37315E91180176710077E6F4 /* AKWeibo.m */; };
+		373C9B4F1803163300AE045A /* repost-background-frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 373C9B4E1803163300AE045A /* repost-background-frame.png */; };
+		373C9B52180317DE00AE045A /* AKRepostedWeiboView.m in Sources */ = {isa = PBXBuildFile; fileRef = 373C9B51180317DE00AE045A /* AKRepostedWeiboView.m */; };
+		374B33391802C13F008C11A0 /* AKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 374B33381802C13F008C11A0 /* AKTextField.m */; };
+		37A67AD917FE8EA600AA03CA /* BetterWeibo ICON.icns in Resources */ = {isa = PBXBuildFile; fileRef = 37A67AD817FE8EA600AA03CA /* BetterWeibo ICON.icns */; };
+		37A67ADC17FF29B800AA03CA /* NSString+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A67ADB17FF29B800AA03CA /* NSString+Size.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -231,9 +240,30 @@
 		04EBC69C17FD251900A0FA11 /* weibo-toolbar-normal_fav.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weibo-toolbar-normal_fav.png"; sourceTree = "<group>"; };
 		04EBC69D17FD251900A0FA11 /* weibo-toolbar-normal_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weibo-toolbar-normal_share.png"; sourceTree = "<group>"; };
 		04EBC69E17FD251900A0FA11 /* weibo-toolbar-normal_weibo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weibo-toolbar-normal_weibo.png"; sourceTree = "<group>"; };
-		04EBC6A717FD2CA300A0FA11 /* repost-background-frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repost-background-frame.png"; sourceTree = "<group>"; };
 		04EBC6A917FD4C6100A0FA11 /* fav_mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fav_mark.png; sourceTree = "<group>"; };
 		04EBC6AA17FD4C6100A0FA11 /* fav_mark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fav_mark@2x.png"; sourceTree = "<group>"; };
+		37315E7F180122890077E6F4 /* PXListDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXListDocumentView.h; sourceTree = "<group>"; };
+		37315E80180122890077E6F4 /* PXListDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXListDocumentView.m; sourceTree = "<group>"; };
+		37315E81180122890077E6F4 /* PXListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXListView.h; sourceTree = "<group>"; };
+		37315E82180122890077E6F4 /* PXListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXListView.m; sourceTree = "<group>"; };
+		37315E83180122890077E6F4 /* PXListView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PXListView+Private.h"; sourceTree = "<group>"; };
+		37315E84180122890077E6F4 /* PXListView+UserInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PXListView+UserInteraction.h"; sourceTree = "<group>"; };
+		37315E85180122890077E6F4 /* PXListView+UserInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PXListView+UserInteraction.m"; sourceTree = "<group>"; };
+		37315E86180122890077E6F4 /* PXListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXListViewCell.h; sourceTree = "<group>"; };
+		37315E87180122890077E6F4 /* PXListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXListViewCell.m; sourceTree = "<group>"; };
+		37315E88180122890077E6F4 /* PXListViewCell+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PXListViewCell+Private.h"; sourceTree = "<group>"; };
+		37315E89180122890077E6F4 /* PXListViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXListViewDelegate.h; sourceTree = "<group>"; };
+		37315E8A180122890077E6F4 /* PXListViewDropHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXListViewDropHighlight.h; sourceTree = "<group>"; };
+		37315E90180176710077E6F4 /* AKWeibo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKWeibo.h; sourceTree = "<group>"; };
+		37315E91180176710077E6F4 /* AKWeibo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKWeibo.m; sourceTree = "<group>"; };
+		373C9B4E1803163300AE045A /* repost-background-frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repost-background-frame.png"; sourceTree = "<group>"; };
+		373C9B50180317DE00AE045A /* AKRepostedWeiboView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKRepostedWeiboView.h; sourceTree = "<group>"; };
+		373C9B51180317DE00AE045A /* AKRepostedWeiboView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKRepostedWeiboView.m; sourceTree = "<group>"; };
+		374B33371802C13F008C11A0 /* AKTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTextField.h; sourceTree = "<group>"; };
+		374B33381802C13F008C11A0 /* AKTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTextField.m; sourceTree = "<group>"; };
+		37A67AD817FE8EA600AA03CA /* BetterWeibo ICON.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "BetterWeibo ICON.icns"; sourceTree = SOURCE_ROOT; };
+		37A67ADA17FF29B800AA03CA /* NSString+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Size.h"; sourceTree = "<group>"; };
+		37A67ADB17FF29B800AA03CA /* NSString+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Size.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,6 +354,10 @@
 		044F3C8417F710E200344173 /* BetterWeibo */ = {
 			isa = PBXGroup;
 			children = (
+				37315E8F180122930077E6F4 /* PSList */,
+				37A67AD817FE8EA600AA03CA /* BetterWeibo ICON.icns */,
+				37A67ADA17FF29B800AA03CA /* NSString+Size.h */,
+				37A67ADB17FF29B800AA03CA /* NSString+Size.m */,
 				04144B8017FD6B860037C297 /* NS(Attributed)String+Geometrics.h */,
 				04144B8117FD6B860037C297 /* NS(Attributed)String+Geometrics.m */,
 				0436A52917F9310500437A55 /* AKWeiboTableCellView.h */,
@@ -344,6 +378,12 @@
 				040D747017FBD75500600F54 /* AKWeiboDetailViewController.h */,
 				040D747117FBD75500600F54 /* AKWeiboDetailViewController.m */,
 				040D747217FBD75500600F54 /* AKWeiboDetailViewController.xib */,
+				37315E90180176710077E6F4 /* AKWeibo.h */,
+				37315E91180176710077E6F4 /* AKWeibo.m */,
+				374B33371802C13F008C11A0 /* AKTextField.h */,
+				374B33381802C13F008C11A0 /* AKTextField.m */,
+				373C9B50180317DE00AE045A /* AKRepostedWeiboView.h */,
+				373C9B51180317DE00AE045A /* AKRepostedWeiboView.m */,
 			);
 			path = BetterWeibo;
 			sourceTree = "<group>";
@@ -392,9 +432,9 @@
 		044F3CDB17F72BCA00344173 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				373C9B4E1803163300AE045A /* repost-background-frame.png */,
 				04EBC6A917FD4C6100A0FA11 /* fav_mark.png */,
 				04EBC6AA17FD4C6100A0FA11 /* fav_mark@2x.png */,
-				04EBC6A717FD2CA300A0FA11 /* repost-background-frame.png */,
 				04EBC69717FD251900A0FA11 /* weibo-toolbar-active_comment.png */,
 				04EBC69817FD251900A0FA11 /* weibo-toolbar-active_fav.png */,
 				04EBC69917FD251900A0FA11 /* weibo-toolbar-active_share.png */,
@@ -467,6 +507,25 @@
 				04942DAB17F83AC400459F28 /* search_tab@2x.png */,
 			);
 			name = TabButtonIcon;
+			sourceTree = "<group>";
+		};
+		37315E8F180122930077E6F4 /* PSList */ = {
+			isa = PBXGroup;
+			children = (
+				37315E7F180122890077E6F4 /* PXListDocumentView.h */,
+				37315E80180122890077E6F4 /* PXListDocumentView.m */,
+				37315E81180122890077E6F4 /* PXListView.h */,
+				37315E82180122890077E6F4 /* PXListView.m */,
+				37315E83180122890077E6F4 /* PXListView+Private.h */,
+				37315E84180122890077E6F4 /* PXListView+UserInteraction.h */,
+				37315E85180122890077E6F4 /* PXListView+UserInteraction.m */,
+				37315E86180122890077E6F4 /* PXListViewCell.h */,
+				37315E87180122890077E6F4 /* PXListViewCell.m */,
+				37315E88180122890077E6F4 /* PXListViewCell+Private.h */,
+				37315E89180122890077E6F4 /* PXListViewDelegate.h */,
+				37315E8A180122890077E6F4 /* PXListViewDropHighlight.h */,
+			);
+			name = PSList;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -585,6 +644,7 @@
 				04942DBA17F83AC400459F28 /* messages_tab.png in Resources */,
 				04942DB617F83AC400459F28 /* mentions_tab.png in Resources */,
 				044F3CD117F72BC500344173 /* minimize-active-color.tiff in Resources */,
+				37A67AD917FE8EA600AA03CA /* BetterWeibo ICON.icns in Resources */,
 				04EBC6A117FD251900A0FA11 /* weibo-toolbar-active_share.png in Resources */,
 				040D747417FBD75500600F54 /* AKWeiboDetailViewController.xib in Resources */,
 				044F3CCE17F72BC500344173 /* close-activenokey-color.tiff in Resources */,
@@ -596,6 +656,7 @@
 				0436A52817F92EF200437A55 /* weibo-separator.png in Resources */,
 				04EBC6AB17FD4C6100A0FA11 /* fav_mark.png in Resources */,
 				04EBC6A517FD251900A0FA11 /* weibo-toolbar-normal_share.png in Resources */,
+				373C9B4F1803163300AE045A /* repost-background-frame.png in Resources */,
 				044F3CDA17F72BC500344173 /* zoom-rollover-color.tiff in Resources */,
 				044F3CCD17F72BC500344173 /* close-active-color.tiff in Resources */,
 				04942DC517F83AC400459F28 /* search_selected_tab@2x.png in Resources */,
@@ -610,7 +671,6 @@
 				0436A53117F9901000437A55 /* light-indicator.png in Resources */,
 				04324CA817FA7EB60021809E /* AKMessageViewController.xib in Resources */,
 				044F3CD017F72BC500344173 /* close-pd-color.tiff in Resources */,
-				04EBC6A817FD2CA300A0FA11 /* repost-background-frame.png in Resources */,
 				044F3C9517F710E200344173 /* MainMenu.xib in Resources */,
 				04942DC017F83AC400459F28 /* profile_selected_tab.png in Resources */,
 				04942DAD17F83AC400459F28 /* favorites_selected_tab@2x.png in Resources */,
@@ -639,8 +699,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0436A52B17F9310500437A55 /* AKWeiboTableCellView.m in Sources */,
+				37315E8E180122890077E6F4 /* PXListViewCell.m in Sources */,
 				044F3CB517F7150300344173 /* AKWindowController.m in Sources */,
+				373C9B52180317DE00AE045A /* AKRepostedWeiboView.m in Sources */,
 				0436A52517F92A5F00437A55 /* AKWeiboViewController.m in Sources */,
+				37315E8B180122890077E6F4 /* PXListDocumentView.m in Sources */,
+				374B33391802C13F008C11A0 /* AKTextField.m in Sources */,
 				043D8BB017F80A850096609C /* AKStatusBar.m in Sources */,
 				044F3C9217F710E200344173 /* AppDelegate.m in Sources */,
 				040D747317FBD75500600F54 /* AKWeiboDetailViewController.m in Sources */,
@@ -648,11 +712,15 @@
 				04324CAC17FA81180021809E /* AKBlockViewController.m in Sources */,
 				044F3CBB17F7205600344173 /* INAppStoreWindow.m in Sources */,
 				043D8BB317F814010096609C /* AKTabController.m in Sources */,
+				37A67ADC17FF29B800AA03CA /* NSString+Size.m in Sources */,
+				37315E8D180122890077E6F4 /* PXListView+UserInteraction.m in Sources */,
 				044F3C8B17F710E200344173 /* main.m in Sources */,
 				04324CA717FA7EB60021809E /* AKMessageViewController.m in Sources */,
 				04731FF617FA5830000635CC /* AKMentionViewController.m in Sources */,
 				04942D8F17F8336900459F28 /* AKTabButton.m in Sources */,
+				37315E8C180122890077E6F4 /* PXListView.m in Sources */,
 				04144B8217FD6B860037C297 /* NS(Attributed)String+Geometrics.m in Sources */,
+				37315E92180176710077E6F4 /* AKWeibo.m in Sources */,
 				0436A52E17F9498B00437A55 /* AKTabViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -782,11 +850,11 @@
 		044F3CAD17F710E300344173 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BetterWeibo/BetterWeibo-Prefix.pch";
 				INFOPLIST_FILE = "BetterWeibo/BetterWeibo-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -795,11 +863,11 @@
 		044F3CAE17F710E300344173 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BetterWeibo/BetterWeibo-Prefix.pch";
 				INFOPLIST_FILE = "BetterWeibo/BetterWeibo-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

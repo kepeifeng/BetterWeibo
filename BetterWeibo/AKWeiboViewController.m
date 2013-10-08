@@ -7,6 +7,8 @@
 //
 
 #import "AKWeiboViewController.h"
+#import "AKWeibo.h"
+#import "AKWeiboTableCellView.h"
 
 @interface AKWeiboViewController ()
 
@@ -21,6 +23,8 @@
 }
 
 
+
+
 - (id)init
 {
     self = [super initWithNibName:@"AKWeiboViewController" bundle:nil];
@@ -29,7 +33,6 @@
         self.button = [[AKTabButton alloc]init];
         self.button.tabButtonIcon = AKTabButtonIconHome;
         self.button.tabButtonType = AKTabButtonTop;
-        
         
         [self.button setAction:@selector(tabButtonClicked:)];
         [self.button setTarget:self];
@@ -51,7 +54,16 @@
                                                                     @"repostedWeiboContent",
                                                                     nil]];
         
-        [weiboArray addObject:weibo];
+        AKWeibo * weiboObj = [[AKWeibo alloc]init];
+        weiboObj.userAlias = (NSString *)[weibo objectForKey:@"userAlias"];
+        weiboObj.weiboContent = (NSString *)[weibo objectForKey:@"weiboContent"];
+        if([(NSNumber *)[weibo objectForKey:@"hasRepostedWeibo"] boolValue]){
+            weiboObj.repostedWeibo = [[AKWeibo alloc]init];
+            weiboObj.repostedWeibo.userAlias = [weibo objectForKey:@"repostedWeiboUserAlias"];
+            weiboObj.repostedWeibo.weiboContent = [weibo objectForKey:@"repostedWeiboContent"];
+        }
+        
+        [weiboArray addObject:weiboObj];
         
         weibo = [[NSDictionary alloc]initWithObjects:[NSArray arrayWithObjects:
                                                       @"南方都市报",
@@ -68,7 +80,44 @@
                                                       @"repostedWeiboContent",
                                                       nil]];
         
-        [weiboArray addObject:weibo];
+//        [weiboArray addObject:weibo];
+        weiboObj = [[AKWeibo alloc]init];
+        weiboObj.userAlias = (NSString *)[weibo objectForKey:@"userAlias"];
+        weiboObj.weiboContent = (NSString *)[weibo objectForKey:@"weiboContent"];
+        if([(NSNumber *)[weibo objectForKey:@"hasRepostedWeibo"] boolValue]){
+            weiboObj.repostedWeibo = [[AKWeibo alloc]init];
+            weiboObj.repostedWeibo.userAlias = [weibo objectForKey:@"repostedWeiboUserAlias"];
+            weiboObj.repostedWeibo.weiboContent = [weibo objectForKey:@"repostedWeiboContent"];
+        }
+        
+        [weiboArray addObject:weiboObj];
+        
+        weibo = [[NSDictionary alloc]initWithObjects:[NSArray arrayWithObjects:
+                                                      @"南方都市报",
+                                                      @"世上没有一件工作不辛苦",
+                                                      [NSNumber numberWithBool:NO],
+                                                      @"",
+                                                      @"",
+                                                      nil]
+                                             forKeys:[NSArray arrayWithObjects:
+                                                      @"userAlias",
+                                                      @"weiboContent",
+                                                      @"hasRepostedWeibo",
+                                                      @"repostedWeiboUserAlias",
+                                                      @"repostedWeiboContent",
+                                                      nil]];
+        
+//        [weiboArray addObject:weibo];
+        weiboObj = [[AKWeibo alloc]init];
+        weiboObj.userAlias = (NSString *)[weibo objectForKey:@"userAlias"];
+        weiboObj.weiboContent = (NSString *)[weibo objectForKey:@"weiboContent"];
+        if([(NSNumber *)[weibo objectForKey:@"hasRepostedWeibo"] boolValue]){
+            weiboObj.repostedWeibo = [[AKWeibo alloc]init];
+            weiboObj.repostedWeibo.userAlias = [weibo objectForKey:@"repostedWeiboUserAlias"];
+            weiboObj.repostedWeibo.weiboContent = [weibo objectForKey:@"repostedWeiboContent"];
+        }
+        
+        [weiboArray addObject:weiboObj];
         
         
         
@@ -77,6 +126,9 @@
     }
     return self;
 }
+
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -95,6 +147,7 @@
 
 
 
+#pragma mark - TableView Delegate
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView{
 
@@ -108,15 +161,20 @@
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
     AKWeiboTableCellView *cell = [tableView makeViewWithIdentifier:@"weiboItem" owner:tableView];
     
-    NSDictionary *weibo = weiboArray[row];
+    AKWeibo *weibo = weiboArray[row];
     
-    [cell.userAlias setStringValue:(NSString *)[weibo objectForKey:@"userAlias"]];
-    [cell.weiboTextField setStringValue:(NSString *)[weibo objectForKey:@"weiboContent"]];
-    cell.hasRepostedWeibo = [(NSNumber *)[weibo objectForKey:@"hasRepostedWeibo"] boolValue];
-    cell.repostedWeiboUserAlias.stringValue = [weibo objectForKey:@"repostedWeiboUserAlias"];
-    cell.repostedWeiboContent.stringValue = [weibo objectForKey:@"repostedWeiboContent"];
+    [cell.userAlias setStringValue:weibo.userAlias];
+    [cell.weiboTextField setStringValue:weibo.weiboContent];
+    cell.hasRepostedWeibo = (weibo.repostedWeibo != nil);
+    [cell loadImages:weibo.images];
+    if(cell.hasRepostedWeibo)
+    {
+        cell.repostedWeiboUserAlias.stringValue = weibo.repostedWeibo.userAlias;
+        cell.repostedWeiboContent.stringValue = weibo.repostedWeibo.weiboContent;
+    }
     
-    [cell.weiboTextField setFrameSize:NSMakeSize(660, 100)];
+    cell.objectValue = weibo;
+    //[cell.weiboTextField setFrameSize:NSMakeSize(660, 100)];
     
     //[cell resize];
     return cell;
@@ -124,6 +182,73 @@
 
 }
 
+-(void)tableViewColumnDidResize:(NSNotification *)notification{
+
+    
+    [self.tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, weiboArray.count)]];
+    
+    //NSLog(@"tableViewColumnDidResize");
+
+
+}
+
+
+
+-(CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row{
+
+    
+    return [AKWeiboTableCellView caculateWeiboHeight:weiboArray[row] forWidth:tableView.frame.size.width];
+    
+    
+    AKWeibo *cell = weiboArray[row];
+    
+    float cellHeight = 0;
+    float repostedWeiboViewHeight = 0;
+    float weiboViewHeight = 0;
+    
+    if(cell.repostedWeibo){
+        
+        repostedWeiboViewHeight = 200;
+        
+        
+    }
+    
+    //Image Matrix
+    if(!cell.images){
+        weiboViewHeight += roundf((cell.images.count)/3)*45 + 10;
+    }
+    
+    //Weibo Content
+    float weiboTextFieldHeight = [cell.weiboContent heightForWidth:tableView.frame.size.width-84 font:[NSFont fontWithName:@"STHeitiSC-Light" size:15]];
+    weiboTextFieldHeight *= 1.5;
+    //[cell.weiboTextField setFrameSize:NSMakeSize(cell.weiboTextField.frame.size.width, weiboTextFieldHeight)];
+    
+    weiboViewHeight += weiboTextFieldHeight;
+    weiboViewHeight += 10;
+    
+    //User Alias
+    
+    weiboViewHeight += 20;
+    weiboViewHeight += 10;
+    
+    //Top Space
+    weiboViewHeight += 10;
+    
+    //[cell.weiboView setFrameSize:NSMakeSize(cell.weiboView.frame.size.width, weiboViewHeight)];
+    
+    
+    cellHeight = repostedWeiboViewHeight + weiboViewHeight + 2;
+    //[cell setFrameSize:NSMakeSize(cell.frame.size.width, cellHeight)];
+    
+    return cellHeight;
+    
+
+    
+
+}
+
+
+#pragma Super class method override
 
 -(void)tabButtonClicked:(id)sender{
 

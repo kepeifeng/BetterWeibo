@@ -26,7 +26,8 @@
     //INITIALIZING TITLE BAR
     [self setupTitleBar];
     [self setupTabController];
-    
+    //NSUserDefault.NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints = YES;
+
     
     
     
