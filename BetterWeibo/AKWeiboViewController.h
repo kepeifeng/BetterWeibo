@@ -17,5 +17,7 @@
 @interface AKWeiboViewController : AKTabViewController< NSTableViewDataSource,NSTableViewDelegate>
 
 @property (weak) IBOutlet NSTableView *tableView;
+@property (weak) IBOutlet NSScrollView *scrollView;
+
 
 @end

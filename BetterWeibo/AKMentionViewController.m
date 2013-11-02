@@ -16,7 +16,8 @@
 
 -(id)init{
 
-    self = [super initWithNibName:@"AKMentionViewController" bundle:nil];
+//    self = [super initWithNibName:@"AKWeiboViewController" bundle:nil];
+    self = [super init];
     
     if(self){
         // Initialization code here.
@@ -34,7 +35,6 @@
     
 
 }
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

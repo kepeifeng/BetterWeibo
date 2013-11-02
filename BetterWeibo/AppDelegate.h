@@ -11,10 +11,16 @@
 #import "AKWindowController.h"
 #import "INWindowButton.h"
 #import "AKTabController.h"
+#import "AKWeibo.h"
+#import "AKWeiboFactory.h"
+#import "AKWeiboManager.h"
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>{
+@protocol AKWeiboManagerDelegate;
+
+@interface AppDelegate : NSObject <NSApplicationDelegate, AKWeiboManagerDelegate>{
     
 #pragma mark - Private Variables
+
 
 }
 
@@ -24,8 +30,11 @@
 
 @property (weak) IBOutlet AKTabController *tabController;
 
+@property (weak) IBOutlet NSView *loginView;
 
+@property (weak) IBOutlet NSButton *loginButton;
 
+- (IBAction)loginButtonClicked:(id)sender;
 
 
 @end

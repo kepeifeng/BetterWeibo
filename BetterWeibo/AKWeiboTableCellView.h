@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AKTextField.h"
-#import "AKWeibo.h"
+#import "AKWeiboStatus.h"
 
 @interface AKWeiboTableCellView : NSTableCellView{
 
@@ -44,10 +44,10 @@
 //有没有带转发微博
 @property BOOL hasRepostedWeibo;
 
-+(CGFloat)caculateWeiboHeight:(AKWeibo *)weibo forWidth:(CGFloat)width;
++(CGFloat)caculateWeiboHeight:(AKWeiboStatus *)weibo forWidth:(CGFloat)width;
 
 
-+(CGFloat)caculateWeiboCellHeight:(AKWeibo *)weibo
++(CGFloat)caculateWeiboCellHeight:(AKWeiboStatus *)weibo
                          forWidth:(CGFloat)width
               repostedWeiboHeight:(CGFloat *)repostedWeiboHeight
           repostedWeiboViewHeight:(CGFloat *)repostedWeiboViewHeight
@@ -59,7 +59,7 @@
 -(void)resize;
 -(void)loadImages:(NSArray *)imageURL;
 
-
+@property AKWeiboStatus *objectValue;
 
 
 @end

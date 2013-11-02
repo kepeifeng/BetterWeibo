@@ -7,7 +7,7 @@
 //
 
 #import "AKTabViewController.h"
-
-@interface AKMentionViewController : AKTabViewController
+#import "AKWeiboViewController.h"
+@interface AKMentionViewController : AKWeiboViewController
 
 @end

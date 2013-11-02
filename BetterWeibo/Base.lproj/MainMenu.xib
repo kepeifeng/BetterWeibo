@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4511" systemVersion="13A598" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4511"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -651,7 +651,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="498" height="538"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <value key="minSize" type="size" width="383" height="383"/>
             <value key="maxSize" type="size" width="720" height="1000"/>
             <view key="contentView" id="372">
@@ -681,17 +681,62 @@
                         <font key="font" metaFont="system"/>
                         <tabViewItems/>
                     </tabView>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="44G-BZ-Sqf">
+                        <rect key="frame" x="0.0" y="24" width="498" height="514"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1CU-OO-7C9">
+                                <rect key="frame" x="0.0" y="0.0" width="498" height="514"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="charWrapping" sendsActionOnEndEditing="YES" alignment="center" drawsBackground="YES" id="yhs-Hp-W4r">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" white="0.14000000000000001" alpha="1" colorSpace="calibratedWhite"/>
+                                </textFieldCell>
+                            </textField>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="bMx-UX-Y7t">
+                                <rect key="frame" x="188" y="75" width="122" height="51"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="118" id="RFP-z3-PyJ"/>
+                                    <constraint firstAttribute="height" constant="46" id="mRX-hs-eCQ"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" title="登陆" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VoD-hs-hqy">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="loginButtonClicked:" target="494" id="Ov2-Xy-d7h"/>
+                                </connections>
+                            </button>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dc6-RY-KvU">
+                                <rect key="frame" x="95" y="174" width="308" height="310"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="pinwheel" id="U67-9L-0MJ"/>
+                            </imageView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="bMx-UX-Y7t" secondAttribute="centerX" id="0Nw-qM-eVB"/>
+                            <constraint firstItem="bMx-UX-Y7t" firstAttribute="top" secondItem="dc6-RY-KvU" secondAttribute="bottom" constant="50" id="TW5-3a-VE9"/>
+                            <constraint firstItem="dc6-RY-KvU" firstAttribute="top" secondItem="44G-BZ-Sqf" secondAttribute="top" constant="30" id="byR-sy-jFb"/>
+                            <constraint firstAttribute="centerX" secondItem="dc6-RY-KvU" secondAttribute="centerX" id="d8f-zf-53g"/>
+                        </constraints>
+                    </customView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="lUg-qA-vZP" firstAttribute="top" secondItem="372" secondAttribute="top" id="Fih-Rj-9eC"/>
                     <constraint firstItem="hPV-dD-HX4" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="82" id="KEX-u2-rTI"/>
                     <constraint firstItem="hPV-dD-HX4" firstAttribute="top" secondItem="372" secondAttribute="top" id="MBo-Wz-mDr"/>
+                    <constraint firstItem="44G-BZ-Sqf" firstAttribute="top" secondItem="372" secondAttribute="top" id="SGg-if-Qz2"/>
+                    <constraint firstAttribute="trailing" secondItem="44G-BZ-Sqf" secondAttribute="trailing" id="WJv-Mx-966"/>
                     <constraint firstAttribute="trailing" secondItem="eYO-Hb-v05" secondAttribute="trailing" id="YfZ-SP-xWY"/>
                     <constraint firstItem="eYO-Hb-v05" firstAttribute="leading" secondItem="372" secondAttribute="leading" id="bVC-Gp-A2S"/>
                     <constraint firstItem="eYO-Hb-v05" firstAttribute="top" secondItem="hPV-dD-HX4" secondAttribute="bottom" id="ddn-Am-2Pz"/>
                     <constraint firstItem="lUg-qA-vZP" firstAttribute="leading" secondItem="372" secondAttribute="leading" id="i5k-kf-twH"/>
                     <constraint firstAttribute="trailing" secondItem="hPV-dD-HX4" secondAttribute="trailing" id="oZr-BR-LQO"/>
                     <constraint firstAttribute="bottom" secondItem="eYO-Hb-v05" secondAttribute="bottom" id="pEY-NL-nIE"/>
+                    <constraint firstItem="eYO-Hb-v05" firstAttribute="top" secondItem="44G-BZ-Sqf" secondAttribute="bottom" id="vhC-zc-L79"/>
+                    <constraint firstItem="44G-BZ-Sqf" firstAttribute="leading" secondItem="372" secondAttribute="leading" id="xdr-ne-6gC"/>
                     <constraint firstAttribute="bottom" secondItem="lUg-qA-vZP" secondAttribute="bottom" constant="24" id="yrQ-Fe-wWj"/>
                 </constraints>
             </view>
@@ -701,10 +746,15 @@
         </window>
         <customObject id="494" customClass="AppDelegate">
             <connections>
+                <outlet property="loginButton" destination="bMx-UX-Y7t" id="DP5-HB-xEP"/>
+                <outlet property="loginView" destination="44G-BZ-Sqf" id="NO8-NA-HPD"/>
                 <outlet property="tabController" destination="lUg-qA-vZP" id="THL-YG-0fu"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
     </objects>
+    <resources>
+        <image name="pinwheel" width="308" height="310"/>
+    </resources>
 </document>

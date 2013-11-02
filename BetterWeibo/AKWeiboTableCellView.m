@@ -21,9 +21,20 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
-        _weiboTextField.autoresizingMask = NSViewMinYMargin | NSViewHeightSizable | NSViewWidthSizable;
-        //self.repostedWeiboContent.autoresizingMask =  NSViewWidthSizable | NSViewHeightSizable ;
-        //self.repostedWeiboUserAlias.autoresizingMask = NSViewMaxYMargin;
+        //_weiboTextField.autoresizingMask = NSViewMinYMargin
+        
+//        
+//        self.images.autoresizingMask = NSViewMinYMargin;
+//        self.userAlias.autoresizingMask = NSViewMinYMargin | NSViewWidthSizable;
+//        self.dateDuration.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
+//        self.weiboTextField.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
+//        self.toolbar.autoresizingMask = NSViewMinXMargin | NSViewMaxYMargin;
+//        self.favMark.autoresizingMask = NSViewMinXMargin | NSViewMinYMargin;
+//        
+//        self.repostedWeiboContent.autoresizingMask =  NSViewWidthSizable | NSViewHeightSizable ;
+//        self.repostedWeiboUserAlias.autoresizingMask = NSViewMaxYMargin;
+//        self.repostedWeiboUserAlias.autoresizingMask = NSViewMinXMargin | NSViewMinYMargin;
+
         
         
         
@@ -35,6 +46,30 @@
 {
 	[super drawRect:dirtyRect];
     
+    NSImage *repostedWeiboViewBackground = [NSImage imageNamed:@"repost-background-frame"];
+    
+    //NSLog(@"(%f, %f, %f, %f", repostedWeiboDrawingRect.origin.x, repostedWeiboDrawingRect.origin.y
+    //      , repostedWeiboDrawingRect.size.width, repostedWeiboDrawingRect.size.height);
+    
+    //Top
+    
+    [self resize];
+    
+    if(self.objectValue.repostedWeibo){
+    
+        NSRect repostedWeiboDrawingRect =self.repostedWeiboView.frame;
+        
+        //Top
+        [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y + repostedWeiboDrawingRect.size.height - 8, repostedWeiboDrawingRect.size.width, 8) fromRect:NSMakeRect(0, 49, 81, 8) operation:NSCompositeSourceOver fraction:1];
+        //Middle Part
+        [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y + 14, repostedWeiboDrawingRect.size.width, repostedWeiboDrawingRect.size.height - 8 - 14) fromRect:NSMakeRect(0, 14, 81, 34) operation:NSCompositeSourceOver fraction:1];
+        //Bottom Part - Arrow
+        [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y, 50, 14) fromRect:NSMakeRect(0, 0, 50, 14) operation:NSCompositeSourceOver fraction:1];
+        //Bottom Right Part
+        [repostedWeiboViewBackground drawInRect:NSMakeRect(50, repostedWeiboDrawingRect.origin.y, repostedWeiboDrawingRect.size.width - 50, 14) fromRect:NSMakeRect(50, 0, 31, 14) operation:NSCompositeSourceOver fraction:1];
+        
+    }
+    
     if(self.inLiveResize){
     
         
@@ -42,7 +77,7 @@
                
     
     }
-    [self resize];
+
 	
     // Drawing code here.
 }
@@ -59,10 +94,10 @@
 -(void)viewDidEndLiveResize{
 
     [super viewDidEndLiveResize];
-    NSLog(@"viewDidEndLiveResize");
+   
 
 //    [_weiboTextField siz]
-    [self resize];
+    //[self resize];
 
 }
 
@@ -87,129 +122,40 @@
 
 
 -(void)resize{
-    
-    //return;
-    /*
-    float cellHeight = 0;
-    float repostedWeiboViewHeight = 0;
-    float weiboViewHeight = 0;
-    
-    
-    AKWeibo *weibo = self.objectValue;
-    if(weibo.repostedWeibo){
-    
-        if(weibo.repostedWeibo.images){
-        
-            repostedWeiboViewHeight += 10;
-            repostedWeiboViewHeight += (weibo.repostedWeibo.images.count)/3*45;
-            
-        }
-        
-        
-        [self.repostedWeiboContent setFrameSize:self.repostedWeiboContent.intrinsicContentSize];
-        
-        
-        repostedWeiboViewHeight += 10;
-        repostedWeiboViewHeight += self.repostedWeiboContent.frame.size.height;
-        repostedWeiboViewHeight += 10;
-        
-        
-        if(self.repostedWeiboUserAlias.frame.origin.y != repostedWeiboViewHeight){
-
-            //update reposted weibo's user alias' origin.
-            [self.repostedWeiboUserAlias setFrameOrigin:NSMakePoint(self.repostedWeiboUserAlias.frame.origin.x,
-                                                                    repostedWeiboViewHeight)];
-            [self.repostedWeiboDateDuration setFrameOrigin:NSMakePoint(self.repostedWeiboDateDuration.frame.origin.x,
-                                                                       repostedWeiboViewHeight)];
-        
-        }
-        
-        repostedWeiboViewHeight += self.repostedWeiboUserAlias.frame.size.height;
-        repostedWeiboViewHeight += 10;
-        
-
-    
-    }
-    
-    [self.repostedWeiboView setFrameSize:NSMakeSize(self.repostedWeiboView.frame.size.width, repostedWeiboViewHeight)];
-    
-    //Bottom Space
-    weiboViewHeight += 20;
-    
-    //Image Matrix
-    if(!self.images.isHidden){
-        weiboViewHeight += self.images.frame.size.height + 10;
-    }
-
-    //Weibo Content
-    
-    [self.weiboTextField setFrameSize:self.weiboTextField.intrinsicContentSize];
-
-    
-    weiboViewHeight += self.weiboTextField.frame.size.height;
-    weiboViewHeight += 10;
-    
-    //User Alias
-    
-    if(self.userAlias.frame.origin.y != weiboViewHeight){
-        
-        //update reposted weibo's user alias' origin.
-        [self.userAlias setFrameOrigin:NSMakePoint(self.userAlias.frame.origin.x,
-                                                   weiboViewHeight)];
-        
-        [self.dateDuration setFrameOrigin:NSMakePoint(self.dateDuration.frame.origin.x, weiboViewHeight)];
-        
-        [self.userImage setFrameOrigin:NSMakePoint(self.userImage.frame.origin.x, weiboViewHeight - (self.userImage.frame.size.height - self.userAlias.frame.size.height))];
-        
-    }
-    
-    weiboViewHeight += self.userAlias.frame.size.height;
-    weiboViewHeight += 10;
-    
-    //Top Space
-    weiboViewHeight += 10;
-    
-    [self.weiboView setFrameSize:NSMakeSize(self.weiboView.frame.size.width, weiboViewHeight)];
-    [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, weiboViewHeight)];
-    
-    
-    cellHeight = repostedWeiboViewHeight + weiboViewHeight + 2;
-    //[self setFrameSize:NSMakeSize(self.frame.size.width, cellHeight)];
-    */
-    
-    CGFloat repostedWeiboHeight;
+        CGFloat repostedWeiboHeight;
     CGFloat weiboHeight;
     CGFloat repostedWeiboViewHeight;
     CGFloat weiboViewHeight;
     
-    AKWeibo *weibo = self.objectValue;
+    AKWeiboStatus *weibo = self.objectValue;
     
     
     CGFloat cellHeight = [AKWeiboTableCellView caculateWeiboCellHeight:weibo forWidth:self.frame.size.width repostedWeiboHeight:&repostedWeiboHeight repostedWeiboViewHeight:&repostedWeiboViewHeight weiboHeight:&weiboHeight weiboViewHeight:&weiboViewHeight];
     
     if(weibo.repostedWeibo){
         
+        [self.repostedWeiboView setFrameSize:NSMakeSize(self.repostedWeiboView.frame.size.width, repostedWeiboViewHeight)];
+        
+        [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, weiboViewHeight)];
         
         //[self.repostedWeiboContent setFrameSize:self.repostedWeiboContent.intrinsicContentSize];
 
         [self.repostedWeiboContent setFrameSize:NSMakeSize(self.repostedWeiboContent.frame.size.width, repostedWeiboHeight)];
+        [self.repostedWeiboContent setFrameOrigin:NSMakePoint(self.repostedWeiboContent.frame.origin.x, repostedWeiboViewHeight - 27 - 5 - self.repostedWeiboContent.frame.size.height)];
         
-        if(self.repostedWeiboUserAlias.frame.origin.y != repostedWeiboViewHeight){
-            
-            //update reposted weibo's user alias' origin.
-            [self.repostedWeiboUserAlias setFrameOrigin:NSMakePoint(self.repostedWeiboUserAlias.frame.origin.x,
-                                                                    repostedWeiboViewHeight - 27)];
-            [self.repostedWeiboDateDuration setFrameOrigin:NSMakePoint(self.repostedWeiboDateDuration.frame.origin.x,
-                                                                       repostedWeiboViewHeight -27)];
-            
-        }
         
+        //update reposted weibo's user alias' origin.
+        [self.repostedWeiboUserAlias setFrameOrigin:NSMakePoint(self.repostedWeiboUserAlias.frame.origin.x,
+                                                                repostedWeiboViewHeight - 27)];
+        [self.repostedWeiboDateDuration setFrameOrigin:NSMakePoint(self.repostedWeiboDateDuration.frame.origin.x,
+                                                                   repostedWeiboViewHeight -27)];
+     
+        
+
         
     }
     
-    [self.repostedWeiboView setFrameSize:NSMakeSize(self.repostedWeiboView.frame.size.width, repostedWeiboViewHeight)];
-    
-    
+
 
     
     [self.weiboView setFrameSize:NSMakeSize(self.weiboView.frame.size.width, weiboViewHeight)];
@@ -222,22 +168,22 @@
     
     [self.userImage setFrameOrigin:NSMakePoint(self.userImage.frame.origin.x, weiboViewHeight - (self.userImage.frame.size.height - self.userAlias.frame.size.height) - 27)];
 
+
+    [self.weiboTextField setFrameSize:NSMakeSize(self.weiboTextField.frame.size.width, weiboHeight)];
         [self.weiboTextField setFrameOrigin:NSMakePoint(self.weiboTextField.frame.origin.x, weiboViewHeight - 27 - 5 - self.weiboTextField.frame.size.height)];
-        
     
 
 
     
-    [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, weiboViewHeight)];
+
     
-    
-    [self setFrameSize:NSMakeSize(self.frame.size.width, cellHeight)];
+    //[self setFrameSize:NSMakeSize(self.frame.size.width, cellHeight)];
 
 }
 
 
 
-+(CGFloat)caculateWeiboHeight:(AKWeibo *)weibo forWidth:(CGFloat)width{
++(CGFloat)caculateWeiboHeight:(AKWeiboStatus *)weibo forWidth:(CGFloat)width{
 
     CGFloat repostedWeiboHeight;
     CGFloat weiboHeight;
@@ -249,7 +195,7 @@
 }
 
 
-+(CGFloat)caculateWeiboCellHeight:(AKWeibo *)weibo
++(CGFloat)caculateWeiboCellHeight:(AKWeiboStatus *)weibo
                          forWidth:(CGFloat)width
               repostedWeiboHeight:(CGFloat *)repostedWeiboHeight
           repostedWeiboViewHeight:(CGFloat *)repostedWeiboViewHeight

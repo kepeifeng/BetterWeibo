@@ -21,6 +21,8 @@
 //@property NSView *view;
 @property AKTabButton *button;
 @property id<AKTabViewControllerDelegate> delegate;
+@property NSArray *leftControls;
+@property NSArray *rightControls;
 
 
 

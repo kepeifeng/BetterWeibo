@@ -2,6 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Shell</string>
+			<key>CFBundleURLName</key>
+			<string>Pinwheel</string>
+			<key>CFBundleURLIconFile</key>
+			<string>BetterWeibo ICON</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>pinwheel</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
