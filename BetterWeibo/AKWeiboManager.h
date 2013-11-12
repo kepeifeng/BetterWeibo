@@ -21,9 +21,11 @@
 @property NSString *appSecret;
 @property id<AKWeiboManagerDelegate> delegate;
 
+-(id)initWithClientID:(NSString *)clientID appSecret:(NSString *)appSecret redirectURL:(NSString *)redirectURL;
+
 -(void)setOauth2Code:(NSString *)code;
 -(void)startOauthLogin;
-
+-(void)addMethodActionObserver:(id)observer selector:(SEL)selector;
 
 @end
 

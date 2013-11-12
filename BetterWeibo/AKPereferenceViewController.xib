@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4511" systemVersion="13A598" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4511"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="AKPereferenceViewController"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="Pereference" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="Yjj-Yw-cvP">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="131" y="159" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="V8b-cr-JUu">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </view>
+            <toolbar key="toolbar" implicitIdentifier="7ECDE9FB-803D-4C74-8841-18622EDAAB80" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="HkD-eK-zut">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="lY5-NR-XxB"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="K45-Mh-jWG"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="0Q3-xj-ccL"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="Nop-du-Jrw"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="MnA-Ht-RMl"/>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="lY5-NR-XxB"/>
+                    <toolbarItem reference="K45-Mh-jWG"/>
+                    <toolbarItem reference="MnA-Ht-RMl"/>
+                    <toolbarItem reference="0Q3-xj-ccL"/>
+                </defaultToolbarItems>
+            </toolbar>
+        </window>
+    </objects>
+</document>

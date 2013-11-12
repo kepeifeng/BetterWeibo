@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AKUserProfile.h"
 
 @interface AKUserManager : NSObject
 
 +(AKUserManager *)defaultUserManager;
 
--(void)createUserProfile:(NSString *)userID withAccessToken:(NSString *)accessToken;
--(void)updateUserAccessToken:(NSString *)userID accessToken:(NSString *)accessToken;
+-(BOOL)hasUserExisted;
+
+-(NSArray *)getAllUserProfile;
+-(AKUserProfile *)loadUserProfile:(NSString *)userID;
+-(void)createUserProfile:(AKUserProfile *)userProfile;
+-(void)updateUserAccessToken:(AKUserProfile *)userProfile;
 
 @end

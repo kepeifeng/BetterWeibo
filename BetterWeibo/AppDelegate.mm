@@ -29,7 +29,12 @@
     [self setupTitleBar];
     [self setupTabController];
     
-    weiboManager = [[AKWeiboManager alloc]init];
+    weiboManager = [[AKWeiboManager alloc]initWithClientID:@"1672616342"
+                                                 appSecret:@"57663124f7eb21e1207a2ee09fed507b"
+                                               redirectURL:@"http://coffeeandsandwich.com/pinwheel/authorize.php"];
+    
+    [weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];
+
 
     //Regist event handler for Login Callback
     NSAppleEventManager *eventManager = [NSAppleEventManager sharedAppleEventManager];
@@ -39,15 +44,28 @@
     if([self existUsers ]){
     
         //Load Users
-        [self.loginView setHidden:TRUE];
+        [self.loginView setHidden:YES];
         
-    
+        NSArray *userProfileArray = [[AKUserManager defaultUserManager]getAllUserProfile];
+        
+        for(AKUserProfile *userProfile in userProfileArray){
+        
+            [tabView addUser:userProfile];
+            
+        
+        }
+        
     }
     else{
     
         //Display Login View
 
         [self.loginView setHidden:NO];
+        
+        //Load users.
+        
+        
+        //Go to default page.
         
         
     
@@ -59,10 +77,24 @@
     
 }
 
+
+-(void)weiboManagerMethodActionHandler:(NSNotification *)notification{
+
+    NSDictionary *userInfoDictionary = notification.userInfo;
+    AKMethodAction methodAction = [(AKMethodActionObject *)[userInfoDictionary valueForKey:@"methodOption"] methodAction];
+    
+    if(methodAction == WBOPT_OAUTH2_ACCESS_TOKEN){
+    
+        [self.loginView setHidden:YES];
+    
+    }
+    
+}
+
 -(BOOL)existUsers{
 
-
-    return NO;
+    return [[AKUserManager defaultUserManager] hasUserExisted];
+    //return NO;
 
 }
 
@@ -137,19 +169,7 @@
 
 -(void)setupTabController{
 
-    AKWeiboViewController *weiboViewController = [[AKWeiboViewController alloc]init];
-    [self.tabController addViewController:weiboViewController];
-    
-    
-    AKMentionViewController *mentionViewController = [[AKMentionViewController alloc]init];
-    [self.tabController addViewController:mentionViewController];
-    
-    AKMessageViewController *messageViewController = [[AKMessageViewController alloc]init];
-    [self.tabController addViewController:messageViewController];
-    
-    
-    AKBlockViewController *blockViewController = [[AKBlockViewController alloc]init];
-    [self.tabController addViewController:blockViewController];
+
     
     
 
@@ -211,6 +231,13 @@
     
 
     [weiboManager startOauthLogin];
+}
+
+- (IBAction)addAccountClicked:(id)sender {
+    
+    [weiboManager startOauthLogin];
+    
+    
 }
 
 @end

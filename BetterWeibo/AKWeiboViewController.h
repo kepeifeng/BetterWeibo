@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "AKTabController.h"
+#import "AKTabControl.h"
 #import "AKTabViewController.h"
 #import "AKWeiboTableCellView.h"
 #import "PXListViewDelegate.h"

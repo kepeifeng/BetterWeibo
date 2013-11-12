@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 Kent Peifeng Ke. All rights reserved.
 //
 
-#import "AKTabController.h"
+#import "AKTabControl.h"
 #import "AKTabViewController.h"
 
 @interface AKTabViewController ()

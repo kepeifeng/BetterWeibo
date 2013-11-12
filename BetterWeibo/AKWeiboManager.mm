@@ -10,6 +10,7 @@
 #import "AKWeiboFactory.h"
 #import "AKUserManager.h"
 
+
 @implementation AKWeiboManager{
 
     id<AKWeibo> weibo;
@@ -23,21 +24,34 @@
 @synthesize redirectURL = _redirectURL;
 @synthesize appSecret = _appSecret;
 
+-(id)initWithClientID:(NSString *)clientID appSecret:(NSString *)appSecret redirectURL:(NSString *)redirectURL{
+
+    self = [super init];
+    if(self){
+    
+        
+        _clientID = clientID;
+        _appSecret = appSecret;
+        _redirectURL = redirectURL;
+        
+        
+        weibo = [AKWeiboFactory getWeibo];
+        weiboMethods = [weibo getMethod];
+        
+        [weibo setDelegate:self];
+        [weibo startUp];
+        [weibo setConsumer:_clientID secret:_appSecret];
+
+    
+    }
+    
+    return self;
+    
+}
+
 -(void)setupWeibo{
     
-    _clientID = @"1672616342";
-    _redirectURL = @"http://coffeeandsandwich.com/pinwheel/authorize.php";
-    _appSecret = @"57663124f7eb21e1207a2ee09fed507b";
-    
-    
-    weibo = [AKWeiboFactory getWeibo];
-    weiboMethods = [weibo getMethod];
-    
-    [weibo setDelegate:self];
-    [weibo startUp];
-    [weibo setConsumer:_clientID secret:_appSecret];
-    
-    
+
 }
 
 - (void)startOauthLogin {
@@ -70,24 +84,38 @@
 
 -(void)pushMethodNotification:(AKMethodAction)methodOption httpHeader:(NSString *)httpHeader result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
 
-    NSMutableDictionary *userInfoDictionary = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[AKMethodActionObject alloc] initWithMethodAction:methodOption], nil];
+    NSMutableDictionary *userInfoDictionary = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[AKMethodActionObject alloc] initWithMethodAction:methodOption],@"methodOption", nil];
     
     if(httpHeader){
-        [userInfoDictionary insertValue:httpHeader inPropertyWithKey:@"httpHeader"];
+
+        [userInfoDictionary setObject:httpHeader forKey:@"httpHeader"];
     }
     
     if(result){
-        [userInfoDictionary insertValue:result inPropertyWithKey:@"result"];
+        [userInfoDictionary setObject:result forKey:@"result"];
     }
     
     if(pTask){
-        [userInfoDictionary insertValue:pTask inPropertyWithKey:@"task"];
+        [userInfoDictionary setObject:pTask forKey:@"task"];
     }
 
     
     NSNotification *notification = [NSNotification notificationWithName:METHOD_OPTION_NOTIFICATION object:self userInfo:userInfoDictionary];
     
     [[NSNotificationCenter defaultCenter]postNotification:notification];
+
+}
+
+
+-(void)addMethodActionObserver:(id)observer selector:(SEL)selector{
+
+    [[NSNotificationCenter defaultCenter]addObserver:observer selector:selector name:METHOD_OPTION_NOTIFICATION object:self];
+
+}
+
+-(void)getStatus{
+
+    [weiboMethods getStatusesHomeTimeline:nil pTask:nil];
 
 }
 
@@ -113,19 +141,24 @@
             
             //[self.loginView setHidden:YES];
             
-            if([self existUser:uid ]){
-                
-                
+            AKUserProfile *userProfile = [[AKUserProfile alloc]init];
+            userProfile.userID = uid;
+            userProfile.accessToken = access_token;
+            
+            
+            if(![self existUser:uid ]){
+    
                 //create user profile.
                 //[self creatLocalProfileForUser:uid];
-                [[AKUserManager defaultUserManager]createUserProfile:uid withAccessToken:access_token];
+                
+                [[AKUserManager defaultUserManager]createUserProfile:userProfile];
                 
                 
             }
             else{
                 
                 //Update Access Token in existed profile.
-                [[AKUserManager defaultUserManager]updateUserAccessToken:uid accessToken: access_token];
+                [[AKUserManager defaultUserManager]updateUserAccessToken:userProfile];
                 
                 
             }
@@ -140,11 +173,12 @@
             
             //switch to Status page.
             
-            //Tab controllers SHOULD do the following stuff:
-            //- Get Status form cache database
-            //- if there is no status in the cache database, get latest status.
-            //- Otherwise, put Status on screen, and check the number of new Status.
-            
+            /*
+            Tab controllers SHOULD do the following stuff:
+            - Get Status from cache database
+            - if there is no status in the cache database, get latest status.
+            - Otherwise, put Status on screen, and check the number of new Status.
+            */
             
             
         }
@@ -154,6 +188,12 @@
         // Send weibo successed!
         // ...
         NSLog(@"Weibo Send.");
+    }
+    else if (methodOption == WBOPT_GET_STATUSES_HOME_TIMELINE){
+        
+        //Save statuses to Cache Database.
+    
+    
     }
     
     
