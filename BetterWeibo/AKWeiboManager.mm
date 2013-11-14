@@ -8,14 +8,15 @@
 
 #import "AKWeiboManager.h"
 #import "AKWeiboFactory.h"
-#import "AKUserManager.h"
 
 
 @implementation AKWeiboManager{
 
-    id<AKWeibo> weibo;
+
     BOOL logined;
     id<AKWeiboMethodProtocol> weiboMethods;
+    NSMutableArray *userProfileArray;
+    AKUserProfile *currentUserProfile;
 
 
 }
@@ -23,6 +24,8 @@
 @synthesize clientID = _clientID;
 @synthesize redirectURL = _redirectURL;
 @synthesize appSecret = _appSecret;
+
+static id<AKWeibo> weibo;
 
 -(id)initWithClientID:(NSString *)clientID appSecret:(NSString *)appSecret redirectURL:(NSString *)redirectURL{
 
@@ -34,13 +37,18 @@
         _appSecret = appSecret;
         _redirectURL = redirectURL;
         
+        if(!weibo){
         
-        weibo = [AKWeiboFactory getWeibo];
+            weibo = [AKWeiboFactory getWeibo];
+            
+            [weibo setDelegate:self];
+            [weibo startUp];
+            [weibo setConsumer:_clientID secret:_appSecret];
+        }
+        
         weiboMethods = [weibo getMethod];
         
-        [weibo setDelegate:self];
-        [weibo startUp];
-        [weibo setConsumer:_clientID secret:_appSecret];
+
 
     
     }
@@ -119,6 +127,29 @@
 
 }
 
+-(void)getUserDetail:(NSString *)userID{
+
+    [weiboMethods getUsersShow:[[AKID alloc] initWithIdType:AKIDTypeID text:userID key:nil] extend:nil var:nil pTask:nil];
+
+}
+
+-(void)addUser:(AKUserProfile *)userProfile{
+
+    [userProfileArray addObject:userProfile];
+    
+    if(!currentUserProfile){
+    
+        [weibo setAccessToken:userProfile.accessToken];
+        
+        currentUserProfile = userProfile;
+    }
+    
+    
+    
+
+}
+
+
 
 #pragma mark - Weibo Delegate
 
@@ -141,12 +172,12 @@
             
             //[self.loginView setHidden:YES];
             
-            AKUserProfile *userProfile = [[AKUserProfile alloc]init];
-            userProfile.userID = uid;
-            userProfile.accessToken = access_token;
+            AKUserProfile *userProfile = [AKWeiboManager getUserProfileFromParsingObject:result];
             
             
             if(![self existUser:uid ]){
+                
+                [userProfileArray addObject:userProfile];
     
                 //create user profile.
                 //[self creatLocalProfileForUser:uid];
@@ -157,11 +188,22 @@
             }
             else{
                 
+                for (NSInteger i=0; i<userProfileArray.count; i++) {
+                    if ([[[userProfileArray objectAtIndex:i] userID] isEqualToString:uid]) {
+                        
+                        [userProfileArray replaceObjectAtIndex:i withObject:userProfile];
+                        break;
+                    }
+                }
+                
+                
                 //Update Access Token in existed profile.
                 [[AKUserManager defaultUserManager]updateUserAccessToken:userProfile];
                 
                 
             }
+            
+            //[self getUserDetail:uid];
             
             // Note: Must set acess token to sdk!
             NSLog(@"Access Token = %@", access_token);
@@ -191,8 +233,15 @@
     }
     else if (methodOption == WBOPT_GET_STATUSES_HOME_TIMELINE){
         
-        //Save statuses to Cache Database.
+        NSLog(@"WBOPT_GET_STATUSES_HOME_TIMELINE");
+        
     
+    
+    }
+    else if (methodOption == WBOPT_GET_USERS_SHOW){
+    
+    
+        NSLog(@"User Screename = %@", [result getSubStringByKey:@"screen_name"]);
     
     }
     
@@ -243,8 +292,41 @@
 }
 
 
+#pragma mark - Public Static Mehtods
+
++(AKUserProfile *)getUserProfileFromParsingObject:(AKParsingObject *)object{
+    
+    /*
+     access_token	string	用于调用access_token，接口获取授权后的access token。
+     expires_in     string	access_token的生命周期，单位是秒数。
+     remind_in      string	access_token的生命周期（该参数即将废弃，开发者请使用expires_in）。
+     uid            string	当前授权用户的UID。
+     */
+    NSString * access_token = [object getSubStringByKey:@"access_token"];
+    NSString * expires_in = [object getSubStringByKey:@"expires_in"];
+    NSString * uid = [object getSubStringByKey:@"uid"];
+    
+    //[self.loginView setHidden:YES];
+    
+    AKUserProfile *userProfile = [[AKUserProfile alloc]init];
+    userProfile.userID = uid;
+    userProfile.accessToken = access_token;
+    userProfile.accessTokenExpiresIn = expires_in;
+    
+    
+    return userProfile;
+
+}
+
+
 
 @end
+
+
+
+
+
+//Implemetation of AKMethodActionObject
 
 @implementation AKMethodActionObject
 

@@ -18,7 +18,7 @@
 @property id<AKTabViewDelegate> delegate;
 
 -(void)addUser:(AKUserProfile *)userProfile;
-
+-(BOOL)isUserExist:(NSString *)userID;
 
 @end
 

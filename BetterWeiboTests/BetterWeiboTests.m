@@ -7,17 +7,36 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "AKWeiboManager.h"
 
 @interface BetterWeiboTests : XCTestCase
 
 @end
 
-@implementation BetterWeiboTests
+@implementation BetterWeiboTests{
+
+    AKWeiboManager *weiboManager;
+
+}
 
 - (void)setUp
 {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    weiboManager = [[AKWeiboManager alloc]initWithClientID:@"1672616342"
+                                                 appSecret:@"57663124f7eb21e1207a2ee09fed507b"
+                                               redirectURL:@"http://coffeeandsandwich.com/pinwheel/authorize.php"];
+    AKUserProfile *userProfile = [[AKUserProfile alloc]init];
+    userProfile.userID = @"2128178903";
+    userProfile.accessToken = @"2.00LYcB1CwuHMpB49be915aaf0Cmenf";
+    userProfile.accessTokenExpiresIn = @"125901";
+    
+    [weiboManager addUser:userProfile];
+    
+    [weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];
+    
+    
 }
 
 - (void)tearDown
@@ -31,5 +50,31 @@
     
     //XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }
+
+-(void)weiboManagerMethodActionHandler:(NSNotification *)notification{
+
+    NSLog(@"Get Notification");
+
+}
+
+- (void)testGetUserProfileTest{
+
+
+    [weiboManager getUserDetail:@"2128178903"];
+    
+    [NSThread sleepForTimeInterval:5];
+    
+}
+
+
+- (void)testGetStatus{
+    
+
+    [weiboManager getStatus];
+    
+    [NSThread sleepForTimeInterval:5];
+    
+}
+
 
 @end

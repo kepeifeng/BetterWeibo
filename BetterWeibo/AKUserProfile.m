@@ -17,6 +17,7 @@
     
         self.userID = [aDecoder decodeObjectForKey:@"userID"];
         self.accessToken = [aDecoder decodeObjectForKey:@"accessToken"];
+        self.accessTokenExpiresIn = [aDecoder decodeObjectForKey:@"expireIn"];
     
     
     }
@@ -30,6 +31,7 @@
     
     [aCoder encodeObject:self.userID forKey:@"userID"];
     [aCoder encodeObject:self.accessToken forKey:@"accessToken"];
+    [aCoder encodeObject:self.accessTokenExpiresIn forKey:@"expireIn"];
 
 }
 

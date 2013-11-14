@@ -35,7 +35,7 @@
 -(void)addControlGroup:(AKUserProfile *)userProfile;
 -(void)switchToGroupAtIndex:(NSInteger)index;
 -(void)setLightIndicatorState:(BOOL)state forButton:(AKTabButtonType)buttonType userID:(NSString *)userID;
-
+-(BOOL)isUserExist:(NSString *)userID;
 //-(void)addViewController:(AKTabViewController *)viewController;
 
 @end

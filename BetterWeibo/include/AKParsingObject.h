@@ -46,7 +46,8 @@ struct AKParsingObjectOpaque;
 -(NSString *)getSubStringByIndex:(NSInteger)index;
 -(AKParsingObject *)getSubObjectByIndex:(NSInteger)index;
 
--(void) enumAllSubWithUserData:(id)userData;
+//-(void) enumAllSubWithUserData:(id)userData;
+-(NSDictionary *)getDictionaryObject;
 
 @property id<AKParsingObjectDelegate> delegate;
 @property (readonly, nonatomic) BOOL isUseable;

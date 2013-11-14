@@ -18,4 +18,10 @@
     
 }
 
+-(BOOL)isUserExist:(NSString *)userID{
+
+    return [self.tabControl isUserExist:userID];
+
+}
+
 @end

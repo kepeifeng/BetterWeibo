@@ -63,8 +63,8 @@
 		04608F39181F673000F20F2D /* libHttpEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04608F35181F673000F20F2D /* libHttpEngine.a */; };
 		04608F3A181F673000F20F2D /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04608F36181F673000F20F2D /* libjson.a */; };
 		04608F3B181F673000F20F2D /* libutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04608F37181F673000F20F2D /* libutil.a */; };
-		04608F3C181F673000F20F2D /* libweibosdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04608F38181F673000F20F2D /* libweibosdk.a */; };
 		046091A9181F99C000F20F2D /* pinwheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 046091A8181F99C000F20F2D /* pinwheel.png */; };
+		0461B18418334DD70054D47C /* libweibosdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0461B18318334DD70054D47C /* libweibosdk.a */; };
 		04731FF617FA5830000635CC /* AKMentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04731FF417FA5830000635CC /* AKMentionViewController.m */; };
 		04731FF717FA5830000635CC /* AKMentionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04731FF517FA5830000635CC /* AKMentionViewController.xib */; };
 		04942D8F17F8336900459F28 /* AKTabButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 04942D8E17F8336900459F28 /* AKTabButton.m */; };
@@ -146,16 +146,6 @@
 		37E81A931828D1DD00D88B33 /* AKWeiboManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37E81A921828D1DD00D88B33 /* AKWeiboManager.mm */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		044F3CA017F710E200344173 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 044F3C7317F710E200344173 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 044F3C7A17F710E200344173;
-			remoteInfo = BetterWeibo;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		040D747017FBD75500600F54 /* AKWeiboDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKWeiboDetailViewController.h; sourceTree = "<group>"; };
 		040D747117FBD75500600F54 /* AKWeiboDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKWeiboDetailViewController.m; sourceTree = "<group>"; };
@@ -234,7 +224,6 @@
 		04608F35181F673000F20F2D /* libHttpEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHttpEngine.a; path = lib/libHttpEngine.a; sourceTree = "<group>"; };
 		04608F36181F673000F20F2D /* libjson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjson.a; path = lib/libjson.a; sourceTree = "<group>"; };
 		04608F37181F673000F20F2D /* libutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libutil.a; path = lib/libutil.a; sourceTree = "<group>"; };
-		04608F38181F673000F20F2D /* libweibosdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libweibosdk.a; path = lib/libweibosdk.a; sourceTree = "<group>"; };
 		04608F3E181F678C00F20F2D /* AKID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKID.h; sourceTree = "<group>"; };
 		04608F3F181F678C00F20F2D /* AKParsingHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKParsingHandle.h; sourceTree = "<group>"; };
 		04608F40181F678C00F20F2D /* AKParsingObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKParsingObject.h; sourceTree = "<group>"; };
@@ -796,6 +785,7 @@
 		046091A6181F678D00F20F2D /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		046091A7181F678D00F20F2D /* ParsingObject.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParsingObject.hxx; sourceTree = "<group>"; };
 		046091A8181F99C000F20F2D /* pinwheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pinwheel.png; sourceTree = "<group>"; };
+		0461B18318334DD70054D47C /* libweibosdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libweibosdk.a; path = "../GIT/weibo-sdk/lib/MacOS/x86_64/libweibosdk.a"; sourceTree = "<group>"; };
 		04731FF317FA5830000635CC /* AKMentionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKMentionViewController.h; sourceTree = "<group>"; };
 		04731FF417FA5830000635CC /* AKMentionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKMentionViewController.m; sourceTree = "<group>"; };
 		04731FF517FA5830000635CC /* AKMentionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKMentionViewController.xib; sourceTree = "<group>"; };
@@ -915,10 +905,10 @@
 				04608F32181F66C600F20F2D /* libcurl.dylib in Frameworks */,
 				37E81A8B1828CF0800D88B33 /* libFMDB.a in Frameworks */,
 				04608F30181F66BE00F20F2D /* libiconv.dylib in Frameworks */,
+				0461B18418334DD70054D47C /* libweibosdk.a in Frameworks */,
 				04608F3A181F673000F20F2D /* libjson.a in Frameworks */,
 				04608F3B181F673000F20F2D /* libutil.a in Frameworks */,
 				04608F39181F673000F20F2D /* libHttpEngine.a in Frameworks */,
-				04608F3C181F673000F20F2D /* libweibosdk.a in Frameworks */,
 				04C76311180CFAFD00C9E540 /* QuartzCore.framework in Frameworks */,
 				044F3C7F17F710E200344173 /* Cocoa.framework in Frameworks */,
 			);
@@ -1003,7 +993,7 @@
 				04608F35181F673000F20F2D /* libHttpEngine.a */,
 				04608F36181F673000F20F2D /* libjson.a */,
 				04608F37181F673000F20F2D /* libutil.a */,
-				04608F38181F673000F20F2D /* libweibosdk.a */,
+				0461B18318334DD70054D47C /* libweibosdk.a */,
 				04608F33181F66CE00F20F2D /* libz.dylib */,
 				04608F31181F66C600F20F2D /* libcurl.dylib */,
 				04608F2F181F66BE00F20F2D /* libiconv.dylib */,
@@ -2327,7 +2317,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				044F3CA117F710E200344173 /* PBXTargetDependency */,
 			);
 			name = BetterWeiboTests;
 			productName = BetterWeiboTests;
@@ -2525,14 +2514,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		044F3CA117F710E200344173 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 044F3C7A17F710E200344173 /* BetterWeibo */;
-			targetProxy = 044F3CA017F710E200344173 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		044F3C8717F710E200344173 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -2649,6 +2630,7 @@
 					/Users/mac/Documents/Projects/BetterWeibo/lib,
 					/Users/mac/Documents/Projects/BetterWeibo,
 					/Users/kent/Documents/Projects/BetterWeibo/lib,
+					"/Users/mac/Documents/Projects/GIT/weibo-sdk/lib/MacOS/x86_64",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2668,6 +2650,7 @@
 					/Users/mac/Documents/Projects/BetterWeibo/lib,
 					/Users/mac/Documents/Projects/BetterWeibo,
 					/Users/kent/Documents/Projects/BetterWeibo/lib,
+					"/Users/mac/Documents/Projects/GIT/weibo-sdk/lib/MacOS/x86_64",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";

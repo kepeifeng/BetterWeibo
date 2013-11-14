@@ -51,7 +51,8 @@
         for(AKUserProfile *userProfile in userProfileArray){
         
             [tabView addUser:userProfile];
-            
+            [weiboManager addUser:userProfile];
+            [weiboManager getUserDetail:userProfile.userID];
         
         }
         
@@ -61,11 +62,7 @@
         //Display Login View
 
         [self.loginView setHidden:NO];
-        
-        //Load users.
-        
-        
-        //Go to default page.
+
         
         
     
@@ -81,11 +78,21 @@
 -(void)weiboManagerMethodActionHandler:(NSNotification *)notification{
 
     NSDictionary *userInfoDictionary = notification.userInfo;
-    AKMethodAction methodAction = [(AKMethodActionObject *)[userInfoDictionary valueForKey:@"methodOption"] methodAction];
+    AKMethodAction methodAction = [(AKMethodActionObject *)[userInfoDictionary objectForKey:@"methodOption"] methodAction];
+    AKParsingObject *result = (AKParsingObject *)[userInfoDictionary objectForKey:@"result"];
+    
     
     if(methodAction == WBOPT_OAUTH2_ACCESS_TOKEN){
     
         [self.loginView setHidden:YES];
+        AKUserProfile *userProfile = [AKWeiboManager getUserProfileFromParsingObject:result];
+        if(![tabView isUserExist:userProfile.userID]){
+        
+            [tabView addUser:userProfile];
+        
+        }
+
+        
     
     }
     

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AKWeibo.h"
+#import "AKUserManager.h"
 
 #define METHOD_OPTION_NOTIFICATION @"METHOD_OPTION_NOTIFICATION"
 
@@ -26,8 +27,25 @@
 -(void)setOauth2Code:(NSString *)code;
 -(void)startOauthLogin;
 -(void)addMethodActionObserver:(id)observer selector:(SEL)selector;
+-(void)addUser:(AKUserProfile *)userProfile;
+-(void)getUserDetail:(NSString *)userID;
+-(void)getStatus;
+
+/**
+ *  Get an AKUserProfile object from a AKParsingObject.
+ *
+ *  @param object An AKParsingObject.
+ *
+ *  @return An AKUserProfile
+ */
++(AKUserProfile *)getUserProfileFromParsingObject:(AKParsingObject *)object;
+
 
 @end
+
+
+
+//============================================================================
 
 @protocol AKWeiboManagerDelegate
 
@@ -39,6 +57,7 @@
 
 @end
 
+//============================================================================
 
 @interface AKMethodActionObject : NSObject
 

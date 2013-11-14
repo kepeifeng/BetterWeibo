@@ -108,12 +108,30 @@
 
 #pragma mark - Public Methods
 
+-(BOOL)isUserExist:(NSString *)userID{
+
+    for (AKUserProfile *userProfile in userIDList) {
+        if([userProfile.userID isEqualToString:userID]){
+        
+            return YES;
+        
+        }
+    }
+    
+    return NO;
+}
+
+
 /**
  *  Setup a group of control for the user.
  *
  *  @param userProfile User profile.
  */
 -(void)addControlGroup:(AKUserProfile *)userProfile{
+    
+    if([self isUserExist:userProfile.userID]){
+        return;
+    }
 
     NSUInteger index = [userButtonDictionary count];
     
@@ -202,7 +220,7 @@
     
     [userTabViewDictionary setObject:userTabView forKey:userProfile.userID];
     
-
+    [userTabView setTabViewType:NSNoTabsNoBorder];
     [newTabViewItem setView:userTabView];
     
     

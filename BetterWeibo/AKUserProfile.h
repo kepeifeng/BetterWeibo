@@ -12,5 +12,6 @@
 
 @property NSString * userID;
 @property NSString * accessToken;
+@property NSString * accessTokenExpiresIn;
 
 @end

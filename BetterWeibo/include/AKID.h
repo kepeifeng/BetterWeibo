@@ -11,8 +11,8 @@
 
 typedef NS_ENUM(NSInteger, AKIDType){
     
-    IDT_ID,
-    IDT_SCREENNAME
+    AKIDTypeID,
+    AKIDTypeScreenname
     
 };
 
