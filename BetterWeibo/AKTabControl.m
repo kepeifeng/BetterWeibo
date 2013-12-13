@@ -12,7 +12,13 @@
 #import "AKMentionViewController.h"
 #import "AKMessageViewController.h"
 #import "AKBlockViewController.h"
-
+#import "AKFavoriteViewController.h"
+#import "AKSearchViewController.h"
+#import "AKProfileViewController.h"
+#import "AKPanelView.h"
+#import "AKTabViewItem.h"
+#import "AKUserButton.h"
+#import "AKUserManager.h"
 
 
 @implementation AKTabControl{
@@ -33,6 +39,11 @@
     
     
     
+    NSMutableDictionary *weiboViewGroup;
+    NSView *activedView;
+    
+    NSMutableArray *userIDList;
+    AKUserManager *userManager;
 }
 
 
@@ -60,13 +71,9 @@
         userTabViewDictionary = [[NSMutableDictionary alloc]init];
         userIDList = [[NSMutableArray alloc]init];
         
-        
+        weiboViewGroup = [[NSMutableDictionary alloc]init];
 
-        
-
-        
-
-        
+        userManager = [AKUserManager defaultUserManager];
 
 //
 //        AKWeiboViewController *weiboController = [[AKWeiboViewController alloc]init];
@@ -111,7 +118,7 @@
 -(BOOL)isUserExist:(NSString *)userID{
 
     for (AKUserProfile *userProfile in userIDList) {
-        if([userProfile.userID isEqualToString:userID]){
+        if([userProfile.IDString isEqualToString:userID]){
         
             return YES;
         
@@ -127,24 +134,33 @@
  *
  *  @param userProfile User profile.
  */
--(void)addControlGroup:(AKUserProfile *)userProfile{
+-(void)addControlGroup:(NSString *)userID{
     
-    if([self isUserExist:userProfile.userID]){
+    if([self isUserExist:userID]){
         return;
     }
 
     NSUInteger index = [userButtonDictionary count];
     
-    [userIDList addObject:userProfile];
+    AKWeiboViewGroupItem *viewGroupItem = [[AKWeiboViewGroupItem alloc]init];
+    [weiboViewGroup setObject:viewGroupItem forKey:userID];
+    
+    [userIDList addObject:userID];
+    viewGroupItem.userID = userID;
     
     //Add user image
-    NSButton *userButton = [[NSButton alloc]initWithFrame:NSMakeRect(0, 0, 48, 48)];
+    AKUserButton *userButton = [[AKUserButton alloc]initWithFrame:NSMakeRect(0, 0, 48, 49)];
+    //userButton.avatarURL = userProfile.profile_image_url;
     userButton.tag = index;
+    userButton.userID = userID;
     [userButton setTarget:self];
     [userButton setAction:@selector(userButtonClicked:)];
     
     
-    [userButtonDictionary setObject:userButton forKey: userProfile.userID];
+    [userButtonDictionary setObject:userButton forKey:userID];
+    
+    viewGroupItem.userButton = userButton;
+    
     NSSize buttonMatrixSize = NSMakeSize(48, 0);
     NSRect buttonMatrixFrame = NSMakeRect(0,60, buttonMatrixSize.width, buttonMatrixSize.height);
     
@@ -207,37 +223,78 @@
     
     
     
-    [userControlMatrixDictionary setObject:buttonMatrix forKey:userProfile.userID];
+    [userControlMatrixDictionary setObject:buttonMatrix forKey:userID];
+    
+    viewGroupItem.userControlMatrix = buttonMatrix;
     
 
     
     //Add New Tab with new tabview inside in targetTabView for User
     
-    NSTabViewItem *newTabViewItem = [[NSTabViewItem alloc]initWithIdentifier:[NSString stringWithFormat:@"%@",userProfile.userID]];
+    NSTabViewItem *newTabViewItem = [[NSTabViewItem alloc]initWithIdentifier:[NSString stringWithFormat:@"%@",userID]];
     [self.targetTabView addTabViewItem:newTabViewItem];
     
     NSTabView *userTabView = [[NSTabView alloc]init];
     
-    [userTabViewDictionary setObject:userTabView forKey:userProfile.userID];
+    [userTabViewDictionary setObject:userTabView forKey:userID];
+    viewGroupItem.tabView = userTabView;
     
     [userTabView setTabViewType:NSNoTabsNoBorder];
     [newTabViewItem setView:userTabView];
     
     
     //Add subviews to Control Matrix and Tab View
+    
+    //微博
     AKWeiboViewController *weiboViewController = [[AKWeiboViewController alloc]init];
-    [self addViewController:weiboViewController forUser:userProfile.userID];
+    weiboViewController.delegate = self;
+    viewGroupItem.weiboViewController = weiboViewController;
+    weiboViewController.timelineType = AKFriendsTimeline;
     
+    [self addViewController:weiboViewController forUser:userID];
+
+
     
-    AKMentionViewController *mentionViewController = [[AKMentionViewController alloc]init];
-    [self addViewController:mentionViewController forUser:userProfile.userID];
+    //提及
+//    AKMentionViewController *mentionViewController = [[AKMentionViewController alloc]init];
+//    [self addViewController:mentionViewController forUser:userID];
+//    viewGroupItem.mentionViewController = mentionViewController;
+    AKWeiboViewController *mentionViewController = [[AKWeiboViewController alloc]init];
+    mentionViewController.delegate = self;
+    viewGroupItem.mentionViewController = mentionViewController;
+    mentionViewController.timelineType = AKMentionTimeline;
+
     
+    [self addViewController:mentionViewController forUser:userID];
+
+    
+    //私信
     AKMessageViewController *messageViewController = [[AKMessageViewController alloc]init];
-    [self addViewController:messageViewController forUser:userProfile.userID];
+    [self addViewController:messageViewController forUser:userID];
+    
+    //收藏
+//    AKTabViewController *favoriteViewController = [[AKFavoriteViewController alloc]init];
+//    [self addViewController:favoriteViewController forUser:userID];
+    AKWeiboViewController *favoriteViewController = [[AKWeiboViewController alloc]init];
+    favoriteViewController.delegate = self;
+    viewGroupItem.favoriteViewController = favoriteViewController;
+    favoriteViewController.timelineType = AKFavoriteTimeline;
+    
+    [self addViewController:favoriteViewController forUser:userID];
+
     
     
+    //我
+    AKTabViewController *profileViewController = [[AKProfileViewController alloc]init];
+    [self addViewController:profileViewController forUser:userID];
+    
+    //搜索
+    AKTabViewController *searchViewController = [[AKSearchViewController alloc]init];
+    [self addViewController: searchViewController forUser:userID];
+    
+    //黑名单
     AKBlockViewController *blockViewController = [[AKBlockViewController alloc]init];
-    [self addViewController:blockViewController forUser:userProfile.userID];
+    [self addViewController:blockViewController forUser:userID];
     
     if(index>0){
         
@@ -251,6 +308,59 @@
     
 }
 
+//-(AKUserProfile *)currentUser{
+//
+//    return [userIDList objectAtIndex:currentIndex];
+//}
+
+
+-(void)switchToGroupOfUser:(NSString *)userID{
+    
+    if([userManager.currentUserID isEqualToString:userID]){
+        return;
+    }
+    
+    
+    //AKUserProfile *currentUser = [userIDList objectAtIndex:currentIndex];
+    NSString *currentUserID = userManager.currentUserID;
+    //AKUserProfile *targetUser = [userIDList objectAtIndex:index];
+    NSString *targetUserID = userID;
+    
+    NSInteger y = self.bounds.size.height;
+    
+    for(AKWeiboViewGroupItem *viewGroup in weiboViewGroup){
+        
+        //AKUserProfile *userProfile = [userIDList objectAtIndex:i];
+        NSButton * userButton = viewGroup.userButton; // [userButtonDictionary objectForKey:userProfile.IDString];
+        NSMatrix *userControlMatrix = viewGroup.userControlMatrix; //[userControlMatrixDictionary objectForKey:userProfile.IDString];
+        
+        if([viewGroup.userID isEqualToString: currentUserID]){
+            
+            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
+        }
+        else if ([viewGroup.userID isEqualToString: targetUserID]){
+            
+            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
+            
+        }
+        
+        y = y - 10 - userButton.frame.size.height;
+        [userButton setFrameOrigin:NSMakePoint(userButton.frame.origin.x, y)];
+        
+        y = y - 10 - userControlMatrix.frame.size.height;
+        [userControlMatrix setFrameOrigin:NSMakePoint(userControlMatrix.frame.origin.x, y)];
+    
+    }
+    [self.targetTabView selectTabViewItemWithIdentifier:targetUserID];
+    
+    userManager.currentUserID = userID;
+    //currentIndex = index;
+    
+    
+    
+}
+
+
 -(void)switchToGroupAtIndex:(NSInteger)index{
     
     if(currentIndex == index){
@@ -260,22 +370,22 @@
     }
     
     AKUserProfile *currentUser = [userIDList objectAtIndex:currentIndex];
-    NSString *currentUserID = currentUser.userID;
+    NSString *currentUserID = currentUser.IDString;
     AKUserProfile *targetUser = [userIDList objectAtIndex:index];
-    NSString *targetUserID = targetUser.userID;
+    NSString *targetUserID = targetUser.IDString;
     
     NSInteger y = self.bounds.size.height;
     for(NSInteger i=0; i<userIDList.count; i++){
     
         AKUserProfile *userProfile = [userIDList objectAtIndex:i];
-        NSButton * userButton = [userButtonDictionary objectForKey:userProfile.userID];
-        NSMatrix *userControlMatrix = [userControlMatrixDictionary objectForKey:userProfile.userID];
+        NSButton * userButton = [userButtonDictionary objectForKey:userProfile.IDString];
+        NSMatrix *userControlMatrix = [userControlMatrixDictionary objectForKey:userProfile.IDString];
         
-        if([userProfile.userID isEqualToString: currentUserID]){
+        if([userProfile.IDString isEqualToString: currentUserID]){
             
             [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
         }
-        else if ([userProfile.userID isEqualToString: targetUserID]){
+        else if ([userProfile.IDString isEqualToString: targetUserID]){
         
             [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
         
@@ -307,8 +417,9 @@
 
 -(void)userButtonClicked:(id)sender{
 
-    NSButton *buttonClicked = (NSButton *)sender;
-    [self switchToGroupAtIndex:buttonClicked.tag];
+    AKUserButton *buttonClicked = (AKUserButton *)sender;
+    //[self switchToGroupAtIndex:buttonClicked.tag];
+    [self switchToGroupOfUser:buttonClicked.userID];
 
 }
 
@@ -317,19 +428,24 @@
     NSMatrix * buttonMatrix = [userControlMatrixDictionary objectForKey:userID];
     NSTabView *userTabView = [userTabViewDictionary objectForKey:userID];
     
-    viewController.delegate = self;
+    //viewController.delegate = self;
     
     
     [_tabViewControllers addObject:viewController];
 
     [buttonMatrix addRowWithCells:[[NSArray alloc] initWithObjects:viewController.button, nil]];
+    viewController.button.target = self;
+    viewController.button.action = @selector(tabButtonClicked:);
+    viewController.button.tag = viewController.identifier;
     
     [buttonMatrix setFrameSize:NSMakeSize(buttonMatrix.frame.size.width, buttonMatrix.frame.size.height + 48)];
     [buttonMatrix setFrameOrigin:NSMakePoint(buttonMatrix.frame.origin.x, buttonMatrix.frame.origin.y - 48)];
 //    [buttonMatrix intrinsicContentSize];
 
     
-    NSTabViewItem *newTabViewItem = [[NSTabViewItem alloc]initWithIdentifier:[NSString stringWithFormat:@"tab%ld",self.targetTabView.numberOfTabViewItems+1]];
+    AKTabViewItem *newTabViewItem = [[AKTabViewItem alloc]initWithIdentifier:[NSString stringWithFormat:@"tab%ld",self.targetTabView.numberOfTabViewItems+1]];
+    
+    newTabViewItem.tabViewController = viewController;
     //newTabViewItem.view = viewController.view;
     
     [newTabViewItem setView:viewController.view];
@@ -343,7 +459,7 @@
     
     [newTabViewItem.view setFrame:NSMakeRect(0, 0, self.targetTabView.frame.size.width, self.targetTabView.frame.size.height)];
     
-    if(buttonMatrix.numberOfRows == 1){
+    if(!activedView && buttonMatrix.numberOfRows == 1){
         [buttonMatrix selectCellAtRow:0 column:0];
         [viewController.button performClick:viewController.button];
     }
@@ -358,6 +474,34 @@
 
 }
 
+-(void)tabButtonClicked:(id)sender
+{
+    
+    //NSLog(@"tabViewController = %@ , buttonClicked = %@",aTabViewController, buttonClicked);
+    
+    
+    
+    NSString *tabViewControllerID = [(AKTabButton *)[(NSMatrix *)sender selectedCell] tag];
+    AKTabViewItem *tabViewItem = (AKTabViewItem *)[tabViewItemAndControllerDictionary objectForKey:tabViewControllerID];
+    [tabViewItem.tabView selectTabViewItem:tabViewItem ];
+    
+
+
+    if([tabViewItem.tabViewController isKindOfClass:[AKWeiboViewController class]]){
+        
+        [(AKWeiboViewController *)tabViewItem.tabViewController tabDidActived];
+    
+    }
+
+    activedView = tabViewItem.view;
+    if(self.delegate){
+        [self.delegate viewDidSelected:tabViewItem.tabViewController];
+    }
+    
+//    [(AKTabViewController *)tabViewItem.view tabDidActived];
+    //tabViewItem.tabView
+    
+}
 
 -(void)tabViewController:(AKTabViewController *)aTabViewController tabButtonClicked:(AKTabButton *)buttonClicked{
     
@@ -377,6 +521,79 @@
 
 }
 
+-(void)updateUser:(AKUserProfile *)userProfile{
+
+    [self setAvatarForUser:userProfile.IDString URL:userProfile.profile_image_url];
+
+}
+
+
+
+-(void)setAvatarForUser:(NSString *)userID URL:(NSString *)url{
+    
+    AKWeiboViewGroupItem *viewGroup = [weiboViewGroup objectForKey:userID];
+    if(!viewGroup)
+    {
+        return;
+    }
+
+    AKUserButton *userButton = viewGroup.userButton;
+    userButton.avatarURL =url;
+    
+
+}
+
+
+-(void)addStatuses:(NSArray *)statuses timelineType:(AKWeiboTimelineType)timelineType forUser:(NSString *)userID;{
+
+//    AKUserProfile *user = [self currentUser];
+    AKWeiboViewGroupItem *viewGroup = [weiboViewGroup objectForKey:userID];
+    AKWeiboViewController *targetWeiboViewController;
+    
+    switch (timelineType) {
+        case AKFriendsTimeline:
+            targetWeiboViewController = viewGroup.weiboViewController;
+            break;
+            
+        case AKMentionTimeline:
+            targetWeiboViewController = viewGroup.mentionViewController;
+            break;
+            
+        case AKFavoriteTimeline:
+            targetWeiboViewController = viewGroup.favoriteViewController;
+            break;
+            
+            
+        default:
+            return;
+            break;
+    }
+    
+    [targetWeiboViewController addStatuses:statuses];
+    
+}
+
+//-(void)addStatuses:(NSArray *)statuses{
+//
+//    //AKUserProfile *user = [self currentUser];
+//    AKWeiboViewGroupItem *viewGroup = [weiboViewGroup objectForKey:user.IDString];
+//    [viewGroup.weiboViewController addStatuses:statuses];
+//}
+
+#pragma mark - AKWeiboViewControllerDelegate
+-(void)WeiboViewRequestForStatuses:(AKWeiboViewController *)weiboViewController sinceWeiboID:(NSString *)sinceWeiboID maxWeiboID:(NSString *)maxWeiboID{
+    
+    //NSString *userID = weiboViewController.userID;
+    if(self.delegate){
+        [self.delegate WeiboViewRequestForStatuses:weiboViewController forUser:weiboViewController.userID sinceWeiboID:sinceWeiboID maxWeiboID:maxWeiboID count:30 page:1 baseApp:NO feature:0 trimUser:0];
+    
+    }
+
+}
+
+-(void)WeiboViewRequestForGroupStatuses:(AKWeiboViewController *)weiboViewController listID:(NSString *)listID sinceWeiboID:(NSString *)sinceWeiboID maxWeiboID:(NSString *)maxWeiboID{
+
+}
 
 
 @end

@@ -21,9 +21,9 @@ struct AKIDOpaque;
 @interface AKID : NSObject<AKObjCWrapper>{
 
     struct AKIDOpaque *idOpaque;
-    AKIDType idType;
-    NSString *id;
-    NSString *key;
+//    AKIDType idType;
+//    NSString *id;
+//    NSString *key;
 
 }
 
@@ -31,6 +31,8 @@ struct AKIDOpaque;
 -(id)initWithIdType:(AKIDType)type text:(NSString *) text key:(NSString *)key;
 
 @property (readonly) BOOL isEmpty;
-
+@property NSString *keyName;
+@property NSString *ID;
+@property AKIDType idType;
 
 @end

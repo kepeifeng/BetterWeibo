@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "AKWeiboManager.h"
+#import "AKCacheDatabaseManager.h"
 
 @interface BetterWeiboTests : XCTestCase
 
@@ -28,7 +29,7 @@
                                                  appSecret:@"57663124f7eb21e1207a2ee09fed507b"
                                                redirectURL:@"http://coffeeandsandwich.com/pinwheel/authorize.php"];
     AKUserProfile *userProfile = [[AKUserProfile alloc]init];
-    userProfile.userID = @"2128178903";
+    userProfile.IDString = @"2128178903";
     userProfile.accessToken = @"2.00LYcB1CwuHMpB49be915aaf0Cmenf";
     userProfile.accessTokenExpiresIn = @"125901";
     
@@ -74,6 +75,14 @@
     
     [NSThread sleepForTimeInterval:5];
     
+}
+
+-(void)testAKVariablePramas{
+
+    AKVariableParams *vp = [[AKVariableParams alloc]init];
+    vp.since_id = [@"12344" longLongValue];
+    assert(vp.since_id == 12344ll);
+
 }
 
 

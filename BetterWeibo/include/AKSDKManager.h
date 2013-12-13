@@ -10,17 +10,27 @@
 #import "AKWeibo.h"
 
 
+
 struct AKSDKManagerOpaque;
 
 /**
  *  A Objectice C Wrapper for SDKManager Class.
  */
-@interface AKSDKManager : NSObject <AKWeibo>{
+@interface AKSDKManager : NSObject <AKWeibo,AKMethodDelegate>{
 
     struct AKSDKManagerOpaque * _sdkManagerOpaque;
-    id<AKWeiboMethodProtocol> _weiboMethod;
+    
 }
 
+/**
+ *  App Key, use setConsumer to set value.
+ */
+@property NSString *key;
+/**
+ *  App Secret, user setConsumer to set value;
+ */
+@property NSString *secret;
+@property NSString *accessToken;
 
 
 

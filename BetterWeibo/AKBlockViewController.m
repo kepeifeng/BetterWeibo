@@ -26,8 +26,8 @@
         self.button.tabButtonType = AKTabButtonBottom;
         
         
-        [self.button setAction:@selector(tabButtonClicked:)];
-        [self.button setTarget:self];
+//        [self.button setAction:@selector(tabButtonClicked:)];
+//        [self.button setTarget:self];
     }
     return self;
 }

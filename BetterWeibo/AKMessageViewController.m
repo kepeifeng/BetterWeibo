@@ -24,8 +24,8 @@
         self.button = [[AKTabButton alloc]init];
         self.button.tabButtonIcon = AKTabButtonIconMessage;
         self.button.tabButtonType = AKTabButtonMiddle;
-        [self.button setAction:@selector(tabButtonClicked:)];
-        [self.button setTarget:self];
+//        [self.button setAction:@selector(tabButtonClicked:)];
+//        [self.button setTarget:self];
     }
     return self;
 }

@@ -19,21 +19,21 @@ typedef NS_ENUM(NSInteger, AKWeiboRequestFormat){
 
 typedef NS_ENUM(NSInteger,AKWeiboResultCode)
 {
-    WRC_UNKNOW = -1,
-    WRC_OK,
-    WRC_USERID_NULL,
-    WRC_WEIBOID_NULL,
-    WRC_LISTID_NULL,
-    WRC_TAGID_NULL,
-    WRC_TEXT_NULL,
-    WRC_PASSWORD_NULL,
-    WRC_SOURCE_NULL, ///< App key or app secret is null.
-    WRC_TOKEN_NULL,  ///< Access token or access secret is null.
-    WRC_FILEPATH_NULL,///< File path is null.
-    WRC_NOT_IMPL,///<
-    WRC_INVALIDE_PARAM,
-    WRC_INTERNAL_ERROR, ///< Internal error.
-    WRC_TASK_EXIST ///< Already has this task.
+    AKWRC_UNKNOW = -1,
+    AKWRC_OK,
+    AKWRC_USERID_NULL,
+    AKWRC_WEIBOID_NULL,
+    AKWRC_LISTID_NULL,
+    AKWRC_TAGID_NULL,
+    AKWRC_TEXT_NULL,
+    AKWRC_PASSWORD_NULL,
+    AKWRC_SOURCE_NULL, ///< App key or app secret is null.
+    AKWRC_TOKEN_NULL,  ///< Access token or access secret is null.
+    AKWRC_FILEPATH_NULL,///< File path is null.
+    AKWRC_NOT_IMPL,///<
+    AKWRC_INVALIDE_PARAM,
+    AKWRC_INTERNAL_ERROR, ///< Internal error.
+    AKWRC_TASK_EXIST ///< Already has this task.
 };
 
 typedef NS_ENUM(NSInteger,AKWeiboProxyType)
@@ -196,15 +196,15 @@ typedef NS_ENUM(NSInteger,AKWeiboErrorSubCode)
 
 
 struct AKUserTaskInfoOpaque;
-@interface AKUserTaskInfo : NSObject<AKObjCWrapper>{
+@interface AKUserTaskInfo : NSObject<AKObjCWrapper,NSCopying>{
 
     struct AKUserTaskInfoOpaque *userTaskInfoOpaque;
 }
 
 -(id)initWithObject:(void *)object;
 
-    @property NSString *mTaskId;
-    @property id mUsrData;
+    @property NSString *taskId;
+    @property void * userData;
 
 @end
 

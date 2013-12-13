@@ -32,9 +32,6 @@
         return [super intrinsicContentSize];
     }
     
-    
-    
-    
     NSRect frame = [self frame];
     
     CGFloat width = frame.size.width;

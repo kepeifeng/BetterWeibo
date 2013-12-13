@@ -32,6 +32,17 @@
 -(void)setResponseFormat:(AKWeiboRequestFormat)format;
 -(void)setAccessToken:(NSString *)token;
 -(void)setLogFile:(NSString *)filepath;
+
+/**
+ *  App Key, use setConsumer to set value.
+ */
+@property NSString *key;
+/**
+ *  App Secret, user setConsumer to set value;
+ */
+@property  NSString *secret;
+@property  NSString *accessToken;
+
 -(id<AKWeiboMethodProtocol>)getMethod;
 
 @property id<AKWeiboDelegate> delegate;
@@ -41,7 +52,7 @@
 
 @protocol AKWeiboDelegate
 
--(void)OnDelegateComplated:(id<AKWeibo>)weibo methodOption:(NSUInteger)methodOption httpHeader:(NSString *)httpHeader result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask;
+-(void)OnDelegateCompleted:(id<AKWeibo>)weibo methodOption:(NSUInteger)methodOption httpHeader:(NSString *)httpHeader result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask;
 
 -(void)OnDelegateErrored:(id<AKWeibo>)weibo methodOption:(NSUInteger)methodOption errCode:(NSInteger)errCode subErrCode:(NSInteger)subErrCode result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask;
 

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AKUserProfile.h"
+#import "AKAccessTokenObject.h"
 
 @interface AKUserManager : NSObject
 
@@ -15,9 +16,22 @@
 
 -(BOOL)hasUserExisted;
 
--(NSArray *)getAllUserProfile;
+
+-(NSArray *)allUserProfiles;
 -(AKUserProfile *)loadUserProfile:(NSString *)userID;
 -(void)createUserProfile:(AKUserProfile *)userProfile;
--(void)updateUserAccessToken:(AKUserProfile *)userProfile;
+-(void)updateUserProfile:(AKUserProfile *)userProfile;
+-(void)updateUserAccessToken:(AKAccessTokenObject *)accessTokenObject;
+-(void)addObserver:(id)observer selector:(SEL)selector;
+
+-(NSArray *)allAccessTokens;
+
+-(BOOL)isAppUser:(NSString *)userID;
+
+@property NSString *currentUserID;
+@property (readonly) AKAccessTokenObject *currentAccessToken;
+@property (readonly) AKUserProfile *currentUserProfile;
+
+-(NSString *)getUserIDByAccessToken:(NSString *)accessToken;
 
 @end

@@ -10,18 +10,19 @@
 #import "INAppStoreWindow.h"
 #import "AKWindowController.h"
 #import "INWindowButton.h"
-#import "AKTabView.h"
+#import "AKTabControl.h"
 #import "AKWeibo.h"
 #import "AKWeiboFactory.h"
 #import "AKWeiboManager.h"
 
 @protocol AKWeiboManagerDelegate;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>{
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSURLConnectionDataDelegate,AKTabControlDelegate>{
     
 #pragma mark - Private Variables
     
-    IBOutlet AKTabView * tabView;
+    //IBOutlet AKTabView * tabView;
+    IBOutlet AKTabControl *tabView;
 
 }
 

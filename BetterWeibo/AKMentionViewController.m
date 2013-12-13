@@ -27,8 +27,8 @@
         self.button.tabButtonType = AKTabButtonMiddle;
         
         
-        [self.button setAction:@selector(tabButtonClicked:)];
-        [self.button setTarget:self];
+//        [self.button setAction:@selector(tabButtonClicked:)];
+//        [self.button setTarget:self];
     }
     
     return self;
@@ -45,9 +45,24 @@
     return self;
 }
 
+//-(void)awakeFromNib{
+//    
+//    //Sroll to Refresh
+//    self.scrollView.refreshBlock = ^(EQSTRScrollView *scrollView){
+//        
+//        if(self.delegate){
+//            
+//            NSString * latestWeiboID = ((AKWeiboStatus *)weiboArray[0]).idstr;
+//            [self.delegate WeiboViewRequestForStatuses:self sinceWeiboID:latestWeiboID maxWeiboID:0];
+//            
+//        }
+//    };
+//}
+
+
 -(void)tabButtonClicked:(id)sender{
 
-    [super tabButtonClicked:sender];
+    //[super tabButtonClicked:sender];
 
     
 }

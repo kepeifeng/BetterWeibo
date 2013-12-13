@@ -15,13 +15,15 @@
 
 @implementation AKTabViewController
 @synthesize identifier = _identifier;
+@synthesize title = _tabTitle;
+//@synthesize view = _view;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Initialization code here.
-        _identifier = [NSString stringWithFormat:@"AKTVC%@",[AKTabViewController uuid]];
+
     }
     return self;
 }
@@ -30,16 +32,21 @@
 -(void)tabButtonClicked:(id)sender{
     
     //NSLog(@"%@",self.title);
-    if(self.delegate){
-        [self.delegate tabViewController:self tabButtonClicked:sender];
-    
-    
-    }
+//    if(self.delegate){
+//        [self.delegate tabViewController:self tabButtonClicked:sender];
+//    
+//    
+//    }
     
 }
 
 -(NSString *)identifier{
 
+    if(!_identifier)
+    {
+        _identifier = [NSString stringWithFormat:@"AKTVC%@",[AKTabViewController uuid]];
+    }
+    
     return _identifier;
 
 }
@@ -51,5 +58,39 @@
     CFRelease(uuidRef);
     return (__bridge NSString *)uuidStringRef;
 }
+
+//-(AKPanelView *)view{
+//
+//    return _view;
+//
+//}
+//
+//-(void)setView:(AKPanelView *)view{
+//
+//    _view = view;
+//    super.view = view;
+//    if(_view){
+//        _view.title = self.title;
+//    }
+//
+//}
+
+-(NSString *)title{
+
+    return _tabTitle;
+
+}
+
+-(void)setTitle:(NSString *)title{
+
+    _tabTitle = title;
+//    if(self.view){
+//        self.view.title = title;
+//    }
+    
+    
+
+}
+
 
 @end

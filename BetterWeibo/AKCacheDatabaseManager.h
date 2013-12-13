@@ -10,7 +10,7 @@
 
 @interface AKCacheDatabaseManager : NSObject
 
-
+-(BOOL)insertData:(NSData *)data appKey:(NSString *)appKey accessToken:(NSString *)accessToken;
 -(void)insertStatuses:(NSArray *)statuses withUserID:(NSString *)userID;
 
 @end

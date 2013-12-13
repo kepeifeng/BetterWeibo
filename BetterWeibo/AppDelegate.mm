@@ -18,7 +18,8 @@
 #pragma mark - Private Variable
     NSView *titleBarCustomView;
     AKWeiboManager * weiboManager;
-
+    NSMutableData *receivedData;
+    AKUserManager *userManager;
 }
 
 
@@ -29,9 +30,12 @@
     [self setupTitleBar];
     [self setupTabController];
     
+    
     weiboManager = [[AKWeiboManager alloc]initWithClientID:@"1672616342"
                                                  appSecret:@"57663124f7eb21e1207a2ee09fed507b"
                                                redirectURL:@"http://coffeeandsandwich.com/pinwheel/authorize.php"];
+    
+    userManager = [AKUserManager defaultUserManager];
     
     [weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];
 
@@ -40,19 +44,26 @@
     NSAppleEventManager *eventManager = [NSAppleEventManager sharedAppleEventManager];
     [eventManager setEventHandler:self andSelector:@selector(getAuthCode:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
     [eventManager setEventHandler:self andSelector:@selector(getAuthCode:withReplyEvent:) forEventClass:'WWW!' andEventID:'OURL'];
+    
 
-    if([self existUsers ]){
+    
+    //Set tab view's delegator to this class.
+    tabView.delegate = self;
+    
+    NSArray *userProfileArray = [userManager allAccessTokens];
+    
+    if(userProfileArray && userProfileArray.count>0){
     
         //Load Users
         [self.loginView setHidden:YES];
         
-        NSArray *userProfileArray = [[AKUserManager defaultUserManager]getAllUserProfile];
+        //NSArray *userProfileArray = [[AKUserManager defaultUserManager]getAllUserProfile];
         
-        for(AKUserProfile *userProfile in userProfileArray){
+        for(AKAccessTokenObject *accessToken in userProfileArray){
         
-            [tabView addUser:userProfile];
-            [weiboManager addUser:userProfile];
-            [weiboManager getUserDetail:userProfile.userID];
+            [tabView addControlGroup:accessToken.userID];
+            //[weiboManager addUser:accessToken];
+            [weiboManager getUserDetail:accessToken.userID];
         
         }
         
@@ -63,9 +74,6 @@
 
         [self.loginView setHidden:NO];
 
-        
-        
-    
     }
     
     
@@ -74,29 +82,98 @@
     
 }
 
-
+//微博请求处理
 -(void)weiboManagerMethodActionHandler:(NSNotification *)notification{
 
     NSDictionary *userInfoDictionary = notification.userInfo;
     AKMethodAction methodAction = [(AKMethodActionObject *)[userInfoDictionary objectForKey:@"methodOption"] methodAction];
     AKParsingObject *result = (AKParsingObject *)[userInfoDictionary objectForKey:@"result"];
     
+    NSString *userID = [userManager getUserIDByAccessToken:result.accessToken];
     
-    if(methodAction == WBOPT_OAUTH2_ACCESS_TOKEN){
+    if(methodAction == AKWBOPT_OAUTH2_ACCESS_TOKEN){
     
         [self.loginView setHidden:YES];
-        AKUserProfile *userProfile = [AKWeiboManager getUserProfileFromParsingObject:result];
-        if(![tabView isUserExist:userProfile.userID]){
         
-            [tabView addUser:userProfile];
+        AKAccessTokenObject *accessTokenObject  = [AKWeiboManager getAccessTokenFromParsingObject:result];
+        //把AccessToken保存到UserManager和磁盘中
+        [userManager updateUserAccessToken:accessTokenObject];
+
+        //在tabView中，建立该用户的UI
+        if(![tabView isUserExist:accessTokenObject.userID]){
+        
+            [tabView addControlGroup:accessTokenObject.userID];
         
         }
-
         
+        //向服务器索要用户的资料
+        [weiboManager getUserDetail:accessTokenObject.userID];
+        
+        
+
+    }
+    else if (methodAction == AKWBOPT_GET_USERS_SHOW){
+    
+        //TODO:update user button icon
+        AKUserProfile *userProfile = (AKUserProfile *)[userInfoDictionary objectForKey:@"userProfile"];
+        
+        //如果拿到资料的这个用户是本程序的用户，则更新到UserManager，并保存到硬盘
+        if([userManager isAppUser:userProfile.IDString]){
+            [userManager updateUserProfile:userProfile];
+            [tabView updateUser:userProfile];
+            
+        }
+
+    
+    }
+    else if (methodAction == AKWBOPT_GET_STATUSES_HOME_TIMELINE || methodAction == AKWBOPT_GET_STATUSES_MENTIONS || methodAction == AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE || methodAction == AKWBOPT_GET_FAVORITES){
+        
+        AKWeiboTimelineType timelineType;
+        switch (methodAction) {
+            case AKWBOPT_GET_STATUSES_HOME_TIMELINE:
+                timelineType = AKFriendsTimeline;
+                break;
+                
+            case AKWBOPT_GET_STATUSES_MENTIONS:
+                timelineType = AKMentionTimeline;
+                break;
+                
+            case AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE:
+                timelineType = AKPublicTimeline;
+                break;
+            case AKWBOPT_GET_FAVORITES:
+                timelineType = AKFavoriteTimeline;
+                break;
+                
+            default:
+                return;
+                break;
+        }
+        
+        
+        NSArray *statusesArray = [userInfoDictionary objectForKey:@"statuses"];
+        [tabView addStatuses:statusesArray timelineType:timelineType forUser:userID];
     
     }
     
 }
+
+-(void)getAvartaForUser:(NSString *)userID URL:(NSURL *)url{
+
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+    
+    receivedData = [[NSMutableData alloc]init];
+    
+    NSURLConnection *connection = [[NSURLConnection alloc]initWithRequest:request delegate:self startImmediately:YES];
+    
+    if (!connection) {
+        receivedData = nil;
+    }
+    
+    
+
+}
+
 
 -(BOOL)existUsers{
 
@@ -246,5 +323,87 @@
     
     
 }
+
+#pragma mark - Connection Delegate
+
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
+    
+    // This method is called when the server has determined that it
+    // has enough information to create the NSURLResponse object.
+    
+    // It can be called multiple times, for example in the case of a
+    // redirect, so each time we reset the data.
+    
+    [receivedData setLength:0];
+}
+
+-(void)connection:(NSURLConnection *)connection didreceivedData:(NSData *)data{
+    // Append the new data to receivedData.
+    [receivedData appendData:data];
+}
+
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
+    
+    // Release the connection and the data object
+    // by setting the properties (declared elsewhere)
+    // to nil.  Note that a real-world app usually
+    // requires the delegate to manage more than one
+    // connection at a time, so these lines would
+    // typically be replaced by code to iterate through
+    // whatever data structures you are using.
+    connection = nil;
+    receivedData = nil;
+    
+    // inform the user
+    NSLog(@"Connection failed! Error - %@ %@",
+          [error localizedDescription],
+          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+
+}
+
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection{
+
+    // do something with the data
+
+    
+    NSLog(@"Succeeded! Received %lu bytes of data",(unsigned long)[receivedData length]);
+    
+    // Release the connection and the data object
+    // by setting the properties (declared elsewhere)
+    // to nil.  Note that a real-world app usually
+    // requires the delegate to manage more than one
+    // connection at a time, so these lines would
+    // typically be replaced by code to iterate through
+    // whatever data structures you are using.
+    connection = nil;
+    receivedData = nil;
+    
+}
+
+#pragma mark - Tab Control
+
+-(void)WeiboViewRequestForStatuses:(AKWeiboViewController *)weiboViewController forUser:(NSString *)userID sinceWeiboID:(NSString *)sinceWeiboID maxWeiboID:(NSString *)maxWeiboID count:(int)count page:(int)page baseApp:(BOOL)baseApp feature:(int)feature trimUser:(int)trimUser{
+
+    [weiboManager getStatusForUser:userID sinceWeiboID:sinceWeiboID maxWeiboID:maxWeiboID count:count page:page baseApp:baseApp feature:feature trimUser:trimUser timelineType:weiboViewController.timelineType];
+
+
+}
+
+-(void)WeiboViewRequestForGroupStatuses:(AKWeiboViewController *)weiboViewController listID:(NSString *)listID sinceWeiboID:(NSString *)sinceWeiboID maxWeiboID:(NSString *)maxWeiboID count:(int)count page:(int)page baseApp:(BOOL)baseApp feature:(int)feature trimUser:(int)trimUser{
+
+
+}
+
+-(void)viewDidSelected:(AKTabViewController *)viewController{
+
+    if(viewController.title){
+    
+        [self.window setTitle:viewController.title];
+        
+    }
+
+}
+
+// connection:didReceiveResponse:, connection:didreceivedData:, connection:didFailWithError:, and connectionDidFinishLoading:
 
 @end

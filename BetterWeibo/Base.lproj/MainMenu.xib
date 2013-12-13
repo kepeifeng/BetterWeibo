@@ -76,6 +76,31 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Window" id="Ykb-rB-dMW">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Window" systemMenu="window" id="NWK-OQ-NKu">
+                        <items>
+                            <menuItem title="Minimize" keyEquivalent="m" id="b1j-Em-WHT">
+                                <connections>
+                                    <action selector="performMiniaturize:" target="-1" id="vTR-Kj-JnK"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Zoom" id="qgp-Hj-FmR">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="performZoom:" target="-1" id="lnl-HO-Hcf"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="qtX-fm-8H0"/>
+                            <menuItem title="Bring All to Front" id="Nb6-Fm-9pG">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="arrangeInFront:" target="-1" id="ko9-aN-6db"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Help" id="490">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="491">
@@ -94,7 +119,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="498" height="538"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <value key="minSize" type="size" width="383" height="383"/>
             <value key="maxSize" type="size" width="720" height="1000"/>
             <view key="contentView" id="372">
@@ -191,16 +216,11 @@
             <connections>
                 <outlet property="loginButton" destination="bMx-UX-Y7t" id="DP5-HB-xEP"/>
                 <outlet property="loginView" destination="44G-BZ-Sqf" id="NO8-NA-HPD"/>
-                <outlet property="tabView" destination="fMd-Iu-u1V" id="cC1-d6-YM9"/>
+                <outlet property="tabView" destination="lUg-qA-vZP" id="S81-Jm-isz"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <customObject id="fMd-Iu-u1V" customClass="AKTabView">
-            <connections>
-                <outlet property="tabControl" destination="lUg-qA-vZP" id="wze-2t-9ey"/>
-            </connections>
-        </customObject>
     </objects>
     <resources>
         <image name="pinwheel" width="308" height="310"/>

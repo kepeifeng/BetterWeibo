@@ -19,6 +19,7 @@
 
 @synthesize tabButtonIcon = _tabButtonIcon;
 @synthesize tabButtonType = _tabButtonType;
+@synthesize tag = _myTag;
 
 -(id)init{
 
@@ -180,6 +181,7 @@
             
 
     }
+    
     
     //[self.icon lockFocusFlipped:NO];
 

@@ -37,5 +37,6 @@ typedef NS_ENUM(NSInteger, AKTabButtonType) {
 @property AKTabButtonIcon tabButtonIcon;
 @property AKTabButtonType tabButtonType;
 @property BOOL lightUpIndicator;
+@property NSString *tag;
 
 @end

@@ -10,11 +10,15 @@
 #import "AKTextField.h"
 #import "AKWeiboStatus.h"
 
+
 @interface AKWeiboTableCellView : NSTableCellView{
 
 
 
 }
+
+@property AKWeiboStatus *status;
+@property NSString *thumbnailImageURL;
 
 //Weibo Contents
 //微博内容
@@ -30,6 +34,7 @@
 @property (weak) IBOutlet NSTextField *weiboTextField;
 @property (weak) IBOutlet NSMatrix *images;
 @property (weak) IBOutlet NSMatrix *toolbar;
+
 
 //Reposted Weibo
 //转发微博
@@ -54,11 +59,10 @@
                       weiboHeight:(CGFloat *)weiboHeight
                   weiboViewHeight:(CGFloat *)weiboViewHeight;
 
-//@property NSString *weiboContent;
 
 -(void)resize;
 -(void)loadImages:(NSArray *)imageURL;
-
+-(void)loadImages:(NSArray *)imageURL isForRepost:(BOOL)isForRepost;
 @property AKWeiboStatus *objectValue;
 
 
