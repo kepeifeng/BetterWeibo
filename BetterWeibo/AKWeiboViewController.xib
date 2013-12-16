@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B40" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -150,6 +150,15 @@
                                                                     <color key="backgroundColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
+                                                            <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alE-1t-O9g">
+                                                                <rect key="frame" x="64" y="10" width="0.0" height="0.0"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                <size key="cellSize" width="45" height="45"/>
+                                                                <size key="intercellSpacing" width="4" height="4"/>
+                                                                <imageCell key="prototype" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="zi6-yf-N2r"/>
+                                                                <cells/>
+                                                            </matrix>
                                                             <matrix hidden="YES" verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEY-3a-yLo">
                                                                 <rect key="frame" x="271" y="5" width="140" height="29"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -171,33 +180,27 @@
                                                                         </buttonCell>
                                                                     </column>
                                                                     <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_comment" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_comment" lineBreakMode="charWrapping" inset="2" id="re4-m1-hhN">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_comment" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_comment" lineBreakMode="charWrapping" tag="1" inset="2" id="re4-m1-hhN">
                                                                             <behavior key="behavior" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
                                                                     </column>
                                                                     <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_fav" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_fav" lineBreakMode="charWrapping" inset="2" id="yO7-IS-yv7">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_fav" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_fav" lineBreakMode="charWrapping" tag="3" inset="2" id="yO7-IS-yv7">
                                                                             <behavior key="behavior" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
                                                                     </column>
                                                                     <column>
-                                                                        <buttonCell type="bevel" title="Radio" bezelStyle="regularSquare" image="weibo-toolbar-normal_share" imagePosition="only" alignment="left" alternateImage="weibo-toolbar-active_share" lineBreakMode="charWrapping" inset="2" id="2mR-Lm-bZF">
+                                                                        <buttonCell type="bevel" title="Radio" bezelStyle="regularSquare" image="weibo-toolbar-normal_share" imagePosition="only" alignment="left" alternateImage="weibo-toolbar-active_share" lineBreakMode="charWrapping" tag="4" inset="2" id="2mR-Lm-bZF">
                                                                             <behavior key="behavior" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
                                                                     </column>
                                                                 </cells>
-                                                            </matrix>
-                                                            <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alE-1t-O9g">
-                                                                <rect key="frame" x="64" y="10" width="0.0" height="0.0"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                <size key="cellSize" width="45" height="45"/>
-                                                                <size key="intercellSpacing" width="4" height="4"/>
-                                                                <imageCell key="prototype" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="zi6-yf-N2r"/>
-                                                                <cells/>
+                                                                <connections>
+                                                                    <action selector="toolbarClicked:" target="bdM-Af-qhh" id="vlF-dX-3z0"/>
+                                                                </connections>
                                                             </matrix>
                                                         </subviews>
                                                         <constraints>

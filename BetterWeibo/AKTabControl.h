@@ -24,10 +24,6 @@
 
     NSMutableArray *tabControlMatrixGroup;
     NSMutableArray *userButtonGroup;
-    
-
-    
-    
 
 }
 
@@ -96,6 +92,6 @@
  *
  *  @param view 新的视图
  */
--(void)viewDidSelected:(AKTabViewController *)viewController;
+-(void)viewDidSelected:(NSViewController *)viewController;
 
 @end

@@ -23,7 +23,7 @@
     NSMutableArray *weiboArray;
 }
 
-@property id<AKWeiboViewControllerDelegate> delegate;
+@property id<AKTabViewControllerDelegate, AKWeiboViewControllerDelegate> delegate;
 @property (weak) IBOutlet NSTableView *tableView;
 @property (weak) IBOutlet EQSTRScrollView *scrollView;
 @property AKWeiboManager *weiboManager;

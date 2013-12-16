@@ -9,10 +9,10 @@
 
 #import "AKTabControl.h"
 #import "AKWeiboViewController.h"
-#import "AKMentionViewController.h"
+
 #import "AKMessageViewController.h"
 #import "AKBlockViewController.h"
-#import "AKFavoriteViewController.h"
+
 #import "AKSearchViewController.h"
 #import "AKProfileViewController.h"
 #import "AKPanelView.h"
@@ -512,7 +512,11 @@
 }
 
 
--(void)tabViewController:(AKTabViewController *)aTabViewController goToNewView:(NSView *)newView{
+-(void)tabViewController:(AKTabViewController *)aTabViewController goToNewViewOfController:(NSViewController *)newViewController{
+    if(self.delegate){
+        [self.delegate viewDidSelected:newViewController];
+    }
+    
 
 }
 

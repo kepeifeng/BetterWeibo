@@ -221,8 +221,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "104"
             endingLineNumber = "104"
-            landmarkName = "@implementation AKWeiboTableCellView"
-            landmarkType = "3">
+            landmarkName = "-setThumbnailImageURL:"
+            landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -278,12 +278,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BetterWeibo/AKWeiboViewController.m"
-            timestampString = "402984659.876827"
+            timestampString = "408688260.515005"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
-            landmarkName = "-tableViewColumnDidResize:"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "-setTimelineType:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -294,11 +294,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BetterWeibo/AKTextField.m"
-            timestampString = "402938648.446617"
+            timestampString = "408805984.644195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
             landmarkName = "-intrinsicContentSize"
             landmarkType = "5">
          </BreakpointContent>
@@ -315,8 +315,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "259"
             endingLineNumber = "259"
-            landmarkName = "+caculateWeiboCellHeight:forWidth:repostedWeiboHeight:repostedWeiboViewHeight:weiboHeight:weiboViewHeight:"
-            landmarkType = "5">
+            landmarkName = "@implementation AKWeiboTableCellView"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -455,36 +455,36 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "132"
             endingLineNumber = "132"
-            landmarkName = "-getUserDetail:"
+            landmarkName = "-pushMethodNotification:httpHeader:result:pTask:"
             landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[AKWeiboManager getUserDetail:]"
+                  symbolName = "-[AKWeiboManager pushMethodNotification:httpHeader:result:pTask:]"
                   moduleName = "BetterWeibo"
                   urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AKWeiboManager.mm"
-                  timestampString = "406041692.424079"
+                  timestampString = "408820540.453167"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "132"
                   endingLineNumber = "132"
-                  offsetFromSymbolStart = "36">
+                  offsetFromSymbolStart = "641">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[AKWeiboManager getUserDetail:]"
+                  symbolName = "-[AKWeiboManager pushMethodNotification:httpHeader:result:pTask:]"
                   moduleName = "BetterWeibo"
                   urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AKWeiboManager.mm"
-                  timestampString = "406041692.42432"
+                  timestampString = "408820540.453448"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "132"
                   endingLineNumber = "132"
-                  offsetFromSymbolStart = "257">
+                  offsetFromSymbolStart = "863">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -501,8 +501,38 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "265"
             endingLineNumber = "265"
-            landmarkName = "-OnDelegateErrored:methodOption:errCode:subErrCode:result:pTask:"
+            landmarkName = "-OnDelegateCompleted:methodOption:httpHeader:result:pTask:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AKWeiboManager OnDelegateCompleted:methodOption:httpHeader:result:pTask:]"
+                  moduleName = "BetterWeibo"
+                  urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AKWeiboManager.mm"
+                  timestampString = "408820540.453699"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "301"
+                  endingLineNumber = "301"
+                  offsetFromSymbolStart = "1295">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AKWeiboManager OnDelegateCompleted:methodOption:httpHeader:result:pTask:]"
+                  moduleName = "BetterWeibo"
+                  urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AKWeiboManager.mm"
+                  timestampString = "408820540.4539"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "301"
+                  endingLineNumber = "301"
+                  offsetFromSymbolStart = "1431">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -517,44 +547,14 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "142"
             endingLineNumber = "142"
-            landmarkName = "-addUser:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AKWeiboManager addUser:]"
-                  moduleName = "BetterWeibo"
-                  urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AKWeiboManager.mm"
-                  timestampString = "406041692.424791"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "142"
-                  endingLineNumber = "142"
-                  offsetFromSymbolStart = "101">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AKWeiboManager addUser:]"
-                  moduleName = "BetterWeibo"
-                  urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AKWeiboManager.mm"
-                  timestampString = "406041692.42502"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "142"
-                  endingLineNumber = "142"
-                  offsetFromSymbolStart = "248">
-               </Location>
-            </Locations>
+            landmarkName = "@implementation AKWeiboManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BetterWeibo/AKWeiboManager.mm"
@@ -563,7 +563,259 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "158"
             endingLineNumber = "158"
-            landmarkName = "-OnDelegateComplated:methodOption:httpHeader:result:pTask:"
+            landmarkName = "-getStatusForUser:sinceWeiboID:maxWeiboID:count:page:baseApp:feature:trimUser:timelineType:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKTabViewController.m"
+            timestampString = "408718457.670436"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "-goToViewOfController:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AppDelegate.mm"
+            timestampString = "408785973.559257"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "413"
+            endingLineNumber = "413"
+            landmarkName = "-viewDidSelected:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AppDelegate.mm"
+            timestampString = "408785973.559257"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "411"
+            endingLineNumber = "411"
+            landmarkName = "-viewDidSelected:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AppDelegate viewDidSelected:]"
+                  moduleName = "BetterWeibo"
+                  urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AppDelegate.mm"
+                  timestampString = "408707360.822085"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "412"
+                  endingLineNumber = "412"
+                  offsetFromSymbolStart = "2455">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AppDelegate viewDidSelected:]"
+                  moduleName = "BetterWeibo"
+                  urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AppDelegate.mm"
+                  timestampString = "408707360.822283"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "412"
+                  endingLineNumber = "412"
+                  offsetFromSymbolStart = "3674">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKWeiboStatusDetailView.m"
+            timestampString = "408808734.418843"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "-initWithFrame:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKWeiboDetailViewController.m"
+            timestampString = "408810163.662994"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "-init"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKTextField.m"
+            timestampString = "408805984.644195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "-adjustFrame"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKTextField.m"
+            timestampString = "408805984.644195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "-intrinsicContentSize"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AKTextField intrinsicContentSize]"
+                  moduleName = "BetterWeibo"
+                  urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AKTextField.m"
+                  timestampString = "408795513.261034"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "446">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AKTextField intrinsicContentSize]"
+                  moduleName = "BetterWeibo"
+                  urlString = "file:///Users/mac/Documents/Projects/BetterWeibo/BetterWeibo/AKTextField.m"
+                  timestampString = "408795513.261221"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "510">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKWeiboStatusDetailView.m"
+            timestampString = "408808734.418843"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "-drawRect:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKWeiboStatusDetailView.m"
+            timestampString = "408820212.773474"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "422"
+            endingLineNumber = "422"
+            landmarkName = "-viewDidEndLiveResize"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKWeiboStatusDetailView.m"
+            timestampString = "408820212.773474"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "451"
+            endingLineNumber = "451"
+            landmarkName = "-resizeSubviewsWithOldSize:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKWeiboViewController.m"
+            timestampString = "408818931.384072"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
+            landmarkName = "-tableView:viewForTableColumn:row:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BetterWeibo/AKWeiboStatusDetailView.m"
+            timestampString = "408820212.773474"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "520"
+            endingLineNumber = "520"
+            landmarkName = "-resizeSubviewsWithOldSize:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

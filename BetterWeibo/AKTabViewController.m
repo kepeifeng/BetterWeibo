@@ -9,11 +9,13 @@
 #import "AKTabControl.h"
 #import "AKTabViewController.h"
 
-@interface AKTabViewController ()
+@implementation AKTabViewController{
 
-@end
+    //这个数组里的每一个Object都是一个数组，每一个数组里的项都是ViewController，每一个数组就是一层View。
+    NSMutableArray *viewArray;
 
-@implementation AKTabViewController
+}
+
 @synthesize identifier = _identifier;
 @synthesize title = _tabTitle;
 //@synthesize view = _view;
@@ -23,7 +25,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Initialization code here.
-
+        self.backgroundImage = [NSImage imageNamed:@"app_content_background"];
     }
     return self;
 }
@@ -84,11 +86,90 @@
 -(void)setTitle:(NSString *)title{
 
     _tabTitle = title;
-//    if(self.view){
-//        self.view.title = title;
-//    }
+
+}
+
+-(void)goBackButtonClicked:(id)sender{
+
+    if(!viewArray || viewArray.count == 0){
+        return;
+    }
+    
+    //NSArray *viewControllerArray = viewArray.lastObject;
+    for (NSViewController *viewController in viewArray) {
+        [viewController.view removeFromSuperview];
+        [viewArray removeObject:viewController];
+    }
+    
+    //显示之前的SubView
+    for(NSView* subView in self.view.subviews){
+        [subView setHidden:NO];
+    }
+    
+    if(self.delegate){
+        [self.delegate tabViewController:self goToNewViewOfController:self];
+    }
+
+}
+
+-(void)goToViewOfController:(NSViewController *)viewController{
+
+    //隐藏之前的SubView
+    for(NSView* subView in self.view.subviews){
+        [subView setHidden:YES];
+    }
+    
+    if([viewController isKindOfClass:[AKTabViewController class]]){
+    
+        AKTabViewController *tabViewController = (AKTabViewController *)viewController;
+        NSMutableArray *leftControls;
+        if([tabViewController.leftControls isKindOfClass:[NSMutableArray class] ]){
+            leftControls = (NSMutableArray *)tabViewController.leftControls;
+        }
+        else{
+            leftControls = [[NSMutableArray alloc]initWithArray:tabViewController.leftControls];
+            
+        }
+        
+        //添加一个GoBack按钮
+        NSButton *goBackButton = [NSButton new];
+        goBackButton.frame = NSMakeRect(0, 0, 48, 36);
+        goBackButton.image = [NSImage imageNamed:@"navbar_back_button"];
+        goBackButton.alternateImage = [NSImage imageNamed:@"navbar_back_highlighted_button"];
+        goBackButton.title = @"Back";
+        goBackButton.target = self;
+        goBackButton.action = @selector(goBackButtonClicked:);
+
+        [leftControls insertObject:goBackButton atIndex:0];
+        
+        tabViewController.leftControls = leftControls;
+    
+    }
+    
+    //设置新加进来的View的尺寸和位置
+    viewController.view.frame = self.view.bounds;
+    //设置View的宽度和高度为自动调整
+    [viewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    //把新的View添加到当前的View中
+    [self.view addSubview:viewController.view];
+    
+    //把新加的View记录下来
+    if(!viewArray){
+        viewArray =[NSMutableArray new];
+    }
+    [viewArray addObject:viewController];
+    
+//    NSArray *newViewControllerArray = [[NSArray alloc] initWithObjects:viewController, nil];
+//    [viewArray addObject:newViewControllerArray];
     
     
+    //告诉Delegate有转到新的View了
+    if(self.delegate){
+        [self.delegate tabViewController:self goToNewViewOfController:viewController];
+    }
+
+    
+    //NSLog(@"YA, I AM GOING TO THE NEW VIEW OF %@",viewController.className);
 
 }
 

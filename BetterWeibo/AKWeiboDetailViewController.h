@@ -7,7 +7,18 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AKWeiboStatus.h"
+#import "PXListView.h"
+#import "AKTabViewController.h"
+#import "AKWeiboStatusDetailView.h"
 
-@interface AKWeiboDetailViewController : NSViewController
+@interface AKWeiboDetailViewController : AKTabViewController<PXListViewDelegate>{
+
+    IBOutlet PXListView *listView;
+
+}
+
+@property AKWeiboStatus *status;
+@property IBOutlet AKWeiboStatusDetailView *statusDetailView;
 
 @end

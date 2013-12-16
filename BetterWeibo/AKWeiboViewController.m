@@ -11,7 +11,7 @@
 #import "AKWeiboTableCellView.h"
 #import "AKTableRowView.h"
 #import "AKLoadMoreCell.h"
-
+#import "AKWeiboDetailViewController.h"
 
 @interface AKWeiboViewController ()
 
@@ -67,6 +67,7 @@
         
         [self.weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];
         
+
         
         
         
@@ -92,6 +93,10 @@
         //请求获得新微博消息
         
     };
+    
+    [self.tableView setTarget:self];
+    [self.tableView setDoubleAction:@selector(tableViewDoubleClicked:)];
+    
 
 
 }
@@ -269,7 +274,7 @@
     [cell.userAlias setStringValue:weibo.user.screen_name];
     [cell.weiboTextField setStringValue:weibo.text];
     [cell.favMark setHidden:!weibo.favorited];
-    cell.hasRepostedWeibo = (weibo.retweeted_status != nil);
+    cell.hasRepostedWeibo = (weibo.retweeted_status && weibo.retweeted_status.user);
     if(weibo.user.profileImage){
         [cell.userImage setImage:weibo.user.profileImage];
     }
@@ -339,8 +344,18 @@
     return height;
 }
 
+-(void)tableViewDoubleClicked:(id)sender{
 
-#pragma Super class method override
+    
+    AKWeiboDetailViewController *weiboDetailViewController = [AKWeiboDetailViewController new];
+    weiboDetailViewController.status = [weiboArray objectAtIndex:[(NSTableView *)sender selectedRow]];
+
+    [self goToViewOfController:weiboDetailViewController];
+    
+    
+}
+
+#pragma -mark Super class method override
 
 -(void)tabButtonClicked:(id)sender{
 

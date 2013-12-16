@@ -528,4 +528,30 @@
 
 }
 
+-(IBAction)toolbarClicked:(id)sender{
+    
+    NSButtonCell *clickedButton = [(NSMatrix *)sender selectedCell];
+    switch (clickedButton.tag) {
+        case 0:
+            //转发
+            break;
+            
+        case 1:
+            //评论
+            break;
+            
+        case 2:
+            //收藏
+            break;
+            
+        case 3:
+            //其它
+            break;
+            
+        default:
+            break;
+    }
+
+
+}
 @end

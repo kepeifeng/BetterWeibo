@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040A3BBF185AEA190049859E /* AKCommentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 040A3BBE185AEA190049859E /* AKCommentViewCell.m */; };
+		040A3BC1185AEA350049859E /* AKCommentViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 040A3BC0185AEA350049859E /* AKCommentViewCell.xib */; };
 		040D747317FBD75500600F54 /* AKWeiboDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040D747117FBD75500600F54 /* AKWeiboDetailViewController.m */; };
 		040D747417FBD75500600F54 /* AKWeiboDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 040D747217FBD75500600F54 /* AKWeiboDetailViewController.xib */; };
 		04144B8217FD6B860037C297 /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 04144B8117FD6B860037C297 /* NS(Attributed)String+Geometrics.m */; };
+		041B33E8185D65CE00BA0891 /* AKWeiboStatusDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 041B33E7185D65CE00BA0891 /* AKWeiboStatusDetailView.m */; };
+		041B33EB185D65F600BA0891 /* AKWeiboStatusDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 041B33EA185D65F600BA0891 /* AKWeiboStatusDetailView.xib */; };
+		041B33F3185D68F800BA0891 /* AKTabViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 041B33F2185D68F800BA0891 /* AKTabViewItem.m */; };
 		04324CA717FA7EB60021809E /* AKMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04324CA517FA7EB60021809E /* AKMessageViewController.m */; };
 		04324CA817FA7EB60021809E /* AKMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04324CA617FA7EB60021809E /* AKMessageViewController.xib */; };
 		04324CAC17FA81180021809E /* AKBlockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04324CAA17FA81180021809E /* AKBlockViewController.m */; };
@@ -64,8 +69,12 @@
 		04608F3A181F673000F20F2D /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04608F36181F673000F20F2D /* libjson.a */; };
 		04608F3B181F673000F20F2D /* libutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04608F37181F673000F20F2D /* libutil.a */; };
 		046091A9181F99C000F20F2D /* pinwheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 046091A8181F99C000F20F2D /* pinwheel.png */; };
-		04731FF617FA5830000635CC /* AKMentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04731FF417FA5830000635CC /* AKMentionViewController.m */; };
-		04731FF717FA5830000635CC /* AKMentionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04731FF517FA5830000635CC /* AKMentionViewController.xib */; };
+		0470D661185C304D00DA4742 /* app_content_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D65F185C304D00DA4742 /* app_content_background.png */; };
+		0470D662185C304D00DA4742 /* app_content_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D660185C304D00DA4742 /* app_content_background@2x.png */; };
+		0470D667185C53AF00DA4742 /* navbar_back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D663185C53AF00DA4742 /* navbar_back_button.png */; };
+		0470D668185C53AF00DA4742 /* navbar_back_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D664185C53AF00DA4742 /* navbar_back_button@2x.png */; };
+		0470D669185C53AF00DA4742 /* navbar_back_highlighted_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D665185C53AF00DA4742 /* navbar_back_highlighted_button.png */; };
+		0470D66A185C53AF00DA4742 /* navbar_back_highlighted_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D666185C53AF00DA4742 /* navbar_back_highlighted_button@2x.png */; };
 		04942D8F17F8336900459F28 /* AKTabButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 04942D8E17F8336900459F28 /* AKTabButton.m */; };
 		04942DAC17F83AC400459F28 /* favorites_selected_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 04942D9017F83AC400459F28 /* favorites_selected_tab.png */; };
 		04942DAD17F83AC400459F28 /* favorites_selected_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04942D9117F83AC400459F28 /* favorites_selected_tab@2x.png */; };
@@ -135,8 +144,6 @@
 		37315E92180176710077E6F4 /* AKWeiboStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 37315E91180176710077E6F4 /* AKWeiboStatus.m */; };
 		37350B221849979F00F25500 /* AKSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37350B201849979F00F25500 /* AKSearchViewController.m */; };
 		37350B231849979F00F25500 /* AKSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37350B211849979F00F25500 /* AKSearchViewController.xib */; };
-		37350B27184997D100F25500 /* AKFavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37350B25184997D100F25500 /* AKFavoriteViewController.m */; };
-		37350B28184997D100F25500 /* AKFavoriteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37350B26184997D100F25500 /* AKFavoriteViewController.xib */; };
 		373C9B4F1803163300AE045A /* repost-background-frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 373C9B4E1803163300AE045A /* repost-background-frame.png */; };
 		373C9B52180317DE00AE045A /* AKRepostedWeiboView.m in Sources */ = {isa = PBXBuildFile; fileRef = 373C9B51180317DE00AE045A /* AKRepostedWeiboView.m */; };
 		373F11E6184E30C800A4C8B7 /* libweibosdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 373F11E5184E30C800A4C8B7 /* libweibosdk.a */; };
@@ -159,7 +166,6 @@
 		37BF92F2184F6A0A000AFABE /* AKRemind.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BF92F1184F6A0A000AFABE /* AKRemind.m */; };
 		37BF92F5184F6AB7000AFABE /* AKPrivacyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BF92F4184F6AB7000AFABE /* AKPrivacyInfo.m */; };
 		37BF92F8184F6B0B000AFABE /* AKComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BF92F7184F6B0B000AFABE /* AKComment.m */; };
-		37DEF2B71856E08F0025D138 /* AKTabViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEF2B61856E08F0025D138 /* AKTabViewItem.m */; };
 		37DEF2B91856E4A70025D138 /* avatar_outline.png in Resources */ = {isa = PBXBuildFile; fileRef = 37DEF2B81856E4A70025D138 /* avatar_outline.png */; };
 		37DEF2BC1856E5010025D138 /* AKUserButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEF2BB1856E5010025D138 /* AKUserButton.m */; };
 		37DEF2BE1856E8EE0025D138 /* avatar_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 37DEF2BD1856E8EE0025D138 /* avatar_default.png */; };
@@ -168,11 +174,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		040A3BBD185AEA190049859E /* AKCommentViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCommentViewCell.h; sourceTree = "<group>"; };
+		040A3BBE185AEA190049859E /* AKCommentViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCommentViewCell.m; sourceTree = "<group>"; };
+		040A3BC0185AEA350049859E /* AKCommentViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKCommentViewCell.xib; sourceTree = "<group>"; };
 		040D747017FBD75500600F54 /* AKWeiboDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKWeiboDetailViewController.h; sourceTree = "<group>"; };
 		040D747117FBD75500600F54 /* AKWeiboDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKWeiboDetailViewController.m; sourceTree = "<group>"; };
 		040D747217FBD75500600F54 /* AKWeiboDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKWeiboDetailViewController.xib; sourceTree = "<group>"; };
 		04144B8017FD6B860037C297 /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
 		04144B8117FD6B860037C297 /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
+		041B33E6185D65CE00BA0891 /* AKWeiboStatusDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKWeiboStatusDetailView.h; sourceTree = "<group>"; };
+		041B33E7185D65CE00BA0891 /* AKWeiboStatusDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKWeiboStatusDetailView.m; sourceTree = "<group>"; };
+		041B33EA185D65F600BA0891 /* AKWeiboStatusDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKWeiboStatusDetailView.xib; sourceTree = "<group>"; };
+		041B33F1185D68F800BA0891 /* AKTabViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTabViewItem.h; sourceTree = "<group>"; };
+		041B33F2185D68F800BA0891 /* AKTabViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTabViewItem.m; sourceTree = "<group>"; };
 		04324CA417FA7EB60021809E /* AKMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKMessageViewController.h; sourceTree = "<group>"; };
 		04324CA517FA7EB60021809E /* AKMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKMessageViewController.m; sourceTree = "<group>"; };
 		04324CA617FA7EB60021809E /* AKMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKMessageViewController.xib; sourceTree = "<group>"; };
@@ -806,9 +820,12 @@
 		046091A6181F678D00F20F2D /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		046091A7181F678D00F20F2D /* ParsingObject.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParsingObject.hxx; sourceTree = "<group>"; };
 		046091A8181F99C000F20F2D /* pinwheel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pinwheel.png; sourceTree = "<group>"; };
-		04731FF317FA5830000635CC /* AKMentionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKMentionViewController.h; sourceTree = "<group>"; };
-		04731FF417FA5830000635CC /* AKMentionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKMentionViewController.m; sourceTree = "<group>"; };
-		04731FF517FA5830000635CC /* AKMentionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKMentionViewController.xib; sourceTree = "<group>"; };
+		0470D65F185C304D00DA4742 /* app_content_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_content_background.png; sourceTree = "<group>"; };
+		0470D660185C304D00DA4742 /* app_content_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app_content_background@2x.png"; sourceTree = "<group>"; };
+		0470D663185C53AF00DA4742 /* navbar_back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_back_button.png; sourceTree = "<group>"; };
+		0470D664185C53AF00DA4742 /* navbar_back_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_back_button@2x.png"; sourceTree = "<group>"; };
+		0470D665185C53AF00DA4742 /* navbar_back_highlighted_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_back_highlighted_button.png; sourceTree = "<group>"; };
+		0470D666185C53AF00DA4742 /* navbar_back_highlighted_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_back_highlighted_button@2x.png"; sourceTree = "<group>"; };
 		04942D8D17F8336900459F28 /* AKTabButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTabButton.h; sourceTree = "<group>"; };
 		04942D8E17F8336900459F28 /* AKTabButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTabButton.m; sourceTree = "<group>"; };
 		04942D9017F83AC400459F28 /* favorites_selected_tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorites_selected_tab.png; sourceTree = "<group>"; };
@@ -897,9 +914,6 @@
 		37350B1F1849979F00F25500 /* AKSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKSearchViewController.h; sourceTree = "<group>"; };
 		37350B201849979F00F25500 /* AKSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKSearchViewController.m; sourceTree = "<group>"; };
 		37350B211849979F00F25500 /* AKSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKSearchViewController.xib; sourceTree = "<group>"; };
-		37350B24184997D100F25500 /* AKFavoriteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKFavoriteViewController.h; sourceTree = "<group>"; };
-		37350B25184997D100F25500 /* AKFavoriteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKFavoriteViewController.m; sourceTree = "<group>"; };
-		37350B26184997D100F25500 /* AKFavoriteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKFavoriteViewController.xib; sourceTree = "<group>"; };
 		373C9B4E1803163300AE045A /* repost-background-frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repost-background-frame.png"; sourceTree = "<group>"; };
 		373C9B50180317DE00AE045A /* AKRepostedWeiboView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKRepostedWeiboView.h; sourceTree = "<group>"; };
 		373C9B51180317DE00AE045A /* AKRepostedWeiboView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKRepostedWeiboView.m; sourceTree = "<group>"; };
@@ -939,8 +953,6 @@
 		37BF92F6184F6B0B000AFABE /* AKComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKComment.h; sourceTree = "<group>"; };
 		37BF92F7184F6B0B000AFABE /* AKComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKComment.m; sourceTree = "<group>"; };
 		37CB1D361854389C006EC245 /* NSString+NSString_Extended.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+NSString_Extended.h"; sourceTree = "<group>"; };
-		37DEF2B51856E08F0025D138 /* AKTabViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTabViewItem.h; sourceTree = "<group>"; };
-		37DEF2B61856E08F0025D138 /* AKTabViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTabViewItem.m; sourceTree = "<group>"; };
 		37DEF2B81856E4A70025D138 /* avatar_outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar_outline.png; sourceTree = "<group>"; };
 		37DEF2BA1856E5010025D138 /* AKUserButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKUserButton.h; sourceTree = "<group>"; };
 		37DEF2BB1856E5010025D138 /* AKUserButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKUserButton.m; sourceTree = "<group>"; };
@@ -984,44 +996,150 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04324CA317FA7E8B0021809E /* AKTab */ = {
+		041B33E0185D646700BA0891 /* Comment Cell View */ = {
+			isa = PBXGroup;
+			children = (
+				040A3BBD185AEA190049859E /* AKCommentViewCell.h */,
+				040A3BBE185AEA190049859E /* AKCommentViewCell.m */,
+				040A3BC0185AEA350049859E /* AKCommentViewCell.xib */,
+			);
+			name = "Comment Cell View";
+			sourceTree = "<group>";
+		};
+		041B33E1185D648800BA0891 /* Weibo Detail View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				040D747017FBD75500600F54 /* AKWeiboDetailViewController.h */,
+				040D747117FBD75500600F54 /* AKWeiboDetailViewController.m */,
+				040D747217FBD75500600F54 /* AKWeiboDetailViewController.xib */,
+				041B33E9185D65D400BA0891 /* Weibo Status Detail View */,
+			);
+			name = "Weibo Detail View Controller";
+			sourceTree = "<group>";
+		};
+		041B33E2185D64AB00BA0891 /* Search View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				37350B1F1849979F00F25500 /* AKSearchViewController.h */,
+				37350B201849979F00F25500 /* AKSearchViewController.m */,
+				37350B211849979F00F25500 /* AKSearchViewController.xib */,
+			);
+			name = "Search View Controller";
+			sourceTree = "<group>";
+		};
+		041B33E3185D652100BA0891 /* Message View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				04324CA417FA7EB60021809E /* AKMessageViewController.h */,
+				04324CA517FA7EB60021809E /* AKMessageViewController.m */,
+				04324CA617FA7EB60021809E /* AKMessageViewController.xib */,
+			);
+			name = "Message View Controller";
+			sourceTree = "<group>";
+		};
+		041B33E4185D652E00BA0891 /* Block View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				04324CA917FA81180021809E /* AKBlockViewController.h */,
+				04324CAA17FA81180021809E /* AKBlockViewController.m */,
+				04324CAB17FA81180021809E /* AKBlockViewController.xib */,
+			);
+			name = "Block View Controller";
+			sourceTree = "<group>";
+		};
+		041B33E5185D655700BA0891 /* User Profile View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				37BC384D18499A2300DF4C00 /* AKProfileViewController.h */,
+				37BC384E18499A2300DF4C00 /* AKProfileViewController.m */,
+				37BC384F18499A2300DF4C00 /* AKProfileViewController.xib */,
+			);
+			name = "User Profile View Controller";
+			sourceTree = "<group>";
+		};
+		041B33E9185D65D400BA0891 /* Weibo Status Detail View */ = {
+			isa = PBXGroup;
+			children = (
+				041B33E6185D65CE00BA0891 /* AKWeiboStatusDetailView.h */,
+				041B33E7185D65CE00BA0891 /* AKWeiboStatusDetailView.m */,
+				041B33EA185D65F600BA0891 /* AKWeiboStatusDetailView.xib */,
+			);
+			name = "Weibo Status Detail View";
+			sourceTree = "<group>";
+		};
+		041B33EC185D660C00BA0891 /* Perference View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				37AE16541830B743002AB9B4 /* AKPereferenceViewController.h */,
+				37AE16551830B743002AB9B4 /* AKPereferenceViewController.m */,
+				37AE16561830B743002AB9B4 /* AKPereferenceViewController.xib */,
+			);
+			name = "Perference View Controller";
+			sourceTree = "<group>";
+		};
+		041B33ED185D662700BA0891 /* Weibo Table View */ = {
+			isa = PBXGroup;
+			children = (
+				049BCCC9180447920076C5C9 /* AKTableRowView.h */,
+				049BCCCA180447920076C5C9 /* AKTableRowView.m */,
+				049BCCCC18045F7A0076C5C9 /* AKWeiboTableView.h */,
+				049BCCCD18045F7A0076C5C9 /* AKWeiboTableView.m */,
+				3724A6A3184B5CA70013880C /* AKLoadMoreCell.h */,
+				3724A6A4184B5CA70013880C /* AKLoadMoreCell.m */,
+			);
+			name = "Weibo Table View";
+			sourceTree = "<group>";
+		};
+		041B33EE185D664400BA0891 /* Image Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				374D25E51858C03500641C9C /* AKImageViewer.h */,
+				374D25E61858C03500641C9C /* AKImageViewer.m */,
+				374D25E71858C03500641C9C /* AKImageViewer.xib */,
+			);
+			name = "Image Viewer";
+			sourceTree = "<group>";
+		};
+		041B33EF185D66A100BA0891 /* Tab Control */ = {
 			isa = PBXGroup;
 			children = (
 				043D8BB117F814010096609C /* AKTabControl.h */,
 				043D8BB217F814010096609C /* AKTabControl.m */,
+				041B33F1185D68F800BA0891 /* AKTabViewItem.h */,
+				041B33F2185D68F800BA0891 /* AKTabViewItem.m */,
 				04942D8D17F8336900459F28 /* AKTabButton.h */,
 				04942D8E17F8336900459F28 /* AKTabButton.m */,
-				0436A52C17F9498B00437A55 /* AKTabViewController.h */,
-				0436A52D17F9498B00437A55 /* AKTabViewController.m */,
+				376E1F5F1855D4C200505626 /* AKPanelView.h */,
+				376E1F601855D4C200505626 /* AKPanelView.m */,
+				37DEF2BA1856E5010025D138 /* AKUserButton.h */,
+				37DEF2BB1856E5010025D138 /* AKUserButton.m */,
+			);
+			name = "Tab Control";
+			sourceTree = "<group>";
+		};
+		041B33F0185D66C800BA0891 /* Weibo View Controller */ = {
+			isa = PBXGroup;
+			children = (
 				0436A52217F92A5F00437A55 /* AKWeiboViewController.h */,
 				0436A52317F92A5F00437A55 /* AKWeiboViewController.m */,
 				0436A52417F92A5F00437A55 /* AKWeiboViewController.xib */,
-				04731FF317FA5830000635CC /* AKMentionViewController.h */,
-				04731FF417FA5830000635CC /* AKMentionViewController.m */,
-				04731FF517FA5830000635CC /* AKMentionViewController.xib */,
-				04324CA417FA7EB60021809E /* AKMessageViewController.h */,
-				04324CA517FA7EB60021809E /* AKMessageViewController.m */,
-				04324CA617FA7EB60021809E /* AKMessageViewController.xib */,
-				04324CA917FA81180021809E /* AKBlockViewController.h */,
-				04324CAA17FA81180021809E /* AKBlockViewController.m */,
-				04324CAB17FA81180021809E /* AKBlockViewController.xib */,
-				37350B1F1849979F00F25500 /* AKSearchViewController.h */,
-				37350B201849979F00F25500 /* AKSearchViewController.m */,
-				37350B211849979F00F25500 /* AKSearchViewController.xib */,
-				37350B24184997D100F25500 /* AKFavoriteViewController.h */,
-				37350B25184997D100F25500 /* AKFavoriteViewController.m */,
-				37350B26184997D100F25500 /* AKFavoriteViewController.xib */,
-				37BC384D18499A2300DF4C00 /* AKProfileViewController.h */,
-				37BC384E18499A2300DF4C00 /* AKProfileViewController.m */,
-				37BC384F18499A2300DF4C00 /* AKProfileViewController.xib */,
 				3724A6A6184B8DE10013880C /* AKWeiboViewGroupItem.h */,
 				3724A6A7184B8DE10013880C /* AKWeiboViewGroupItem.m */,
-				376E1F5F1855D4C200505626 /* AKPanelView.h */,
-				376E1F601855D4C200505626 /* AKPanelView.m */,
-				37DEF2B51856E08F0025D138 /* AKTabViewItem.h */,
-				37DEF2B61856E08F0025D138 /* AKTabViewItem.m */,
-				37DEF2BA1856E5010025D138 /* AKUserButton.h */,
-				37DEF2BB1856E5010025D138 /* AKUserButton.m */,
+			);
+			name = "Weibo View Controller";
+			sourceTree = "<group>";
+		};
+		04324CA317FA7E8B0021809E /* AKTab */ = {
+			isa = PBXGroup;
+			children = (
+				041B33EF185D66A100BA0891 /* Tab Control */,
+				0436A52C17F9498B00437A55 /* AKTabViewController.h */,
+				0436A52D17F9498B00437A55 /* AKTabViewController.m */,
+				041B33F0185D66C800BA0891 /* Weibo View Controller */,
+				041B33E3185D652100BA0891 /* Message View Controller */,
+				041B33E4185D652E00BA0891 /* Block View Controller */,
+				041B33E2185D64AB00BA0891 /* Search View Controller */,
+				041B33E5185D655700BA0891 /* User Profile View Controller */,
 			);
 			name = AKTab;
 			sourceTree = "<group>";
@@ -1147,6 +1265,12 @@
 		044F3CDB17F72BCA00344173 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0470D663185C53AF00DA4742 /* navbar_back_button.png */,
+				0470D664185C53AF00DA4742 /* navbar_back_button@2x.png */,
+				0470D665185C53AF00DA4742 /* navbar_back_highlighted_button.png */,
+				0470D666185C53AF00DA4742 /* navbar_back_highlighted_button@2x.png */,
+				0470D65F185C304D00DA4742 /* app_content_background.png */,
+				0470D660185C304D00DA4742 /* app_content_background@2x.png */,
 				37DEF2BD1856E8EE0025D138 /* avatar_default.png */,
 				37DEF2B81856E4A70025D138 /* avatar_outline.png */,
 				37A67AD817FE8EA600AA03CA /* BetterWeibo ICON.icns */,
@@ -2319,25 +2443,15 @@
 				043D8BAE17F80A850096609C /* AKStatusBar.h */,
 				043D8BAF17F80A850096609C /* AKStatusBar.m */,
 				04324CA317FA7E8B0021809E /* AKTab */,
-				040D747017FBD75500600F54 /* AKWeiboDetailViewController.h */,
-				040D747117FBD75500600F54 /* AKWeiboDetailViewController.m */,
-				040D747217FBD75500600F54 /* AKWeiboDetailViewController.xib */,
+				041B33E1185D648800BA0891 /* Weibo Detail View Controller */,
+				041B33E0185D646700BA0891 /* Comment Cell View */,
 				374B33371802C13F008C11A0 /* AKTextField.h */,
 				374B33381802C13F008C11A0 /* AKTextField.m */,
 				373C9B50180317DE00AE045A /* AKRepostedWeiboView.h */,
 				373C9B51180317DE00AE045A /* AKRepostedWeiboView.m */,
-				049BCCC9180447920076C5C9 /* AKTableRowView.h */,
-				049BCCCA180447920076C5C9 /* AKTableRowView.m */,
-				049BCCCC18045F7A0076C5C9 /* AKWeiboTableView.h */,
-				049BCCCD18045F7A0076C5C9 /* AKWeiboTableView.m */,
-				37AE16541830B743002AB9B4 /* AKPereferenceViewController.h */,
-				37AE16551830B743002AB9B4 /* AKPereferenceViewController.m */,
-				37AE16561830B743002AB9B4 /* AKPereferenceViewController.xib */,
-				3724A6A3184B5CA70013880C /* AKLoadMoreCell.h */,
-				3724A6A4184B5CA70013880C /* AKLoadMoreCell.m */,
-				374D25E51858C03500641C9C /* AKImageViewer.h */,
-				374D25E61858C03500641C9C /* AKImageViewer.m */,
-				374D25E71858C03500641C9C /* AKImageViewer.xib */,
+				041B33ED185D662700BA0891 /* Weibo Table View */,
+				041B33EC185D660C00BA0891 /* Perference View Controller */,
+				041B33EE185D664400BA0891 /* Image Viewer */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2457,7 +2571,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				044F3CCF17F72BC500344173 /* close-inactive-disabled-color.tiff in Resources */,
-				04731FF717FA5830000635CC /* AKMentionViewController.xib in Resources */,
 				04942DAE17F83AC400459F28 /* favorites_tab.png in Resources */,
 				046091A9181F99C000F20F2D /* pinwheel.png in Resources */,
 				04942DB817F83AC400459F28 /* messages_selected_tab.png in Resources */,
@@ -2470,7 +2583,6 @@
 				04E0F30C18052E7D00424939 /* main_navbar_post_button@2x.png in Resources */,
 				044F3C8917F710E200344173 /* InfoPlist.strings in Resources */,
 				044F3CD717F72BC500344173 /* zoom-activenokey-color.tiff in Resources */,
-				37350B28184997D100F25500 /* AKFavoriteViewController.xib in Resources */,
 				044F3CB617F7150300344173 /* AKWindowController.xib in Resources */,
 				04942DCF17F83B3700459F28 /* timeline_tab.png in Resources */,
 				04942DC117F83AC400459F28 /* profile_selected_tab@2x.png in Resources */,
@@ -2486,6 +2598,8 @@
 				04942DC417F83AC400459F28 /* search_selected_tab.png in Resources */,
 				04942DBD17F83AC400459F28 /* mute_selected_tab@2x.png in Resources */,
 				04EBC6A017FD251900A0FA11 /* weibo-toolbar-active_fav.png in Resources */,
+				0470D661185C304D00DA4742 /* app_content_background.png in Resources */,
+				040A3BC1185AEA350049859E /* AKCommentViewCell.xib in Resources */,
 				044F3CD517F72BC500344173 /* minimize-rollover-color.tiff in Resources */,
 				04942DAC17F83AC400459F28 /* favorites_selected_tab.png in Resources */,
 				04324CB117FA85680021809E /* tab-control-button-normal.png in Resources */,
@@ -2494,6 +2608,7 @@
 				04EBC6AC17FD4C6100A0FA11 /* fav_mark@2x.png in Resources */,
 				04324CAD17FA81180021809E /* AKBlockViewController.xib in Resources */,
 				04942DAF17F83AC400459F28 /* favorites_tab@2x.png in Resources */,
+				0470D667185C53AF00DA4742 /* navbar_back_button.png in Resources */,
 				044F3CD217F72BC500344173 /* minimize-activenokey-color.tiff in Resources */,
 				04942DC217F83AC400459F28 /* profile_tab.png in Resources */,
 				04942DB117F83AC400459F28 /* lists_selected_tab@2x.png in Resources */,
@@ -2503,7 +2618,10 @@
 				04942DBA17F83AC400459F28 /* messages_tab.png in Resources */,
 				04942DB617F83AC400459F28 /* mentions_tab.png in Resources */,
 				044F3CD117F72BC500344173 /* minimize-active-color.tiff in Resources */,
+				041B33EB185D65F600BA0891 /* AKWeiboStatusDetailView.xib in Resources */,
 				37A67AD917FE8EA600AA03CA /* BetterWeibo ICON.icns in Resources */,
+				0470D668185C53AF00DA4742 /* navbar_back_button@2x.png in Resources */,
+				0470D669185C53AF00DA4742 /* navbar_back_highlighted_button.png in Resources */,
 				04EBC6A117FD251900A0FA11 /* weibo-toolbar-active_share.png in Resources */,
 				040D747417FBD75500600F54 /* AKWeiboDetailViewController.xib in Resources */,
 				044F3CCE17F72BC500344173 /* close-activenokey-color.tiff in Resources */,
@@ -2526,6 +2644,7 @@
 				04942DB917F83AC400459F28 /* messages_selected_tab@2x.png in Resources */,
 				04942DB717F83AC400459F28 /* mentions_tab@2x.png in Resources */,
 				04E0F30718052E7D00424939 /* main_navbar_list_button.png in Resources */,
+				0470D66A185C53AF00DA4742 /* navbar_back_highlighted_button@2x.png in Resources */,
 				37BC385118499A2300DF4C00 /* AKProfileViewController.xib in Resources */,
 				044F3C8F17F710E200344173 /* Credits.rtf in Resources */,
 				04EBC6A217FD251900A0FA11 /* weibo-toolbar-active_weibo.png in Resources */,
@@ -2538,6 +2657,7 @@
 				044F3CD017F72BC500344173 /* close-pd-color.tiff in Resources */,
 				044F3C9517F710E200344173 /* MainMenu.xib in Resources */,
 				04942DC017F83AC400459F28 /* profile_selected_tab.png in Resources */,
+				0470D662185C304D00DA4742 /* app_content_background@2x.png in Resources */,
 				37AE16581830B743002AB9B4 /* AKPereferenceViewController.xib in Resources */,
 				04942DAD17F83AC400459F28 /* favorites_selected_tab@2x.png in Resources */,
 				044F3CD817F72BC500344173 /* zoom-inactive-disabled-color.tiff in Resources */,
@@ -2583,8 +2703,6 @@
 				04C7630B180CF12400C9E540 /* EQSTRClipView.m in Sources */,
 				044F3C9217F710E200344173 /* AppDelegate.mm in Sources */,
 				040D747317FBD75500600F54 /* AKWeiboDetailViewController.m in Sources */,
-				37DEF2B71856E08F0025D138 /* AKTabViewItem.m in Sources */,
-				37350B27184997D100F25500 /* AKFavoriteViewController.m in Sources */,
 				044F3CBC17F7205600344173 /* INWindowButton.m in Sources */,
 				04324CAC17FA81180021809E /* AKBlockViewController.m in Sources */,
 				04B3A7501823B9330034B5EC /* AKUserManager.m in Sources */,
@@ -2601,14 +2719,16 @@
 				04324CA717FA7EB60021809E /* AKMessageViewController.m in Sources */,
 				37BF92F2184F6A0A000AFABE /* AKRemind.m in Sources */,
 				37E81A931828D1DD00D88B33 /* AKWeiboManager.mm in Sources */,
-				04731FF617FA5830000635CC /* AKMentionViewController.m in Sources */,
+				040A3BBF185AEA190049859E /* AKCommentViewCell.m in Sources */,
 				04942D8F17F8336900459F28 /* AKTabButton.m in Sources */,
 				37BF92EC184F675A000AFABE /* AKGeoInfo.m in Sources */,
 				37315E8C180122890077E6F4 /* PXListView.m in Sources */,
 				04144B8217FD6B860037C297 /* NS(Attributed)String+Geometrics.m in Sources */,
 				3781442F1857149900EADA5B /* AKAccessTokenObject.m in Sources */,
 				3724A6A8184B8DE10013880C /* AKWeiboViewGroupItem.m in Sources */,
+				041B33E8185D65CE00BA0891 /* AKWeiboStatusDetailView.m in Sources */,
 				37315E92180176710077E6F4 /* AKWeiboStatus.m in Sources */,
+				041B33F3185D68F800BA0891 /* AKTabViewItem.m in Sources */,
 				0436A52E17F9498B00437A55 /* AKTabViewController.m in Sources */,
 				37BF92EF184F6893000AFABE /* AKShortURL.m in Sources */,
 				37BF92F8184F6B0B000AFABE /* AKComment.m in Sources */,

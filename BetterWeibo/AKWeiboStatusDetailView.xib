@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B40" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="AKWeiboDetailViewController">
+            <connections>
+                <outlet property="statusDetailView" destination="1" id="7oM-UB-HOn"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <customView id="1" customClass="AKWeiboStatusDetailView">
+            <rect key="frame" x="0.0" y="0.0" width="335" height="633"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mNM-Uq-Adx">
+                    <rect key="frame" x="0.0" y="299" width="335" height="334"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bX8-h4-dCM" customClass="AKRepostedWeiboView">
+                            <rect key="frame" x="0.0" y="158" width="335" height="138"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <subviews>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMh-Ii-C3F">
+                                    <rect key="frame" x="18" y="101" width="311" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="用户名" id="zyT-15-aLB">
+                                        <font key="font" metaFont="systemBold"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kV7-zW-5HH">
+                                    <rect key="frame" x="263" y="101" width="66" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="62" id="wyI-6I-XOH"/>
+                                    </constraints>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="64天" id="p63-Z5-mVZ">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGY-bg-RT0">
+                                    <rect key="frame" x="18" y="-181" width="0.0" height="0.0"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    <size key="cellSize" width="45" height="45"/>
+                                    <size key="intercellSpacing" width="4" height="4"/>
+                                    <imageCell key="prototype" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="ZYv-oL-Kiu"/>
+                                    <cells/>
+                                </matrix>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" ambiguous="YES" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hRa-5t-jwu" customClass="AKTextField">
+                                    <rect key="frame" x="18" y="30" width="311" height="68"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="charWrapping" sendsActionOnEndEditing="YES" title="黎明即起﹐洒掃庭除﹐要內外整潔﹔既昏便息﹐關鎖門戶﹐必親自檢點。一粥一飯﹐當思來處不易﹔半絲半縷﹐恆念物力維艱。宜未雨而綢繆﹐毋臨渴而掘井。自奉必須儉約﹐宴客切勿流連。" id="EDO-MS-8X8">
+                                        <font key="font" size="13" name="STHeitiSC-Light"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="kV7-zW-5HH" secondAttribute="trailing" constant="20" id="6cD-h4-y90"/>
+                                <constraint firstAttribute="trailing" secondItem="hRa-5t-jwu" secondAttribute="trailing" constant="20" id="8e6-UB-sXo"/>
+                                <constraint firstItem="hRa-5t-jwu" firstAttribute="top" secondItem="KMh-Ii-C3F" secondAttribute="bottom" constant="5" id="APN-k1-9df"/>
+                                <constraint firstItem="hRa-5t-jwu" firstAttribute="leading" secondItem="bX8-h4-dCM" secondAttribute="leading" constant="20" id="WiV-7m-1Y1"/>
+                                <constraint firstItem="KMh-Ii-C3F" firstAttribute="top" secondItem="bX8-h4-dCM" secondAttribute="top" constant="20" id="kRD-dC-Rqo"/>
+                            </constraints>
+                        </customView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p1l-zd-AAX">
+                            <rect key="frame" x="264" y="124" width="56" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="52" id="C0T-mc-DtO"/>
+                            </constraints>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="126天" id="2qb-QF-vl3">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I5n-I1-iNh" customClass="AKTextField">
+                            <rect key="frame" x="72" y="54" width="248" height="68"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" continuous="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="器具質而潔﹐瓦缶勝金玉﹔飲食約而精﹐園蔬愈珍饈。勿營華屋﹐勿謀良田。三姑六婆﹐實淫盜之媒﹔婢美妾嬌﹐非閨房之福。童僕勿用俊美﹐妻妾切忌豔妝。" id="tmY-wB-QjO">
+                                <font key="font" size="13" name="STHeitiSC-Light"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3v3-kH-TEC">
+                            <rect key="frame" x="175" y="141" width="0.0" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <size key="cellSize" width="45" height="45"/>
+                            <size key="intercellSpacing" width="4" height="4"/>
+                            <imageCell key="prototype" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="obn-Xo-X2b"/>
+                            <cells/>
+                        </matrix>
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cGl-La-VHu">
+                            <rect key="frame" x="72" y="124" width="175" height="17"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="用户名" id="8hg-BY-tpc">
+                                <font key="font" metaFont="systemBold"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W86-mc-K3P">
+                            <rect key="frame" x="16" y="91" width="53" height="53"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" image="NSActionTemplate" id="EnU-q2-P6E"/>
+                        </imageView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SHT-ve-mw6">
+                            <rect key="frame" x="77" y="304" width="181" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="2013年9月25日 下午12：14" id="dSk-N9-TYn">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <matrix verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UiW-I1-b9h">
+                            <rect key="frame" x="98" y="10" width="140" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <size key="cellSize" width="35" height="29"/>
+                            <buttonCell key="prototype" type="bevel" title="Radio" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="D9T-ct-NaS">
+                                <behavior key="behavior" lightByContents="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <cells>
+                                <column>
+                                    <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_weibo" imagePosition="overlaps" alignment="center" alternateImage="weibo-toolbar-active_weibo" lineBreakMode="charWrapping" inset="2" id="yk5-Tn-eeF">
+                                        <behavior key="behavior" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </column>
+                                <column>
+                                    <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_comment" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_comment" lineBreakMode="charWrapping" tag="1" inset="2" id="VuM-lb-VZd">
+                                        <behavior key="behavior" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </column>
+                                <column>
+                                    <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_fav" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_fav" lineBreakMode="charWrapping" tag="3" inset="2" id="uDc-MY-KWW">
+                                        <behavior key="behavior" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </column>
+                                <column>
+                                    <buttonCell type="bevel" title="Radio" bezelStyle="regularSquare" image="weibo-toolbar-normal_share" imagePosition="only" alignment="left" alternateImage="weibo-toolbar-active_share" lineBreakMode="charWrapping" tag="4" inset="2" id="43D-Kr-hNR">
+                                        <behavior key="behavior" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </column>
+                            </cells>
+                        </matrix>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="SHT-ve-mw6" secondAttribute="centerX" id="ItZ-48-eel"/>
+                        <constraint firstAttribute="trailing" secondItem="p1l-zd-AAX" secondAttribute="trailing" constant="20" id="KoY-aQ-wZ5"/>
+                        <constraint firstAttribute="bottom" secondItem="UiW-I1-b9h" secondAttribute="bottom" constant="10" id="btx-qT-3aZ"/>
+                        <constraint firstAttribute="trailing" secondItem="bX8-h4-dCM" secondAttribute="trailing" id="fx9-7j-Arl"/>
+                        <constraint firstItem="I5n-I1-iNh" firstAttribute="leading" secondItem="mNM-Uq-Adx" secondAttribute="leading" constant="74" id="hg5-EV-UBS"/>
+                        <constraint firstItem="bX8-h4-dCM" firstAttribute="leading" secondItem="mNM-Uq-Adx" secondAttribute="leading" id="moY-En-CnX"/>
+                        <constraint firstAttribute="trailing" secondItem="I5n-I1-iNh" secondAttribute="trailing" constant="20" id="oAW-CZ-B0t"/>
+                        <constraint firstAttribute="centerX" secondItem="UiW-I1-b9h" secondAttribute="centerX" id="zYU-uK-56N"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="mNM-Uq-Adx" secondAttribute="trailing" id="3Do-T4-HKg"/>
+                <constraint firstItem="mNM-Uq-Adx" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="w9o-8q-B7q"/>
+            </constraints>
+            <connections>
+                <outlet property="commentButton" destination="VuM-lb-VZd" id="en7-dy-dfE"/>
+                <outlet property="dateDuration" destination="p1l-zd-AAX" id="H02-cD-elZ"/>
+                <outlet property="favButton" destination="uDc-MY-KWW" id="mjl-ao-H3e"/>
+                <outlet property="images" destination="3v3-kH-TEC" id="luQ-fo-YeR"/>
+                <outlet property="repostButton" destination="yk5-Tn-eeF" id="bSe-be-teF"/>
+                <outlet property="repostedWeiboContent" destination="hRa-5t-jwu" id="g5F-d6-CLI"/>
+                <outlet property="repostedWeiboDateDuration" destination="kV7-zW-5HH" id="bK6-2l-wV4"/>
+                <outlet property="repostedWeiboImageMatrix" destination="aGY-bg-RT0" id="wFj-ST-4Db"/>
+                <outlet property="repostedWeiboUserAlias" destination="KMh-Ii-C3F" id="hHc-A1-VFT"/>
+                <outlet property="repostedWeiboView" destination="bX8-h4-dCM" id="eaM-f2-kmG"/>
+                <outlet property="shareButton" destination="43D-Kr-hNR" id="NDl-Iz-QzQ"/>
+                <outlet property="statusDateField" destination="SHT-ve-mw6" id="bKu-wU-L9W"/>
+                <outlet property="statusView" destination="mNM-Uq-Adx" id="n5B-tu-VdX"/>
+                <outlet property="toolbar" destination="UiW-I1-b9h" id="rNy-ly-yiV"/>
+                <outlet property="userAlias" destination="cGl-La-VHu" id="fxS-gt-HNg"/>
+                <outlet property="userImage" destination="W86-mc-K3P" id="IOo-b8-bAE"/>
+                <outlet property="weiboTextField" destination="I5n-I1-iNh" id="ja1-UO-blU"/>
+            </connections>
+        </customView>
+    </objects>
+    <resources>
+        <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="weibo-toolbar-active_comment" width="35" height="29"/>
+        <image name="weibo-toolbar-active_fav" width="35" height="29"/>
+        <image name="weibo-toolbar-active_share" width="35" height="29"/>
+        <image name="weibo-toolbar-active_weibo" width="35" height="29"/>
+        <image name="weibo-toolbar-normal_comment" width="35" height="29"/>
+        <image name="weibo-toolbar-normal_fav" width="35" height="29"/>
+        <image name="weibo-toolbar-normal_share" width="35" height="29"/>
+        <image name="weibo-toolbar-normal_weibo" width="35" height="29"/>
+    </resources>
+</document>

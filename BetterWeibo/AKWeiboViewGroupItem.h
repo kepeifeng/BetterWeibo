@@ -9,10 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "AKUserButton.h"
 #import "AKWeiboViewController.h"
-#import "AKMentionViewController.h"
 #import "AKMessageViewController.h"
 #import "AKBlockViewController.h"
-#import "AKFavoriteViewController.h"
 #import "AKSearchViewController.h"
 #import "AKProfileViewController.h"
 

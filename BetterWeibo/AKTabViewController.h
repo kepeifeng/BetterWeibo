@@ -26,24 +26,28 @@
 //@property NSString *tabTitle;
 //@property NSView *view;
 @property AKTabButton *button;
-//@property id<AKTabViewControllerDelegate> delegate;
+@property id<AKTabViewControllerDelegate> delegate;
 @property NSArray *leftControls;
 @property NSArray *rightControls;
 @property AKWeiboManager *weiboManager;
 @property NSString *userID;
 @property (readonly) NSString *identifier;
 @property NSString *title;
+@property NSImage *backgroundImage;
+
 //@property IBOutlet AKPanelView *view;
 
 
 //-(void)tabButtonClicked:(id)sender;
+
+-(void)goToViewOfController:(NSViewController *)viewController;
 
 @end
 
 @protocol AKTabViewControllerDelegate
 
 -(void)tabViewController:(AKTabViewController *)aTabViewController tabButtonClicked:(AKTabButton *)buttonClicked;
--(void)tabViewController:(AKTabViewController *)aTabViewController goToNewView:(NSView *)newView;
+-(void)tabViewController:(AKTabViewController *)aTabViewController goToNewViewOfController:(NSViewController *)newViewController;
 -(void)goBackToPreviousView:(AKTabViewController *)aTabViewController;
 
 @end

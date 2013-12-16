@@ -10,4 +10,8 @@
 
 @interface AKTextField : NSTextField
 
+-(void)adjustFrame;
+
+@property NSInteger minimalHeight;
+
 @end

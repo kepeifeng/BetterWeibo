@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "AKMentionViewController.h"
 #import "AKMessageViewController.h"
 #import "AKBlockViewController.h"
 #import "AKUserManager.h"
@@ -229,20 +228,6 @@
         
     };
     
-    titleBarCustomView = [[NSView alloc]init];
-    
-    [self.window.titleBarView addSubview:titleBarCustomView];
-    [titleBarCustomView setFrame:NSMakeRect(82, 0, (self.window.titleBarView.bounds.size.width - 82), self.window.titleBarView.bounds.size.height)];
-    [titleBarCustomView setAutoresizingMask:NSViewWidthSizable];
-    
-//    NSButton * titleButton = [[NSButton alloc]init];
-//    titleButton.title = @"Click";
-//    [titleBarCustomView addSubview:titleButton];
-//    [titleButton setFrame:NSMakeRect(5, (titleBarCustomView.bounds.size.height - 36)/2, 80, 36)];
-//    [titleButton setAutoresizingMask:NSViewMaxXMargin];
-    
-    
-    
     self.window.showsTitle = YES;
     [self setupCloseButton];
     [self setupMinimizeButton];
@@ -394,13 +379,49 @@
 
 }
 
--(void)viewDidSelected:(AKTabViewController *)viewController{
+-(void)viewDidSelected:(NSViewController *)aViewController{
 
+    
+    if(![aViewController isKindOfClass:[AKTabViewController class]]){
+        return;
+    }
+    
+    AKTabViewController *viewController = (AKTabViewController *)aViewController;
+    
     if(viewController.title){
     
         [self.window setTitle:viewController.title];
+    }
+    
+    if(!titleBarCustomView){
+        titleBarCustomView = [[NSView alloc]init];
+        [self.window.titleBarView addSubview:titleBarCustomView];
+        [titleBarCustomView setFrame:NSMakeRect(82, 0, (self.window.titleBarView.bounds.size.width - 82), self.window.titleBarView.bounds.size.height)];
+        [titleBarCustomView setAutoresizingMask:NSViewWidthSizable];
+    }
+    else{
+        for(NSView *subView in titleBarCustomView.subviews){
+            [subView removeFromSuperview];
+        }
+    }
+
+    NSInteger nextLeftMargin = 5;
+    if(viewController.leftControls){
+
+        for(NSControl *control in viewController.leftControls){
+        
+            [titleBarCustomView addSubview:control];
+            [control setFrame:NSMakeRect(nextLeftMargin, (titleBarCustomView.bounds.size.height - 36)/2, control.frame.size.width, 36)];
+            
+            [control setAutoresizingMask:NSViewMaxXMargin];
+            
+            nextLeftMargin += control.frame.size.width + 5;
+        
+        }
         
     }
+        
+    
 
 }
 

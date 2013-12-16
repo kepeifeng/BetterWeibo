@@ -15,6 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
+        self.minimalHeight = 0;
     }
     return self;
 }
@@ -25,6 +26,15 @@
 	
     // Drawing code here.
 }
+
+-(void)adjustFrame{
+
+    NSRect textFieldFrame = self.frame;
+    [self setFrameSize:self.intrinsicContentSize];
+    [self setFrameOrigin:NSMakePoint(textFieldFrame.origin.x,textFieldFrame.origin.y - (self.frame.size.height - textFieldFrame.size.height))];
+
+}
+
 
 -(NSSize)intrinsicContentSize
 {
@@ -46,7 +56,7 @@
     //NSLog(@"(%f, %f) - %@ \n",width,height,self.stringValue);
 //    NSLog(@"\n",);
     
-    return NSMakeSize(width, height);
+    return NSMakeSize(width, (height<self.minimalHeight)?self.minimalHeight:height);
 }
 
 @end
