@@ -8,11 +8,14 @@
 
 #import "PXListViewCell.h"
 #import "AKComment.h"
-@interface AKCommentViewCell : PXListViewCell
+#import "AKTextField.h"
+@interface AKCommentViewCell : NSTableCellView
 
 
 @property AKComment *comment;
-@property (weak) IBOutlet NSTextField *userAliasField;
-@property (weak) IBOutlet NSTextField *commentField;
+
+@property (nonatomic, retain) IBOutlet NSImageView *userAvatar;
+@property (nonatomic, retain) IBOutlet NSTextField *userAliasField;
+@property (nonatomic, retain) IBOutlet AKTextField *commentField;
 
 @end

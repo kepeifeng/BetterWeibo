@@ -11,6 +11,13 @@
 #import "AKImageViewer.h"
 
 //#import "NSString+Size.h"
+/**
+ *  小缩略图的边长
+ *
+ */
+#define SMALL_THUMBNAIL_SIZE 60
+#define SMALL_THUMBNAIL_SPACING 5
+#define LARGE_THUMBNAIL_SIZE 120
 
 @implementation AKWeiboTableCellView{
 
@@ -146,6 +153,19 @@
 
 }
 
+-(void)prepareForReuse{
+
+    [super prepareForReuse];
+    
+    for(NSButtonCell *cell in [self.images cells]){
+    
+        cell.image = nil;
+
+        
+    }
+    
+
+}
 
 -(void)resize{
     
@@ -182,16 +202,16 @@
             NSSize repostedWeiboImageMatrixSize;
             if(weibo.retweeted_status.pic_urls.count ==1){
             
-                repostedWeiboImageMatrixSize = NSMakeSize(90, 90);
+                repostedWeiboImageMatrixSize = NSMakeSize(LARGE_THUMBNAIL_SIZE, LARGE_THUMBNAIL_SIZE);
             
             }
             else{
             
-                repostedWeiboImageMatrixSize = NSMakeSize(self.repostedWeiboImageMatrix.numberOfColumns * 45, self.repostedWeiboImageMatrix.numberOfRows * 45);
+                repostedWeiboImageMatrixSize = NSMakeSize(self.repostedWeiboImageMatrix.numberOfColumns * (SMALL_THUMBNAIL_SIZE+SMALL_THUMBNAIL_SPACING) - SMALL_THUMBNAIL_SPACING, ((NSInteger)((weibo.retweeted_status.pic_urls.count+2)/3)) * (SMALL_THUMBNAIL_SIZE+SMALL_THUMBNAIL_SPACING)-SMALL_THUMBNAIL_SPACING);
 
             }
             [self.repostedWeiboImageMatrix setFrameSize:repostedWeiboImageMatrixSize];
-            [self .repostedWeiboImageMatrix setFrameOrigin:NSMakePoint(60, 25)];
+            [self.repostedWeiboImageMatrix setFrameOrigin:NSMakePoint(60, 25)];
             
         }
         
@@ -225,18 +245,19 @@
         NSSize weiboImageMatrixSize;
         if(weibo.pic_urls.count ==1){
             
-            weiboImageMatrixSize = NSMakeSize(90, 90);
+            weiboImageMatrixSize = NSMakeSize(LARGE_THUMBNAIL_SIZE, LARGE_THUMBNAIL_SIZE);
             
         }
         else{
             
-            weiboImageMatrixSize = NSMakeSize(self.images.numberOfColumns * 45, self.images.numberOfRows * 45);
+            weiboImageMatrixSize = NSMakeSize(self.images.numberOfColumns * (SMALL_THUMBNAIL_SIZE+SMALL_THUMBNAIL_SPACING)-SMALL_THUMBNAIL_SPACING,
+                                              ((NSInteger)((weibo.pic_urls.count+2)/3)) * (SMALL_THUMBNAIL_SIZE+SMALL_THUMBNAIL_SPACING)-SMALL_THUMBNAIL_SPACING);
             
         }
         
         
         [self.images setFrameSize:weiboImageMatrixSize];
-        [self .images setFrameOrigin:NSMakePoint(60, 10)];
+        [self.images setFrameOrigin:NSMakePoint(60, 10)];
     }
     
     //Favorite Mark
@@ -303,7 +324,7 @@
             
             if(weibo.retweeted_status.pic_urls.count==1){
 
-                _repostedWeiboViewHeight += 90;
+                _repostedWeiboViewHeight += LARGE_THUMBNAIL_SIZE;
             }
             else{
             
@@ -312,7 +333,7 @@
                     numberOfRow ++;
                 }
                 //(numberOfRow - 1)*5是算上每行之间的间距
-                _repostedWeiboViewHeight += numberOfRow * 45 + (numberOfRow - 1)*5;
+                _repostedWeiboViewHeight += numberOfRow * SMALL_THUMBNAIL_SIZE + (numberOfRow - 1)*SMALL_THUMBNAIL_SPACING;
                 
             }
         }
@@ -348,7 +369,7 @@
         
         if(weibo.pic_urls.count == 1){
         
-            _weiboViewHeight += 90 + 10;
+            _weiboViewHeight += LARGE_THUMBNAIL_SIZE + 10;
         }
         else{
 
@@ -357,7 +378,7 @@
                 numberOfRow ++;
             }
             
-            _weiboViewHeight += numberOfRow*45 + (numberOfRow - 1)*5 +  10;
+            _weiboViewHeight += numberOfRow*SMALL_THUMBNAIL_SIZE + (numberOfRow - 1)*SMALL_THUMBNAIL_SPACING +  10;
         
         }
     }
@@ -456,27 +477,27 @@
         
         NSInteger i = 0;
         //第一行 第一列
-        [imageMatrix addRow];
+        //[imageMatrix addRow];
         for(NSDictionary *url in imageURL){
             
             NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[url objectForKey:@"thumbnail_pic"]]]];
             
 
-            NSButtonCell *imageCell = [[NSButtonCell alloc]init];
+            NSButtonCell *imageCell = [imageMatrix cellAtRow:(NSInteger)(i/3) column:(i%3)];
             imageCell.tag = i;
             imageCell.image = image;
-            if(i==1 || i==2){
-                //i==1 2的时候，各自添加一列。
-                [imageMatrix addColumn];
-            }
-            else if (i==3 || i == 6){
-                //i==3的时候添加第二行
-                //i==6的时候添加第三行
-                [imageMatrix addRow];
-            }
+//            if(i==1 || i==2){
+//                //i==1 2的时候，各自添加一列。
+//                [imageMatrix addColumn];
+//            }
+//            else if (i==3 || i == 6){
+//                //i==3的时候添加第二行
+//                //i==6的时候添加第三行
+//                [imageMatrix addRow];
+//            }
             
-            [imageMatrix putCell:imageCell atRow:(NSInteger)(i/3) column:(i%3)];
-            //[imageMatrix setCell:imageCell];
+            //[imageMatrix putCell:imageCell atRow:(NSInteger)(i/3) column:(i%3)];
+
             i++;
 
         }
@@ -485,10 +506,10 @@
         
         if(imageURL.count == 1){
         
-            imageMatrix.cellSize = NSMakeSize(90, 90);
+            imageMatrix.cellSize = NSMakeSize(LARGE_THUMBNAIL_SIZE, LARGE_THUMBNAIL_SIZE);
         }else{
         
-            imageMatrix.cellSize = NSMakeSize(45, 45);
+            imageMatrix.cellSize = NSMakeSize(SMALL_THUMBNAIL_SIZE, SMALL_THUMBNAIL_SIZE);
         }
         
         [imageMatrix setTarget:self];

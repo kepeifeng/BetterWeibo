@@ -1,0 +1,37 @@
+
+/**
+ *评论创建时间
+ */
+comment.created_at = [commentItem objectForKey:@"created_at"];
+/**
+ *评论的ID
+ */
+comment.ID = [(NSNumber *)[commentItem objectForKey:@"ID"] longlongValue];
+/**
+ *评论的内容
+ */
+comment.text = [commentItem objectForKey:@"text"];
+/**
+ *评论的来源
+ */
+comment.source = [commentItem objectForKey:@"source"];
+/**
+ *评论作者的用户信息字段详细
+ */
+comment.user = [commentItem objectForKey:@"user"];
+/**
+ *评论的MID
+ */
+comment.mid = [commentItem objectForKey:@"mid"];
+/**
+ *字符串型的评论ID
+ */
+comment.idstr = [commentItem objectForKey:@"idstr"];
+/**
+ *评论的微博信息字段详细
+ */
+comment.status = [commentItem objectForKey:@"status"];
+/**
+ *评论来源评论，当本评论属于对另一评论的回复时返回此字段
+ */
+comment.reply_comment = [commentItem objectForKey:@"reply_comment"];

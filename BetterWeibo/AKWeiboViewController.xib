@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B40" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -18,14 +18,14 @@
             <rect key="frame" x="0.0" y="0.0" width="418" height="330"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNJ-dZ-GMy" customClass="EQSTRScrollView">
+                <scrollView autohidesScrollers="YES" horizontalLineScroll="161" horizontalPageScroll="10" verticalLineScroll="161" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNJ-dZ-GMy" customClass="EQSTRScrollView">
                     <rect key="frame" x="0.0" y="0.0" width="418" height="330"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="T8Q-fk-CDl" customClass="EQSTRClipView">
                         <rect key="frame" x="1" y="1" width="416" height="328"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="dTs-sz-RrF">
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="161" rowSizeStyle="automatic" viewBased="YES" id="dTs-sz-RrF">
                                 <rect key="frame" x="0.0" y="0.0" width="416" height="328"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" red="0.95686274509803926" green="0.95686274509803926" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
@@ -92,13 +92,59 @@
                                                                 </textFieldCell>
                                                             </textField>
                                                             <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyj-QC-u9f">
-                                                                <rect key="frame" x="18" y="-217" width="0.0" height="0.0"/>
+                                                                <rect key="frame" x="19" y="9" width="143" height="143"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 <size key="cellSize" width="45" height="45"/>
                                                                 <size key="intercellSpacing" width="4" height="4"/>
-                                                                <imageCell key="prototype" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="GRL-LV-t8P"/>
-                                                                <cells/>
+                                                                <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="QeB-6t-VLZ">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <cells>
+                                                                    <column>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="1eJ-lJ-uIm">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="z4V-Cl-v90">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="HMI-Li-Ydh">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                    </column>
+                                                                    <column>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="GrA-tg-Y4I">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="bgI-2n-vym">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="Hch-yh-kPe">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                    </column>
+                                                                    <column>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="Ii4-Wp-5FC">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="DqO-Et-b4k">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="fS2-VI-HLF">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                    </column>
+                                                                </cells>
                                                             </matrix>
                                                         </subviews>
                                                         <constraints>
@@ -151,13 +197,59 @@
                                                                 </textFieldCell>
                                                             </textField>
                                                             <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alE-1t-O9g">
-                                                                <rect key="frame" x="64" y="10" width="0.0" height="0.0"/>
+                                                                <rect key="frame" x="58" y="4" width="143" height="143"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 <size key="cellSize" width="45" height="45"/>
                                                                 <size key="intercellSpacing" width="4" height="4"/>
-                                                                <imageCell key="prototype" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="zi6-yf-N2r"/>
-                                                                <cells/>
+                                                                <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="Lep-3f-hDx">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <cells>
+                                                                    <column>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="UGo-5g-fM8">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="s9o-WM-JEm">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="O2D-00-gvZ">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                    </column>
+                                                                    <column>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="ci0-Ul-eNr">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="hLU-10-gfx">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="SSk-JF-tQo">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                    </column>
+                                                                    <column>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="sLs-Zd-DXh">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="mJb-x0-e5V">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="Mgc-rM-yeb">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                    </column>
+                                                                </cells>
                                                             </matrix>
                                                             <matrix hidden="YES" verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEY-3a-yLo">
                                                                 <rect key="frame" x="271" y="5" width="140" height="29"/>

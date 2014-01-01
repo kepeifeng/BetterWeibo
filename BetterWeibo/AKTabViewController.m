@@ -133,12 +133,27 @@
         
         //添加一个GoBack按钮
         NSButton *goBackButton = [NSButton new];
-        goBackButton.frame = NSMakeRect(0, 0, 48, 36);
+        goBackButton.frame = NSMakeRect(0, 0, 60, 36);
         goBackButton.image = [NSImage imageNamed:@"navbar_back_button"];
         goBackButton.alternateImage = [NSImage imageNamed:@"navbar_back_highlighted_button"];
+        
         goBackButton.title = @"Back";
+        
+        NSColor *color = [NSColor whiteColor];
+        
+        NSMutableAttributedString *colorTitle = [[NSMutableAttributedString alloc] initWithAttributedString:[goBackButton attributedTitle]];
+        
+        NSRange titleRange = NSMakeRange(0, [colorTitle length]);
+        
+        [colorTitle addAttribute:NSForegroundColorAttributeName value:color range:titleRange];
+        
+        [goBackButton setAttributedTitle:colorTitle];
+        
+        
         goBackButton.target = self;
         goBackButton.action = @selector(goBackButtonClicked:);
+        goBackButton.imagePosition = NSImageOverlaps;
+        [goBackButton setBordered:NO];
 
         [leftControls insertObject:goBackButton atIndex:0];
         

@@ -46,6 +46,9 @@ typedef  NS_ENUM(NSUInteger, AKWeiboTimelineType){
 -(void)getStatus;
 -(void)getStatusForUser:(NSString *)userID sinceWeiboID:(NSString *)sinceWeiboID maxWeiboID:(NSString *)maxWeiboID count:(int)count page:(int)page baseApp:(BOOL)baseApp feature:(int)feature trimUser:(int)trimUser timelineType:(AKWeiboTimelineType)timelineType;
 
+
+-(void)getStatusComment:(NSString *)weiboID callbackTarget:(id<AKWeiboManagerDelegate>)target;
+-(void)getStatusRepost:(NSString *)weiboID callbackTarget:(id<AKWeiboManagerDelegate>)target;
 -(void)setAccessToken:(AKAccessTokenObject*)accessToken;
 
 //-(BOOL)userExist:(NSString *)userID;
@@ -59,6 +62,8 @@ typedef  NS_ENUM(NSUInteger, AKWeiboTimelineType){
  */
 +(AKAccessTokenObject *)getAccessTokenFromParsingObject:(AKParsingObject *)object;
 
++(AKWeiboManager *)currentManager;
++(void)setCurrentManager:(AKWeiboManager *)manager;
 
 @end
 

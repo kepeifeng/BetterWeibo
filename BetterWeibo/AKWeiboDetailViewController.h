@@ -11,14 +11,16 @@
 #import "PXListView.h"
 #import "AKTabViewController.h"
 #import "AKWeiboStatusDetailView.h"
+#import "AKWeiboManager.h"
 
-@interface AKWeiboDetailViewController : AKTabViewController<PXListViewDelegate>{
+@interface AKWeiboDetailViewController : AKTabViewController<PXListViewDelegate, AKWeiboManagerDelegate, NSTableViewDataSource, NSTableViewDelegate>{
 
-    IBOutlet PXListView *listView;
+
 
 }
 
 @property AKWeiboStatus *status;
 @property IBOutlet AKWeiboStatusDetailView *statusDetailView;
+- (IBAction)tabBarSelectionChanged:(id)sender;
 
 @end

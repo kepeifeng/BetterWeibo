@@ -132,7 +132,7 @@
 //@property AKWeiboStatus *repostedWeibo;
 
 +(AKWeiboStatus *)getStatusFromDictionary:(NSDictionary *)statusDictionary;
-
++(AKWeiboStatus *)getStatusFromDictionary:(NSDictionary *)statusDictionary forStatus:(AKWeiboStatus *)repostedStatus;
 
 @end
 

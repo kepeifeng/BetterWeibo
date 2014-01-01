@@ -76,6 +76,42 @@
     
 }
 
++(AKWeiboStatus *)getStatusFromDictionary:(NSDictionary *)statusDictionary forStatus:(AKWeiboStatus *)repostedStatus{
+
+    
+    
+    AKWeiboStatus *statusObject = [[AKWeiboStatus alloc]init];
+    statusObject.ID = [(NSNumber *)[statusDictionary objectForKey:@"id"] longLongValue];
+    statusObject.mid = [(NSNumber *)[statusDictionary objectForKey:@"mid"] longLongValue];
+    statusObject.idstr =(NSString *)[statusDictionary objectForKey:@"idstr"];
+    statusObject.created_at = (NSString *)[statusDictionary objectForKey:@"created_at"];
+    statusObject.thumbnail_pic = (NSString *)[statusDictionary objectForKey:@"thumbnail_pic"];
+    statusObject.bmiddle_pic =(NSString *)[statusDictionary objectForKey:@"bmiddle_pic"];
+    statusObject.original_pic = (NSString *)[statusDictionary objectForKey:@"created_at"];
+    statusObject.retweeted_status = repostedStatus;
+    statusObject.favorited = [(NSNumber *)[statusDictionary objectForKey:@"favorited"] boolValue];
+    //            statusObject.geo =
+    statusObject.in_reply_to_screen_name = (NSString *)[statusDictionary objectForKey:@"in_reply_to_screen_name"];
+    statusObject.in_reply_to_status_id = (NSString *)[statusDictionary objectForKey:@"in_reply_to_status_id"];
+    statusObject.in_reply_to_user_id = (NSString *)[statusDictionary objectForKey:@"in_reply_to_user_id"];
+    statusObject.reposts_count = [(NSNumber *)[statusDictionary objectForKey:@"reposts_count"] longLongValue];
+    statusObject.comments_count = [(NSNumber *)[statusDictionary objectForKey:@"comments_count"] integerValue];
+    statusObject.attitudes_count = [(NSNumber *)[statusDictionary objectForKey:@"attitudes_count"] integerValue];
+    statusObject.visible = [AKWeiboVisibility getVisibilityFromDictionary:(NSDictionary *)[statusDictionary objectForKey:@"visible"]];
+    statusObject.pic_urls = (NSArray *)[statusDictionary objectForKey:@"pic_urls"];
+    statusObject.source = (NSString *)[statusDictionary objectForKey:@"source"];
+    statusObject.text = (NSString *)[statusDictionary objectForKey:@"text"];
+    statusObject.truncated = [(NSNumber *)[statusDictionary objectForKey:@"favorited"] boolValue];
+    
+    NSDictionary *userProfileDictionary = (NSDictionary *)[statusDictionary objectForKey:@"user"];
+    
+    statusObject.user = [AKUserProfile getUserProfileFromDictionary:userProfileDictionary];
+    
+    return statusObject;
+
+}
+
+
 @end
 
 

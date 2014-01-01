@@ -10,6 +10,7 @@
 #import "AKWeiboFactory.h"
 #import "AKCacheDatabaseManager.h"
 #import "AKUserManager.h"
+#import "AKWeiboRequestQueueItem.h"
 
 @implementation AKWeiboManager{
 
@@ -19,6 +20,7 @@
     AKAccessTokenObject *currentAccessToken;
     AKCacheDatabaseManager *cacheManager;
     AKUserManager *userManager;
+    NSMutableDictionary * callbackDictionary;
 
 }
 
@@ -27,6 +29,7 @@
 @synthesize appSecret = _appSecret;
 
 static id<AKWeibo> weibo;
+static AKWeiboManager * _currentManager;
 
 -(id)initWithClientID:(NSString *)clientID appSecret:(NSString *)appSecret redirectURL:(NSString *)redirectURL{
 
@@ -49,6 +52,7 @@ static id<AKWeibo> weibo;
         
         weiboMethods = [weibo getMethod];
         
+        callbackDictionary = [NSMutableDictionary new];
         cacheManager = [[AKCacheDatabaseManager alloc]init];
         userManager = [AKUserManager defaultUserManager];
         [userManager addObserver:self selector:@selector(currentUserIDChanged:)];
@@ -64,6 +68,15 @@ static id<AKWeibo> weibo;
     return self;
     
 }
++(AKWeiboManager *)currentManager{
+
+    return _currentManager;
+    
+}
++(void)setCurrentManager:(AKWeiboManager *)manager{
+    _currentManager = manager;
+}
+
 
 -(void)setupWeibo{
     
@@ -225,6 +238,45 @@ static id<AKWeibo> weibo;
 //}
 
 
+-(AKUserTaskInfo *)newTask:(id<AKWeiboManagerDelegate>)callbackTarget{
+
+    AKWeiboRequestQueueItem *queueItem = [AKWeiboRequestQueueItem new];
+    queueItem.delegate = callbackTarget;
+    
+    AKUserTaskInfo *userTaskInfo = [AKUserTaskInfo new];
+    userTaskInfo.taskId = queueItem.ID;
+    
+    [callbackDictionary setObject:queueItem forKey:queueItem.ID];
+    
+    return userTaskInfo;
+}
+
+-(void)getStatusComment:(NSString *)weiboID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+    
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods getCommentsShow:weiboID var:nil pTask:taskInfo];
+    
+}
+
+-(void)getStatusRepost:(NSString *)weiboID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods getStatusesRepostTimeline:weiboID var:nil pTask:taskInfo];
+
+}
+
+
+
+
+-(BOOL)existUser:(NSString *)userID{
+    
+    //TODO: implement checking user.
+    return NO;
+    
+}
+
+
 #pragma mark - Weibo Delegate
 
 -(void)OnDelegateCompleted:(id<AKWeibo>)theWeibo methodOption:(NSUInteger)methodOption httpHeader:(NSString *)httpHeader result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
@@ -356,6 +408,11 @@ static id<AKWeibo> weibo;
     
 
 
+    if (callbackDictionary && [callbackDictionary objectForKey:pTask.taskId]) {
+        AKWeiboRequestQueueItem * queueItem = [callbackDictionary objectForKey:pTask.taskId];
+        [queueItem.delegate OnDelegateComplete:self methodOption:(AKMethodAction)methodOption httpHeader:httpHeader result:result pTask:pTask];
+        [callbackDictionary removeObjectForKey:pTask.taskId];
+    }
     
     //[self pushMethodNotification:(AKMethodAction)methodOption httpHeader:httpHeader result:result pTask:pTask];
     
@@ -363,12 +420,6 @@ static id<AKWeibo> weibo;
 }
 
 
--(BOOL)existUser:(NSString *)userID{
-    
-    //TODO: implement checking user.
-    return NO;
-    
-}
 
 -(void)OnDelegateErrored:(id<AKWeibo>)theWeibo methodOption:(NSUInteger)methodOption errCode:(NSInteger)errCode subErrCode:(NSInteger)subErrCode result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
     

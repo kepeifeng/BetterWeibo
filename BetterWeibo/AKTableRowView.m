@@ -15,6 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
+
     }
     return self;
 }
@@ -31,10 +32,14 @@
 
     if(self.selectionHighlightStyle != NSTableViewSelectionHighlightStyleNone){
 
-        NSColor *startColor = [NSColor colorWithCalibratedRed:(231/255.0) green:(244/255.0) blue:(255/255.0) alpha:1];
+//        NSColor *startColor = [NSColor colorWithCalibratedRed:(231/255.0) green:(244/255.0) blue:(255/255.0) alpha:1];
         NSColor *endColor = [NSColor colorWithCalibratedRed:(204/255.0) green:(230/255.0) blue:(255/255.0) alpha:1];
-        NSGradient *gradient = [[NSGradient alloc]initWithStartingColor:startColor endingColor:endColor];
-        [gradient drawInRect:dirtyRect angle:90];
+        //[endColor setFill];
+        //TODO: Fill background with end color.
+        [endColor drawSwatchInRect:dirtyRect];
+        
+//        NSGradient *gradient = [[NSGradient alloc]initWithStartingColor:startColor endingColor:endColor];
+//        [gradient drawInRect:dirtyRect angle:90];
     
     }
 

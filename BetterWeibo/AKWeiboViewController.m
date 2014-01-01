@@ -46,6 +46,7 @@
         listButton.image = [NSImage imageNamed:@"main_navbar_list_button"];
         listButton.alternateImage = [NSImage imageNamed:@"main_navbar_list_highlighted_button"];
         listButton.imagePosition = NSImageOnly;
+        [listButton setBordered:NO];
         
         self.leftControls = [NSArray arrayWithObject:listButton];
         
@@ -54,6 +55,7 @@
         postButton.image = [NSImage imageNamed:@"main_navbar_post_button"];
         postButton.alternateImage = [NSImage imageNamed:@"main_navbar_post_highlighted_button"];
         postButton.imagePosition = NSImageOnly;
+        [postButton setBordered:NO];
         
         self.rightControls = [NSArray arrayWithObject:postButton];
         

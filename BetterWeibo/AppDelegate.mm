@@ -33,8 +33,11 @@
     weiboManager = [[AKWeiboManager alloc]initWithClientID:@"1672616342"
                                                  appSecret:@"57663124f7eb21e1207a2ee09fed507b"
                                                redirectURL:@"http://coffeeandsandwich.com/pinwheel/authorize.php"];
+    [AKWeiboManager setCurrentManager:weiboManager];
     
     userManager = [AKUserManager defaultUserManager];
+    
+    
     
     [weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];
 
@@ -255,7 +258,19 @@
     closeButton.inactiveImage = [NSImage imageNamed:@"close-inactive-disabled-color.tiff"];
     closeButton.pressedImage = [NSImage imageNamed:@"close-pd-color.tiff"];
     closeButton.rolloverImage = [NSImage imageNamed:@"close-rollover-color.tiff"];
+    
     self.window.closeButton = closeButton;
+//    
+//    closeButton.target = self;
+//    closeButton.action = @selector(closeButtonClicked:);
+}
+
+
+-(void)closeButtonClicked:(id)sender{
+    
+//    NSLog(@"close button clicked");
+    [self.window orderOut:sender];
+
 }
 
 - (void)setupMinimizeButton {
@@ -276,6 +291,13 @@
     button.pressedImage = [NSImage imageNamed:@"zoom-pd-color.tiff"];
     button.rolloverImage = [NSImage imageNamed:@"zoom-rollover-color.tiff"];
     self.window.zoomButton = button;
+}
+
+-(BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag{
+
+    [self.window makeKeyAndOrderFront:sender];
+    return YES;
+
 }
 
 -(void)getAuthCode:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent{

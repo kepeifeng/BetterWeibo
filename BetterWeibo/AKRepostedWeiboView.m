@@ -9,6 +9,7 @@
 #import "AKRepostedWeiboView.h"
 
 @implementation AKRepostedWeiboView
+static NSImage *_repostedWeiboViewBackground;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -19,12 +20,21 @@
     return self;
 }
 
++(NSImage *)backgroundImage{
+    if (!_repostedWeiboViewBackground) {
+        _repostedWeiboViewBackground = [NSImage imageNamed:@"repost-background-frame"];
+    }
+    
+    return _repostedWeiboViewBackground;
+}
+
+
 - (void)drawRect:(NSRect)dirtyRect
 {
-	[super drawRect:dirtyRect];
+	//
 	
     // Drawing code here.
-    NSImage *repostedWeiboViewBackground = [NSImage imageNamed:@"repost-background-frame"];
+    
     
     //NSLog(@"(%f, %f, %f, %f", repostedWeiboDrawingRect.origin.x, repostedWeiboDrawingRect.origin.y
     //      , repostedWeiboDrawingRect.size.width, repostedWeiboDrawingRect.size.height);
@@ -35,8 +45,12 @@
     
     //    if(self.status && self.status.retweeted_status){
 
+    if([self inLiveResize]){
+    
+//        NSImage *repostedWeiboViewBackground = [NSImage imageNamed:@"repost-background-frame"];
+        NSImage *repostedWeiboViewBackground = [AKRepostedWeiboView backgroundImage];
         
-        NSRect repostedWeiboDrawingRect =self.frame;
+        NSRect repostedWeiboDrawingRect =dirtyRect;
         
         //Top
         [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y + repostedWeiboDrawingRect.size.height - 8, repostedWeiboDrawingRect.size.width, 8) fromRect:NSMakeRect(0, 49, 81, 8) operation:NSCompositeSourceOver fraction:1];
@@ -47,7 +61,11 @@
         //Bottom Right Part
         [repostedWeiboViewBackground drawInRect:NSMakeRect(50, repostedWeiboDrawingRect.origin.y, repostedWeiboDrawingRect.size.width - 50, 14) fromRect:NSMakeRect(50, 0, 31, 14) operation:NSCompositeSourceOver fraction:1];
         
+    }
+    //[super drawRect:dirtyRect];
+    
     
 }
+
 
 @end

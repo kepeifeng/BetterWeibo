@@ -50,5 +50,7 @@
  */
 @property AKComment * reply_comment;
 
++(AKComment *)getCommentFromDictionary:(NSDictionary *)dictionary;
++(AKComment *)getCommentFromDictionary:(NSDictionary *)dictionary forStatus:(AKWeiboStatus *)status;
 
 @end

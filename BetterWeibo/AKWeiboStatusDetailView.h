@@ -10,8 +10,13 @@
 #import "AKTextField.h"
 #import "AKWeiboStatus.h"
 #import "PXListView.h"
+#import "AKRepostedWeiboView.h"
 
-@interface AKWeiboStatusDetailView : NSView
+@interface AKWeiboStatusDetailView : NSView{
+
+    IBOutlet NSScrollView *scrollView;
+}
+
 
 
 @property AKWeiboStatus *status;
@@ -37,7 +42,7 @@
 
 //Reposted Weibo
 //转发微博
-@property (weak) IBOutlet NSView *repostedWeiboView;
+@property (weak) IBOutlet AKRepostedWeiboView *repostedWeiboView;
 @property (weak) IBOutlet NSTextField *repostedWeiboDateDuration;
 @property (weak) IBOutlet NSTextField *repostedWeiboUserAlias;
 @property (weak) IBOutlet AKTextField *repostedWeiboContent;
@@ -48,7 +53,15 @@
 //有没有带转发微博
 @property BOOL hasRepostedWeibo;
 
-@property (weak) IBOutlet PXListView *listView;
+//@property (weak) IBOutlet PXListView *listView;
+
+@property (strong) IBOutlet NSTableView *commentListView;
+@property (strong) IBOutlet NSTableView *repostListView;
+
+@property (strong) IBOutlet NSSegmentedControl *tabBar;
+@property (strong) IBOutlet NSTabView *tab;
+
+
 
 -(void)resize;
 -(void)loadImages:(NSArray *)imageURL;

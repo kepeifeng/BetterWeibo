@@ -10,6 +10,7 @@
 #import "AKUserProfile.h"
 #import "AKCommentViewCell.h"
 #import "AKWeiboTableCellView.h"
+#import "AKWeiboManager.h"
 
 #pragma mark - Constants
 
@@ -25,8 +26,11 @@
 @implementation AKWeiboDetailViewController{
 
     NSMutableArray *_comments;
+    NSMutableArray *_reposts;
     NSTrackingArea *trackingArea;
-    
+    BOOL isRepostTabActived;
+    //For cell height calculation usage.
+    AKTextField *_textField;
 }
 
 @synthesize status = _status;
@@ -42,6 +46,9 @@
     if (self) {
         self.title = @"评    论";        
         _comments = [NSMutableArray new];
+        _reposts = [NSMutableArray new];
+        
+        isRepostTabActived = NO;
         
         NSArray *topLevelObjects;
         [[NSBundle mainBundle]loadNibNamed:@"AKWeiboStatusDetailView" owner:self topLevelObjects:&topLevelObjects];
@@ -65,6 +72,8 @@
         //[self.statusDetailView setFrameSize:statusDetailViewSize];
         //[self.statusDetailView setFrameOrigin:statusDetailViewOrigin];
         //[self.statusDetailView setAutoresizesSubviews:YES];
+        self.statusDetailView.commentListView.delegate =self;
+        self.statusDetailView.commentListView.dataSource = self;
         [self.statusDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
         
 
@@ -72,6 +81,8 @@
     }
     return self;
 }
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -87,13 +98,12 @@
 
 - (void)awakeFromNib
 {
-	[listView setCellSpacing:2.0f];
-	[listView setAllowsEmptySelection:YES];
-	[listView setAllowsMultipleSelection:YES];
-	[listView registerForDraggedTypes:[NSArray arrayWithObjects: NSStringPboardType, nil]];
+
+    
 
     self.view.wantsLayer = YES;
     self.view.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+    
     
     //self.view.layer.contents = [NSImage imageNamed:@"app_content_background"];
     
@@ -112,65 +122,176 @@
     
     
     _status = status;
+    
+    self.statusDetailView.status = status;
+    
+    if(status){
+        [[AKWeiboManager currentManager] getStatusComment:status.idstr callbackTarget:self];
+        
+        
+    }
 
     
 }
 
 
+-(NSMutableArray *)getContentArrayByTableView:(NSTableView *)tableView{
+
+    NSMutableArray *contentArray;
+    if(tableView == self.statusDetailView.commentListView){
+        contentArray = _comments;
+    }
+    else if (tableView == self.statusDetailView.repostListView){
+        contentArray = _reposts;
+    }
+    
+    return contentArray;
+
+}
+
 #pragma mark - List View Delegate Methods
-
-- (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-#pragma unused(aListView)
-	return [_comments count];
+
+    NSArray *contentArray = [self getContentArrayByTableView:tableView];
+    return contentArray.count;
 }
 
-- (PXListViewCell*)listView:(PXListView*)aListView cellForRow:(NSUInteger)row
-{
-	AKCommentViewCell *cell = (AKCommentViewCell*)[aListView dequeueCellWithReusableIdentifier:LISTVIEW_CELL_IDENTIFIER];
-	
-	if(!cell) {
-		cell = [AKCommentViewCell cellLoadedFromNibNamed:@"AKCommentViewCell" reusableIdentifier:LISTVIEW_CELL_IDENTIFIER];
-	}
-	
-    AKComment *comment = [_comments objectAtIndex:row];
-	// Set up the new cell:
-	[cell.userAliasField setStringValue:comment.user.screen_name];
-    [cell.commentField setStringValue:comment.text];
-	
-	return cell;
+-(CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row{
+
+
+    NSString *text;
+    //NSMutableArray *contentArray;
+    if(tableView == self.statusDetailView.commentListView){
+        //contentArray = _comments;
+        text = [(AKComment *)[_comments objectAtIndex:row] text];
+    }
+    else if (tableView == self.statusDetailView.repostListView){
+//        contentArray = _reposts;
+        text = [(AKWeiboStatus *)[_reposts objectAtIndex:row] text];
+    }
+    
+    NSInteger minHeight = 68;
+    
+    if(!_textField){
+        _textField = [AKTextField new];
+    }
+    
+    [_textField setFrameSize:NSMakeSize(tableView.frame.size.width - 64-20, 100)];
+    
+    
+    [_textField setStringValue:text];
+    
+    CGFloat cellHeight = _textField.intrinsicContentSize.height+27+10;
+    
+    
+    return (cellHeight>minHeight)?cellHeight:minHeight;
+    
+    //return 100;
+
 }
 
-- (CGFloat)listView:(PXListView*)aListView heightOfRow:(NSUInteger)row
-{
-	return 50;
+-(id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
+    
+    NSArray *contentArray = [self getContentArrayByTableView:tableView];
+
+    return [contentArray objectAtIndex:row];
+
 }
 
-- (void)listViewSelectionDidChange:(NSNotification*)aNotification
-{
-    NSLog(@"Selection changed");
+-(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
+    
+    AKCommentViewCell *cell = [tableView makeViewWithIdentifier:@"commentItem" owner:self];
+    
+    if(tableView == self.statusDetailView.commentListView){
+        
+        AKComment *comment = [_comments objectAtIndex:row];
+        
+        
+        [cell.userAliasField setStringValue:comment.user.screen_name];
+        [cell.commentField setStringValue:comment.text];
+        [cell.userAvatar setImage:comment.user.profileImage];
+    
+        
+    }
+    else if (tableView == self.statusDetailView.repostListView){
+    
+        AKWeiboStatus *status = [_reposts objectAtIndex:row];
+        
+        [cell.userAliasField setStringValue:status.user.screen_name];
+        [cell.commentField setStringValue:status.text];
+        [cell.userAvatar setImage:status.user.profileImage];
+        
+    }
+    
+    return cell;
+
+
+}
+
+#pragma mark - Weibo Manager Delegate
+
+-(void)OnDelegateComplete:(AKWeiboManager*)weiboManager methodOption:(AKMethodAction)methodOption  httpHeader:(NSString *)httpHeader result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
+    
+    if(methodOption == AKWBOPT_GET_COMMENTS_SHOW){
+//        NSLog(@"getStatusCommentCallback");
+        
+        _comments = [NSMutableArray new];
+        NSArray *commentArray = [(NSDictionary *)[result getObject] objectForKey:@"comments"];
+        for (NSDictionary *commentItem in commentArray) {
+        
+            
+            [_comments addObject:[AKComment getCommentFromDictionary:commentItem forStatus:self.status]];
+            
+            
+        }
+        
+        [self.statusDetailView.commentListView reloadData];
+
+    }else if (methodOption == AKWBOPT_GET_STATUSES_REPOST_TIMELINE){
+        _reposts = [NSMutableArray new];
+        NSArray *repostArray = [(NSDictionary *)[result getObject] objectForKey:@"reposts"];
+        for (NSDictionary *repostItem in repostArray) {
+            
+            
+            [_reposts addObject:[AKWeiboStatus getStatusFromDictionary:repostItem forStatus:self.status]];
+            
+            
+        }
+        
+        [self.statusDetailView.repostListView reloadData];
+        
+    
+    }
+
+
+}
+
+-(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption errCode:(NSInteger)errCode subErrCode:(NSInteger)subErrCode result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
+
+
+}
+
+-(void)OnDelegateWillRelease:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption pTask:(AKUserTaskInfo *)pTask{
+
+
 }
 
 
-// The following are only needed for drag'n drop:
-- (BOOL)listView:(PXListView*)aListView writeRowsWithIndexes:(NSIndexSet*)rowIndexes toPasteboard:(NSPasteboard*)dragPasteboard
-{
-	// +++ Actually drag the items, not just dummy data.
-	[dragPasteboard declareTypes: [NSArray arrayWithObjects: NSStringPboardType, nil] owner: self];
-	[dragPasteboard setString: @"Just Testing" forType: NSStringPboardType];
-	
-	return YES;
-}
 
-- (NSDragOperation)listView:(PXListView*)aListView validateDrop:(id <NSDraggingInfo>)info proposedRow:(NSUInteger)row
-      proposedDropHighlight:(PXListViewDropHighlight)dropHighlight;
-{
-	return NSDragOperationCopy;
-}
+- (IBAction)tabBarSelectionChanged:(id)sender {
 
-- (IBAction) reloadTable:(id)sender
-{
-	[listView reloadData];
+    NSSegmentedControl *segmentedControl = sender;
+    //转发
+    if([segmentedControl selectedSegment] == 1 && !isRepostTabActived){
+        
+        [[AKWeiboManager currentManager] getStatusRepost:self.status.idstr callbackTarget:self];
+        
+        isRepostTabActived = YES;
+    }
+    
+    [self.statusDetailView.tab selectTabViewItemAtIndex:[segmentedControl selectedSegment] ];
+    
+    
 }
-
 @end

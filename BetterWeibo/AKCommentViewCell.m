@@ -10,39 +10,16 @@
 
 @implementation AKCommentViewCell
 
-- (id)initWithFrame:(NSRect)frame
-{
-    self = [super initWithFrame:frame];
-    
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
-}
+@synthesize userAliasField;
+@synthesize commentField;
 
-- (id)initWithReusableIdentifier: (NSString*)identifier
-{
-	if((self = [super initWithReusableIdentifier:identifier]))
-	{
-	}
-	
-	return self;
-}
 
 #pragma mark Drawing
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	if([self isSelected]) {
-		[[NSColor selectedControlColor] set];
-	}
-	else {
-		[[NSColor whiteColor] set];
-    }
-//    
-//    //Draw the border and background
-//	NSBezierPath *roundedRect = [NSBezierPath bezierPathWithRoundedRect:[self bounds] xRadius:6.0 yRadius:6.0];
-//	[roundedRect fill];
+
+    [super drawRect:dirtyRect];
 }
 
 
@@ -102,8 +79,29 @@
 
 - (void)prepareForReuse
 {
-	[self.userAliasField setStringValue:@""];
-    [self.commentField setStringValue:@""];
+//	[self.userAliasField setStringValue:@""];
+//    [self.commentField setStringValue:@""];
+}
+
+-(void)resizeSubviewsWithOldSize:(NSSize)oldSize{
+
+    [super resizeSubviewsWithOldSize:oldSize];
+    NSInteger oldHeight = self.commentField.frame.size.height;
+    [self.commentField adjustFrame];
+    NSInteger newHeight = self.commentField.frame.size.height;
+    
+    NSInteger moveDistance = newHeight - oldHeight;
+    if(moveDistance){
+        for (NSView *subView in self.subviews) {
+            NSPoint origin = subView.frame.origin;
+            origin.y += moveDistance;
+            [subView setFrameOrigin:origin];
+        }
+        
+    }
+    
+    
+
 }
 
 

@@ -201,10 +201,12 @@ struct AKUserTaskInfoOpaque;
     struct AKUserTaskInfoOpaque *userTaskInfoOpaque;
 }
 
+
+
 -(id)initWithObject:(void *)object;
 
-    @property NSString *taskId;
-    @property void * userData;
+@property NSString *taskId;
+@property void * userData;
 
 @end
 
