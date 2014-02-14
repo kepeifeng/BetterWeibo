@@ -152,9 +152,29 @@
 		374B33391802C13F008C11A0 /* AKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 374B33381802C13F008C11A0 /* AKTextField.m */; };
 		374D25E81858C03500641C9C /* AKImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 374D25E61858C03500641C9C /* AKImageViewer.m */; };
 		374D25E91858C03500641C9C /* AKImageViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 374D25E71858C03500641C9C /* AKImageViewer.xib */; };
+		374DB50B1880E43900758142 /* AKDraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 374DB5091880E43900758142 /* AKDraftViewController.m */; };
+		374DB50C1880E43900758142 /* AKDraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 374DB50A1880E43900758142 /* AKDraftViewController.xib */; };
+		374DB5111880E72500758142 /* AKStatusEditorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 374DB50F1880E72500758142 /* AKStatusEditorWindowController.m */; };
+		374DB5121880E72500758142 /* AKStatusEditorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 374DB5101880E72500758142 /* AKStatusEditorWindowController.xib */; };
+		374DB51718810D3700758142 /* insert-emotion.png in Resources */ = {isa = PBXBuildFile; fileRef = 374DB51418810D3700758142 /* insert-emotion.png */; };
+		374DB51818810D3700758142 /* insert-images.png in Resources */ = {isa = PBXBuildFile; fileRef = 374DB51518810D3700758142 /* insert-images.png */; };
+		374DB51918810D3700758142 /* insert-topic.png in Resources */ = {isa = PBXBuildFile; fileRef = 374DB51618810D3700758142 /* insert-topic.png */; };
+		374DB51D188110D000758142 /* insert-highlight-emotion.png in Resources */ = {isa = PBXBuildFile; fileRef = 374DB51A188110D000758142 /* insert-highlight-emotion.png */; };
+		374DB51E188110D000758142 /* insert-highlight-images.png in Resources */ = {isa = PBXBuildFile; fileRef = 374DB51B188110D000758142 /* insert-highlight-images.png */; };
+		374DB51F188110D000758142 /* insert-highlight-topic.png in Resources */ = {isa = PBXBuildFile; fileRef = 374DB51C188110D000758142 /* insert-highlight-topic.png */; };
+		374DB521188131B800758142 /* add-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 374DB520188131B800758142 /* add-image.png */; };
+		374DB5251881417D00758142 /* AKEmotionTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 374DB5231881417D00758142 /* AKEmotionTableController.m */; };
+		374DB5261881417D00758142 /* AKEmotionTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 374DB5241881417D00758142 /* AKEmotionTableController.xib */; };
+		374DB52A18817D2B00758142 /* AKEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 374DB52918817D2B00758142 /* AKEmotion.m */; };
+		375DFEB618878C8E0065564B /* AKNameSenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 375DFEAF18878C8E0065564B /* AKNameSenceViewController.m */; };
+		375DFEB718878C8E0065564B /* AKNameSenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 375DFEB018878C8E0065564B /* AKNameSenceViewController.xib */; };
+		375DFEB818878C8E0065564B /* AKStatusTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 375DFEB218878C8E0065564B /* AKStatusTextView.m */; };
+		375DFEB918878C8E0065564B /* AKStatusTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 375DFEB418878C8E0065564B /* AKStatusTextViewController.m */; };
+		375DFEBA18878C8E0065564B /* clear-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 375DFEB518878C8E0065564B /* clear-button.png */; };
 		376E1F611855D4C200505626 /* AKPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 376E1F601855D4C200505626 /* AKPanelView.m */; };
 		378144281857005800EADA5B /* DatabaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 378144271857005800EADA5B /* DatabaseTest.m */; };
 		3781442F1857149900EADA5B /* AKAccessTokenObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3781442E1857149900EADA5B /* AKAccessTokenObject.m */; };
+		379348DD1876B10B00DD4CF6 /* AKImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 379348DC1876B10B00DD4CF6 /* AKImageDownloader.m */; };
 		37A67AD917FE8EA600AA03CA /* BetterWeibo ICON.icns in Resources */ = {isa = PBXBuildFile; fileRef = 37A67AD817FE8EA600AA03CA /* BetterWeibo ICON.icns */; };
 		37A67ADC17FF29B800AA03CA /* NSString+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A67ADB17FF29B800AA03CA /* NSString+Size.m */; };
 		37AE1653182FE036002AB9B4 /* AKUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AE1652182FE036002AB9B4 /* AKUserProfile.m */; };
@@ -928,6 +948,33 @@
 		374D25E51858C03500641C9C /* AKImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKImageViewer.h; sourceTree = "<group>"; };
 		374D25E61858C03500641C9C /* AKImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKImageViewer.m; sourceTree = "<group>"; };
 		374D25E71858C03500641C9C /* AKImageViewer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKImageViewer.xib; sourceTree = "<group>"; };
+		374DB4FF187FDD3A00758142 /* AKViewConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKViewConstant.h; sourceTree = "<group>"; };
+		374DB5081880E43900758142 /* AKDraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKDraftViewController.h; sourceTree = "<group>"; };
+		374DB5091880E43900758142 /* AKDraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKDraftViewController.m; sourceTree = "<group>"; };
+		374DB50A1880E43900758142 /* AKDraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKDraftViewController.xib; sourceTree = "<group>"; };
+		374DB50E1880E72500758142 /* AKStatusEditorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKStatusEditorWindowController.h; sourceTree = "<group>"; };
+		374DB50F1880E72500758142 /* AKStatusEditorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKStatusEditorWindowController.m; sourceTree = "<group>"; };
+		374DB5101880E72500758142 /* AKStatusEditorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKStatusEditorWindowController.xib; sourceTree = "<group>"; };
+		374DB51418810D3700758142 /* insert-emotion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "insert-emotion.png"; sourceTree = "<group>"; };
+		374DB51518810D3700758142 /* insert-images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "insert-images.png"; sourceTree = "<group>"; };
+		374DB51618810D3700758142 /* insert-topic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "insert-topic.png"; sourceTree = "<group>"; };
+		374DB51A188110D000758142 /* insert-highlight-emotion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "insert-highlight-emotion.png"; sourceTree = "<group>"; };
+		374DB51B188110D000758142 /* insert-highlight-images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "insert-highlight-images.png"; sourceTree = "<group>"; };
+		374DB51C188110D000758142 /* insert-highlight-topic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "insert-highlight-topic.png"; sourceTree = "<group>"; };
+		374DB520188131B800758142 /* add-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-image.png"; sourceTree = "<group>"; };
+		374DB5221881417D00758142 /* AKEmotionTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEmotionTableController.h; sourceTree = "<group>"; };
+		374DB5231881417D00758142 /* AKEmotionTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEmotionTableController.m; sourceTree = "<group>"; };
+		374DB5241881417D00758142 /* AKEmotionTableController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKEmotionTableController.xib; sourceTree = "<group>"; };
+		374DB52818817D2B00758142 /* AKEmotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEmotion.h; sourceTree = "<group>"; };
+		374DB52918817D2B00758142 /* AKEmotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEmotion.m; sourceTree = "<group>"; };
+		375DFEAE18878C8E0065564B /* AKNameSenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNameSenceViewController.h; sourceTree = "<group>"; };
+		375DFEAF18878C8E0065564B /* AKNameSenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNameSenceViewController.m; sourceTree = "<group>"; };
+		375DFEB018878C8E0065564B /* AKNameSenceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AKNameSenceViewController.xib; sourceTree = "<group>"; };
+		375DFEB118878C8E0065564B /* AKStatusTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKStatusTextView.h; sourceTree = "<group>"; };
+		375DFEB218878C8E0065564B /* AKStatusTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKStatusTextView.m; sourceTree = "<group>"; };
+		375DFEB318878C8E0065564B /* AKStatusTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKStatusTextViewController.h; sourceTree = "<group>"; };
+		375DFEB418878C8E0065564B /* AKStatusTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKStatusTextViewController.m; sourceTree = "<group>"; };
+		375DFEB518878C8E0065564B /* clear-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clear-button.png"; sourceTree = "<group>"; };
 		376E1F5F1855D4C200505626 /* AKPanelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPanelView.h; sourceTree = "<group>"; };
 		376E1F601855D4C200505626 /* AKPanelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPanelView.m; sourceTree = "<group>"; };
 		37703C84186C75CB00400574 /* empty.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = empty.txt; sourceTree = "<group>"; };
@@ -935,6 +982,8 @@
 		3781442D1857149900EADA5B /* AKAccessTokenObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAccessTokenObject.h; sourceTree = "<group>"; };
 		3781442E1857149900EADA5B /* AKAccessTokenObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAccessTokenObject.m; sourceTree = "<group>"; };
 		378144301858205400EADA5B /* AKWeiboRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKWeiboRequest.h; sourceTree = "<group>"; };
+		379348DB1876B10B00DD4CF6 /* AKImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKImageDownloader.h; sourceTree = "<group>"; };
+		379348DC1876B10B00DD4CF6 /* AKImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKImageDownloader.m; sourceTree = "<group>"; };
 		37A67AD817FE8EA600AA03CA /* BetterWeibo ICON.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "BetterWeibo ICON.icns"; sourceTree = SOURCE_ROOT; };
 		37A67ADA17FF29B800AA03CA /* NSString+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Size.h"; sourceTree = "<group>"; };
 		37A67ADB17FF29B800AA03CA /* NSString+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Size.m"; sourceTree = "<group>"; };
@@ -1273,6 +1322,14 @@
 		044F3CDB17F72BCA00344173 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				375DFEB518878C8E0065564B /* clear-button.png */,
+				374DB520188131B800758142 /* add-image.png */,
+				374DB51A188110D000758142 /* insert-highlight-emotion.png */,
+				374DB51B188110D000758142 /* insert-highlight-images.png */,
+				374DB51C188110D000758142 /* insert-highlight-topic.png */,
+				374DB51418810D3700758142 /* insert-emotion.png */,
+				374DB51518810D3700758142 /* insert-images.png */,
+				374DB51618810D3700758142 /* insert-topic.png */,
 				0470D663185C53AF00DA4742 /* navbar_back_button.png */,
 				0470D664185C53AF00DA4742 /* navbar_back_button@2x.png */,
 				0470D665185C53AF00DA4742 /* navbar_back_highlighted_button.png */,
@@ -2429,6 +2486,8 @@
 				37BF92F7184F6B0B000AFABE /* AKComment.m */,
 				3781442D1857149900EADA5B /* AKAccessTokenObject.h */,
 				3781442E1857149900EADA5B /* AKAccessTokenObject.m */,
+				374DB52818817D2B00758142 /* AKEmotion.h */,
+				374DB52918817D2B00758142 /* AKEmotion.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2436,6 +2495,13 @@
 		04B3A7521823B9830034B5EC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				375DFEAE18878C8E0065564B /* AKNameSenceViewController.h */,
+				375DFEAF18878C8E0065564B /* AKNameSenceViewController.m */,
+				375DFEB018878C8E0065564B /* AKNameSenceViewController.xib */,
+				375DFEB118878C8E0065564B /* AKStatusTextView.h */,
+				375DFEB218878C8E0065564B /* AKStatusTextView.m */,
+				375DFEB318878C8E0065564B /* AKStatusTextViewController.h */,
+				375DFEB418878C8E0065564B /* AKStatusTextViewController.m */,
 				37315E8F180122930077E6F4 /* PSList */,
 				044F3CBE17F7206600344173 /* INAppStoreWindow */,
 				044F3C9017F710E200344173 /* AppDelegate.h */,
@@ -2457,6 +2523,9 @@
 				041B33ED185D662700BA0891 /* Weibo Table View */,
 				041B33EC185D660C00BA0891 /* Perference View Controller */,
 				041B33EE185D664400BA0891 /* Image Viewer */,
+				374DB4FF187FDD3A00758142 /* AKViewConstant.h */,
+				374DB50D1880E68900758142 /* 【草稿】Draft View Controller */,
+				374DB5131880F07300758142 /* 微博编辑窗口 */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2468,6 +2537,8 @@
 				37E81A921828D1DD00D88B33 /* AKWeiboManager.mm */,
 				3744399B186BF5E30030659A /* AKWeiboRequestQueueItem.h */,
 				3744399C186BF5E30030659A /* AKWeiboRequestQueueItem.m */,
+				379348DB1876B10B00DD4CF6 /* AKImageDownloader.h */,
+				379348DC1876B10B00DD4CF6 /* AKImageDownloader.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2500,6 +2571,37 @@
 				37315E8A180122890077E6F4 /* PXListViewDropHighlight.h */,
 			);
 			name = PSList;
+			sourceTree = "<group>";
+		};
+		374DB50D1880E68900758142 /* 【草稿】Draft View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				374DB5081880E43900758142 /* AKDraftViewController.h */,
+				374DB5091880E43900758142 /* AKDraftViewController.m */,
+				374DB50A1880E43900758142 /* AKDraftViewController.xib */,
+			);
+			name = "【草稿】Draft View Controller";
+			sourceTree = "<group>";
+		};
+		374DB5131880F07300758142 /* 微博编辑窗口 */ = {
+			isa = PBXGroup;
+			children = (
+				374DB50E1880E72500758142 /* AKStatusEditorWindowController.h */,
+				374DB50F1880E72500758142 /* AKStatusEditorWindowController.m */,
+				374DB5101880E72500758142 /* AKStatusEditorWindowController.xib */,
+				374DB5271881418200758142 /* 表情窗口 */,
+			);
+			name = "微博编辑窗口";
+			sourceTree = "<group>";
+		};
+		374DB5271881418200758142 /* 表情窗口 */ = {
+			isa = PBXGroup;
+			children = (
+				374DB5221881417D00758142 /* AKEmotionTableController.h */,
+				374DB5231881417D00758142 /* AKEmotionTableController.m */,
+				374DB5241881417D00758142 /* AKEmotionTableController.xib */,
+			);
+			name = "表情窗口";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2578,6 +2680,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				044F3CCF17F72BC500344173 /* close-inactive-disabled-color.tiff in Resources */,
+				374DB51818810D3700758142 /* insert-images.png in Resources */,
 				04942DAE17F83AC400459F28 /* favorites_tab.png in Resources */,
 				046091A9181F99C000F20F2D /* pinwheel.png in Resources */,
 				04942DB817F83AC400459F28 /* messages_selected_tab.png in Resources */,
@@ -2586,6 +2689,7 @@
 				04324CB017FA85680021809E /* tab-control-button-active.png in Resources */,
 				04942DBE17F83AC400459F28 /* mute_tab.png in Resources */,
 				04E0F30818052E7D00424939 /* main_navbar_list_button@2x.png in Resources */,
+				374DB51D188110D000758142 /* insert-highlight-emotion.png in Resources */,
 				04E0F30B18052E7D00424939 /* main_navbar_post_button.png in Resources */,
 				04E0F30C18052E7D00424939 /* main_navbar_post_button@2x.png in Resources */,
 				044F3C8917F710E200344173 /* InfoPlist.strings in Resources */,
@@ -2596,6 +2700,7 @@
 				04942DB017F83AC400459F28 /* lists_selected_tab.png in Resources */,
 				04942DCE17F83B3700459F28 /* timeline_selected_tab@2x.png in Resources */,
 				04942DC317F83AC400459F28 /* profile_tab@2x.png in Resources */,
+				374DB51918810D3700758142 /* insert-topic.png in Resources */,
 				37350B231849979F00F25500 /* AKSearchViewController.xib in Resources */,
 				04942DC617F83AC400459F28 /* search_tab.png in Resources */,
 				04942DBB17F83AC400459F28 /* messages_tab@2x.png in Resources */,
@@ -2610,6 +2715,7 @@
 				044F3CD517F72BC500344173 /* minimize-rollover-color.tiff in Resources */,
 				04942DAC17F83AC400459F28 /* favorites_selected_tab.png in Resources */,
 				04324CB117FA85680021809E /* tab-control-button-normal.png in Resources */,
+				375DFEBA18878C8E0065564B /* clear-button.png in Resources */,
 				04EBC6A617FD251900A0FA11 /* weibo-toolbar-normal_weibo.png in Resources */,
 				044F3C9717F710E200344173 /* Images.xcassets in Resources */,
 				04EBC6AC17FD4C6100A0FA11 /* fav_mark@2x.png in Resources */,
@@ -2647,6 +2753,7 @@
 				37DEF2B91856E4A70025D138 /* avatar_outline.png in Resources */,
 				044F3CDD17F72DF200344173 /* close-rollover-color.tiff in Resources */,
 				04E0F30E18052E7D00424939 /* main_navbar_post_highlighted_button@2x.png in Resources */,
+				374DB51E188110D000758142 /* insert-highlight-images.png in Resources */,
 				374D25E91858C03500641C9C /* AKImageViewer.xib in Resources */,
 				04942DB917F83AC400459F28 /* messages_selected_tab@2x.png in Resources */,
 				04942DB717F83AC400459F28 /* mentions_tab@2x.png in Resources */,
@@ -2655,10 +2762,13 @@
 				37BC385118499A2300DF4C00 /* AKProfileViewController.xib in Resources */,
 				044F3C8F17F710E200344173 /* Credits.rtf in Resources */,
 				04EBC6A217FD251900A0FA11 /* weibo-toolbar-active_weibo.png in Resources */,
+				374DB51718810D3700758142 /* insert-emotion.png in Resources */,
 				04942DB517F83AC400459F28 /* mentions_selected_tab@2x.png in Resources */,
 				04942DB417F83AC400459F28 /* mentions_selected_tab.png in Resources */,
 				044F3CD617F72BC500344173 /* zoom-active-color.tiff in Resources */,
+				374DB5121880E72500758142 /* AKStatusEditorWindowController.xib in Resources */,
 				04E0F30918052E7D00424939 /* main_navbar_list_highlighted_button.png in Resources */,
+				374DB50C1880E43900758142 /* AKDraftViewController.xib in Resources */,
 				0436A53117F9901000437A55 /* light-indicator.png in Resources */,
 				04324CA817FA7EB60021809E /* AKMessageViewController.xib in Resources */,
 				044F3CD017F72BC500344173 /* close-pd-color.tiff in Resources */,
@@ -2667,14 +2777,18 @@
 				0470D662185C304D00DA4742 /* app_content_background@2x.png in Resources */,
 				37AE16581830B743002AB9B4 /* AKPereferenceViewController.xib in Resources */,
 				04942DAD17F83AC400459F28 /* favorites_selected_tab@2x.png in Resources */,
+				374DB51F188110D000758142 /* insert-highlight-topic.png in Resources */,
 				044F3CD817F72BC500344173 /* zoom-inactive-disabled-color.tiff in Resources */,
 				04C7630F180CF73700C9E540 /* arrow.png in Resources */,
 				04EBC6A417FD251900A0FA11 /* weibo-toolbar-normal_fav.png in Resources */,
 				04E0F30A18052E7D00424939 /* main_navbar_list_highlighted_button@2x.png in Resources */,
+				375DFEB718878C8E0065564B /* AKNameSenceViewController.xib in Resources */,
 				04942DC717F83AC400459F28 /* search_tab@2x.png in Resources */,
 				37DEF2BE1856E8EE0025D138 /* avatar_default.png in Resources */,
 				044F3CD317F72BC500344173 /* minimize-inactive-disabled-color.tiff in Resources */,
+				374DB521188131B800758142 /* add-image.png in Resources */,
 				04942DB317F83AC400459F28 /* lists_tab@2x.png in Resources */,
+				374DB5261881417D00758142 /* AKEmotionTableController.xib in Resources */,
 				044F3CD417F72BC500344173 /* minimize-pd-color.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2700,14 +2814,18 @@
 				0436A52B17F9310500437A55 /* AKWeiboTableCellView.m in Sources */,
 				37315E8E180122890077E6F4 /* PXListViewCell.m in Sources */,
 				044F3CB517F7150300344173 /* AKWindowController.m in Sources */,
+				374DB52A18817D2B00758142 /* AKEmotion.m in Sources */,
 				3742575B182529CA00902403 /* AKCacheDatabaseManager.m in Sources */,
+				379348DD1876B10B00DD4CF6 /* AKImageDownloader.m in Sources */,
 				3744399D186BF5E30030659A /* AKWeiboRequestQueueItem.m in Sources */,
 				373C9B52180317DE00AE045A /* AKRepostedWeiboView.m in Sources */,
 				0436A52517F92A5F00437A55 /* AKWeiboViewController.m in Sources */,
+				375DFEB818878C8E0065564B /* AKStatusTextView.m in Sources */,
 				04C7630C180CF12400C9E540 /* EQSTRScrollView.m in Sources */,
 				37315E8B180122890077E6F4 /* PXListDocumentView.m in Sources */,
 				374B33391802C13F008C11A0 /* AKTextField.m in Sources */,
 				043D8BB017F80A850096609C /* AKStatusBar.m in Sources */,
+				375DFEB618878C8E0065564B /* AKNameSenceViewController.m in Sources */,
 				04C7630B180CF12400C9E540 /* EQSTRClipView.m in Sources */,
 				044F3C9217F710E200344173 /* AppDelegate.mm in Sources */,
 				040D747317FBD75500600F54 /* AKWeiboDetailViewController.m in Sources */,
@@ -2723,14 +2841,17 @@
 				37315E8D180122890077E6F4 /* PXListView+UserInteraction.m in Sources */,
 				044F3C8B17F710E200344173 /* main.m in Sources */,
 				37BF92F5184F6AB7000AFABE /* AKPrivacyInfo.m in Sources */,
+				375DFEB918878C8E0065564B /* AKStatusTextViewController.m in Sources */,
 				376E1F611855D4C200505626 /* AKPanelView.m in Sources */,
 				04324CA717FA7EB60021809E /* AKMessageViewController.m in Sources */,
 				37BF92F2184F6A0A000AFABE /* AKRemind.m in Sources */,
 				37E81A931828D1DD00D88B33 /* AKWeiboManager.mm in Sources */,
+				374DB50B1880E43900758142 /* AKDraftViewController.m in Sources */,
 				040A3BBF185AEA190049859E /* AKCommentViewCell.m in Sources */,
 				04942D8F17F8336900459F28 /* AKTabButton.m in Sources */,
 				37BF92EC184F675A000AFABE /* AKGeoInfo.m in Sources */,
 				37315E8C180122890077E6F4 /* PXListView.m in Sources */,
+				374DB5111880E72500758142 /* AKStatusEditorWindowController.m in Sources */,
 				04144B8217FD6B860037C297 /* NS(Attributed)String+Geometrics.m in Sources */,
 				3781442F1857149900EADA5B /* AKAccessTokenObject.m in Sources */,
 				3724A6A8184B8DE10013880C /* AKWeiboViewGroupItem.m in Sources */,
@@ -2739,6 +2860,7 @@
 				041B33F3185D68F800BA0891 /* AKTabViewItem.m in Sources */,
 				0436A52E17F9498B00437A55 /* AKTabViewController.m in Sources */,
 				37BF92EF184F6893000AFABE /* AKShortURL.m in Sources */,
+				374DB5251881417D00758142 /* AKEmotionTableController.m in Sources */,
 				37BF92F8184F6B0B000AFABE /* AKComment.m in Sources */,
 				049BCCCE18045F7A0076C5C9 /* AKWeiboTableView.m in Sources */,
 				37DEF2BC1856E5010025D138 /* AKUserButton.m in Sources */,

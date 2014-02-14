@@ -18,14 +18,14 @@
             <rect key="frame" x="0.0" y="0.0" width="418" height="330"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="161" horizontalPageScroll="10" verticalLineScroll="161" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNJ-dZ-GMy" customClass="EQSTRScrollView">
+                <scrollView autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNJ-dZ-GMy" customClass="EQSTRScrollView">
                     <rect key="frame" x="0.0" y="0.0" width="418" height="330"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="T8Q-fk-CDl" customClass="EQSTRClipView">
                         <rect key="frame" x="1" y="1" width="416" height="328"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="161" rowSizeStyle="automatic" viewBased="YES" id="dTs-sz-RrF">
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="dTs-sz-RrF">
                                 <rect key="frame" x="0.0" y="0.0" width="416" height="328"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" red="0.95686274509803926" green="0.95686274509803926" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
@@ -155,6 +155,12 @@
                                                             <constraint firstItem="bCm-jd-Kk0" firstAttribute="leading" secondItem="m7b-5M-F6z" secondAttribute="leading" constant="20" id="bBC-JY-HVH"/>
                                                             <constraint firstItem="bM0-A3-zKB" firstAttribute="leading" secondItem="b4j-wD-8kF" secondAttribute="trailing" constant="10" id="ihO-Li-93V"/>
                                                         </constraints>
+                                                        <connections>
+                                                            <outlet property="repostedWeiboContent" destination="bCm-jd-Kk0" id="gXP-xu-An6"/>
+                                                            <outlet property="repostedWeiboDateDuration" destination="bM0-A3-zKB" id="khJ-tN-XAy"/>
+                                                            <outlet property="repostedWeiboImageMatrix" destination="dyj-QC-u9f" id="NJX-cr-hyR"/>
+                                                            <outlet property="repostedWeiboUserAlias" destination="b4j-wD-8kF" id="K9U-yi-Lzt"/>
+                                                        </connections>
                                                     </customView>
                                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="un5-Rp-Ybd">
                                                         <rect key="frame" x="0.0" y="0.0" width="416" height="79"/>
@@ -230,7 +236,7 @@
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="SSk-JF-tQo">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="overlaps" inset="2" id="SSk-JF-tQo">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
@@ -332,10 +338,6 @@
                                                     <outlet property="favMark" destination="OCG-pq-jrb" id="xpf-oD-0xh"/>
                                                     <outlet property="images" destination="alE-1t-O9g" id="7zv-Ha-n52"/>
                                                     <outlet property="repostButton" destination="gmw-aM-DoI" id="Gl7-8c-FRl"/>
-                                                    <outlet property="repostedWeiboContent" destination="bCm-jd-Kk0" id="ifK-ba-Ium"/>
-                                                    <outlet property="repostedWeiboDateDuration" destination="bM0-A3-zKB" id="uwu-HM-nHf"/>
-                                                    <outlet property="repostedWeiboImageMatrix" destination="dyj-QC-u9f" id="wEX-vn-XEC"/>
-                                                    <outlet property="repostedWeiboUserAlias" destination="b4j-wD-8kF" id="YJx-NC-NqI"/>
                                                     <outlet property="repostedWeiboView" destination="m7b-5M-F6z" id="gTT-Hp-rzh"/>
                                                     <outlet property="shareButton" destination="2mR-Lm-bZF" id="JYj-c8-gIq"/>
                                                     <outlet property="toolbar" destination="fEY-3a-yLo" id="g0B-oy-c1y"/>

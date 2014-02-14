@@ -76,6 +76,8 @@
         self.statusDetailView.commentListView.dataSource = self;
         [self.statusDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
         
+        
+        
 
         
     }
@@ -101,13 +103,14 @@
 
     
 
-    self.view.wantsLayer = YES;
-    self.view.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+    //self.view.wantsLayer = YES;
+    //self.view.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
     
     
     //self.view.layer.contents = [NSImage imageNamed:@"app_content_background"];
     
 }
+
 
 
 
@@ -124,6 +127,8 @@
     _status = status;
     
     self.statusDetailView.status = status;
+    [self.statusDetailView adjustPosition];
+    
     
     if(status){
         [[AKWeiboManager currentManager] getStatusComment:status.idstr callbackTarget:self];

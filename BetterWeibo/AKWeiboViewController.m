@@ -289,12 +289,14 @@
     [cell loadImages:weibo.retweeted_status.pic_urls isForRepost:YES];
     if(cell.hasRepostedWeibo)
     {
-        cell.repostedWeiboUserAlias.stringValue = weibo.retweeted_status.user.screen_name;
-        cell.repostedWeiboContent.stringValue = weibo.retweeted_status.text;
+        
+        cell.repostedWeiboView.repostedStatus = weibo.retweeted_status;
+//        cell.repostedWeiboUserAlias.stringValue = weibo.retweeted_status.user.screen_name;
+//        cell.repostedWeiboContent.stringValue = weibo.retweeted_status.text;
     }
     
     
-    //cell.objectValue = weibo;
+    cell.objectValue = weibo;
     //[cell.weiboTextField setFrameSize:NSMakeSize(660, 100)];
     
     //[cell resize];
@@ -338,7 +340,7 @@
     
         return 50;
     }
-    
+    assert(weiboArray[row]);
     CGFloat height = [AKWeiboTableCellView caculateWeiboHeight:weiboArray[row]
                                                       forWidth:self.view.frame.size.width]-2;
     

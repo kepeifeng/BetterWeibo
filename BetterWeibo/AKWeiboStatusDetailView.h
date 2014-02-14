@@ -43,6 +43,7 @@
 //Reposted Weibo
 //转发微博
 @property (weak) IBOutlet AKRepostedWeiboView *repostedWeiboView;
+
 @property (weak) IBOutlet NSTextField *repostedWeiboDateDuration;
 @property (weak) IBOutlet NSTextField *repostedWeiboUserAlias;
 @property (weak) IBOutlet AKTextField *repostedWeiboContent;
@@ -67,5 +68,7 @@
 -(void)loadImages:(NSArray *)imageURL;
 -(void)loadImages:(NSArray *)imageURL isForRepost:(BOOL)isForRepost;
 -(IBAction)toolbarClicked:(id)sender;
+
+-(void)adjustPosition;
 
 @end

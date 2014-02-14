@@ -1,0 +1,41 @@
+//
+//  AKViewConstant.h
+//  BetterWeibo
+//
+//  Created by Kent on 14-1-10.
+//  Copyright (c) 2014年 Kent Peifeng Ke. All rights reserved.
+//
+
+#ifndef BetterWeibo_AKViewConstant_h
+#define BetterWeibo_AKViewConstant_h
+
+
+#define REPOST_STATUS_MARGIN_TOP 38
+#define REPOST_STATUS_PADDING_TOP 20
+#define REPOST_STATUS_PADDING_BOTTOM 30
+#define REPOST_STATUS_PADDING_LEFT 20
+#define REPOST_STATUS_PADDING_RIGHT 20
+
+#define STATUS_MARGIN_TOP 20
+#define USER_AVATAR_MARGIN_LEFT 10
+#define USER_AVATAR_MARGIN_RIGHT 10
+#define USER_AVATAR_SIZE 48
+#define STATUS_MARGIN_RIGHT 20
+#define STATUS_TEXT_MARGIN_TOP 5
+#define STATUS_PADDING_BOTTOM 20
+
+#define IMAGE_MARGIN_TOP 10
+
+#define USER_ALIAS_HEIGHT 17
+
+#define TOOLBAR_MARGIN_TOP 10
+#define TOOLBAR_MARGIN_BOTTOM 10
+
+#define TABBAR_MARGIN_TOP 10
+#define TABBAR_MARGIN_BOTTOM 10
+
+#define SMALL_THUMBNAIL_SIZE 60
+#define SMALL_THUMBNAIL_SPACING 5
+#define LARGE_THUMBNAIL_SIZE 120
+
+#endif

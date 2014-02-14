@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "AKTextField.h"
 #import "AKWeiboStatus.h"
+#import "AKRepostedWeiboView.h"
 
 
 @interface AKWeiboTableCellView : NSTableCellView{
@@ -38,7 +39,7 @@
 
 //Reposted Weibo
 //转发微博
-@property (weak) IBOutlet NSView *repostedWeiboView;
+@property (weak) IBOutlet AKRepostedWeiboView *repostedWeiboView;
 @property (weak) IBOutlet NSTextField *repostedWeiboDateDuration;
 @property (weak) IBOutlet NSTextField *repostedWeiboUserAlias;
 @property (weak) IBOutlet AKTextField *repostedWeiboContent;

@@ -7,7 +7,19 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AKWeiboStatus.h"
+#import "AKTextField.h"
 
 @interface AKRepostedWeiboView : NSView
+
+@property AKWeiboStatus * repostedStatus;
+
+
+@property (weak) IBOutlet NSTextField *repostedWeiboDateDuration;
+@property (weak) IBOutlet NSTextField *repostedWeiboUserAlias;
+@property (weak) IBOutlet AKTextField *repostedWeiboContent;
+@property (weak) IBOutlet NSMatrix *repostedWeiboImageMatrix;
+
+
 
 @end

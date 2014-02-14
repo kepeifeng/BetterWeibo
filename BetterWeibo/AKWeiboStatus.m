@@ -8,8 +8,30 @@
 
 #import "AKWeiboStatus.h"
 #import "AKUserProfile.h"
+#import "AKImageDownloader.h"
+
 
 @implementation AKWeiboStatus
+@synthesize pic_urls = _pic_urls;
+
+-(NSArray *)pic_urls{
+
+    return _pic_urls;
+
+}
+
+
+-(void)setPic_urls:(NSArray *)pic_urls{
+
+    _pic_urls = pic_urls;
+    if(_pic_urls){
+    
+        
+    
+    }
+
+}
+
 
 
 +(AKWeiboStatus *)getStatusFromDictionary:(NSDictionary *)status{

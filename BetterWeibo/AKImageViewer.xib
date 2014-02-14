@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -7,26 +7,118 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AKImageViewer">
             <connections>
+                <outlet property="_progressIndicator" destination="wkU-YG-o5z" id="xsd-6K-UOA"/>
                 <outlet property="imageView" destination="oxX-My-FdQ" id="Ygi-9z-5XN"/>
+                <outlet property="messageField" destination="Hvj-Fl-Kqz" id="ZNV-Jw-5hM"/>
+                <outlet property="messageView" destination="PLw-UQ-xar" id="bIt-ro-0hY"/>
+                <outlet property="nextButton" destination="242-dc-iSI" id="rHc-Uv-ZeI"/>
+                <outlet property="previousButton" destination="Ts4-GT-rRA" id="8sP-qs-Mfc"/>
+                <outlet property="progressIndicator" destination="wkU-YG-o5z" id="OSP-jp-BBm"/>
+                <outlet property="retryButton" destination="Ia2-H7-G4r" id="rRK-y5-Kj1"/>
                 <outlet property="window" destination="dWH-Hy-E9g" id="Vbr-7h-OHE"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
         <window title="Image" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="dWH-Hy-E9g" customClass="NSPanel">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES" HUD="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="90" y="130" width="480" height="270"/>
+            <rect key="contentRect" x="90" y="130" width="480" height="340"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="HwI-MD-VcM">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <rect key="frame" x="0.0" y="0.0" width="480" height="340"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oxX-My-FdQ">
-                        <rect key="frame" x="-3" y="-3" width="486" height="276"/>
+                        <rect key="frame" x="-3" y="-3" width="486" height="346"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="photo" id="b92-eN-WKN"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" imageFrameStyle="photo" id="b92-eN-WKN"/>
                     </imageView>
+                    <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e43-9N-yik">
+                        <rect key="frame" x="28" y="35" width="416" height="42"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        <size key="cellSize" width="76" height="29"/>
+                        <size key="intercellSpacing" width="4" height="2"/>
+                        <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" alignment="center" borderStyle="border" inset="2" id="qvd-wE-jZX">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <cells>
+                            <column>
+                                <buttonCell type="bevel" title="&lt;" bezelStyle="regularSquare" alignment="center" state="on" borderStyle="border" tag="1" inset="2" id="Ts4-GT-rRA">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="previousButtonClicked:" target="-2" id="cqk-zR-fXf"/>
+                                    </connections>
+                                </buttonCell>
+                            </column>
+                            <column>
+                                <buttonCell type="bevel" title=">" bezelStyle="regularSquare" alignment="center" borderStyle="border" inset="2" id="242-dc-iSI">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="nextButtonClicked:" target="-2" id="tXD-0P-VJh"/>
+                                    </connections>
+                                </buttonCell>
+                            </column>
+                            <column>
+                                <buttonCell type="bevel" title="原始图片" bezelStyle="regularSquare" imagePosition="left" alignment="left" borderStyle="border" inset="2" id="Cfc-hw-bNT">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="sizeSwitchButtonClicked:" target="-2" id="HQo-jF-pJx"/>
+                                    </connections>
+                                </buttonCell>
+                            </column>
+                            <column>
+                                <buttonCell type="bevel" title="保存" bezelStyle="regularSquare" alignment="center" borderStyle="border" inset="2" id="wKd-u8-OB8">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="saveButtonClicked:" target="-2" id="d1U-z0-2lp"/>
+                                    </connections>
+                                </buttonCell>
+                            </column>
+                            <column>
+                                <buttonCell type="bevel" bezelStyle="regularSquare" alignment="center" borderStyle="border" inset="2" id="eN1-rB-Hcf">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </column>
+                        </cells>
+                    </matrix>
+                    <progressIndicator fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="wkU-YG-o5z">
+                        <rect key="frame" x="91" y="160" width="266" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </progressIndicator>
+                    <customView hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PLw-UQ-xar">
+                        <rect key="frame" x="97" y="97" width="269" height="175"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hvj-Fl-Kqz">
+                                <rect key="frame" x="18" y="95" width="233" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="message" id="ybT-oV-V5n">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ia2-H7-G4r">
+                                <rect key="frame" x="93" y="28" width="82" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="重试" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SsY-Tu-Gw1">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="retryButtonClicked:" target="-2" id="mkt-y8-n6u"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </customView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="oxX-My-FdQ" firstAttribute="top" secondItem="HwI-MD-VcM" secondAttribute="top" id="Mif-VR-hdW"/>
