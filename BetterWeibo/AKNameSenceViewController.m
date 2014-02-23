@@ -24,6 +24,17 @@
 
 
 
+- (id)init
+{
+    self = [[[self class] alloc] initWithNibName:@"AKNameSenceViewController" bundle:[NSBundle bundleForClass:[self class]]];
+    if (self) {
+        
+        
+    }
+    return self;
+}
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -103,6 +114,10 @@
     [_popover showRelativeToRect:rect ofView:view preferredEdge:NSMinYEdge];
     
 
+}
+
+-(void)closeNameSence{
+    [_popover performClose:nil];
 }
 
 -(NSArray *)searchResult{

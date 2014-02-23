@@ -64,8 +64,7 @@
     <child-task idref="t5"/>
     <child-task idref="t6"/>
     <child-task idref="t7"/>
-    <child-task idref="t9"/>
-    <child-task idref="t8"/>
+    <child-task idref="t12"/>
   </task>
   <task id="t1">
     <title>Drafts</title>
@@ -118,15 +117,11 @@
       <value key="font-size">25</value>
     </style>
   </task>
-  <task id="t8">
-    <title/>
+  <task id="t12">
+    <title>优化</title>
     <effort>28800</effort>
-    <start-constraint-date>2014-01-10T16:00:00.000Z</start-constraint-date>
-  </task>
-  <task id="t9">
-    <title>&gt;任务 1</title>
-    <effort>28800</effort>
-    <start-constraint-date>2014-01-10T16:00:00.000Z</start-constraint-date>
+    <start-constraint-date>2014-02-18T00:00:00.000Z</start-constraint-date>
+    <start-no-earlier-than>2014-02-18T00:00:00.000Z</start-no-earlier-than>
   </task>
   <critical-path root="-1" enabled="false" resources="false">
     <color r="1" g="0.5" b="0.5"/>

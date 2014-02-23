@@ -26,10 +26,11 @@
     if (self) {
         // Initialization code here.
 
-        [self loadTestData];
+        
         self.numberOfColumn = 10;
         self.numberOfRow = 4;
         self.cellSize = NSMakeSize(32, 32);
+        [self loadTestData];
         
     }
     return self;
@@ -52,30 +53,77 @@
     NSInteger numberOfCells = self.numberOfRow * self.numberOfColumn;
     for(NSInteger i=0; i<=array.count/(self.numberOfRow * self.numberOfColumn); i++) {
         
-        NSArray *tmpArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*numberOfCells, (i<(NSInteger)(array.count/numberOfCells))?(self.numberOfRow * self.numberOfColumn):(array.count%i))]];
+        NSArray *tmpArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*numberOfCells, (i<(NSInteger)(array.count/numberOfCells))?(numberOfCells):(array.count%numberOfCells))]];
         
         [self.data addObject:tmpArray];
         
     }
     
-    self.pageController.arrangedObjects  = self.data;
+    
 
 
 }
 
--(void)_adjustViewSize{
+-(void)awakeFromNib{
 
+    NSSize boxMargin = NSMakeSize(0, 0);
+    NSSize boxPadding = NSMakeSize(5, 5);
     //Matrix Size
     NSSize viewSize = NSMakeSize((self.cellSize.width+1)*self.numberOfColumn-1,
-                                   (self.cellSize.height+1)*self.numberOfRow-1);
-    
-    //Box Size
-    viewSize = NSMakeSize(viewSize.width + self.emotionViewContainer.contentViewMargins.width*2, viewSize.height+self.emotionViewContainer.contentViewMargins.height*2);
+                                 (self.cellSize.height+1)*self.numberOfRow-1);
 
-    [self.emotionViewContainer setFrameSize:viewSize];
     
-    viewSize = NSMakeSize(viewSize.width+5*2, viewSize.height + 5*2);
+    NSView *pageView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, viewSize.width, viewSize.height)];
+    
+    NSBox *box = [[NSBox alloc] initWithFrame:NSMakeRect(boxMargin.width, boxMargin.height, viewSize.width+boxPadding.width*2 + 4,viewSize.height+boxPadding.height * 2 + 4)];
+    box.titlePosition = NSNoTitle;
+    box.contentViewMargins = boxPadding;
+    
+    
+    [box addSubview:pageView];
+
+    [self.view addSubview:box];
+    
+    viewSize = box.frame.size;
+    
+    viewSize = NSMakeSize(viewSize.width, viewSize.height);
     [self.view setFrameSize:viewSize];
+    
+    self.emotionViewContainer = box;
+    self.pageController.view = pageView;
+    
+
+    
+
+    self.pageController.arrangedObjects  = self.data;
+    [self _adjustViewSize];
+
+}
+
+
+-(void)_adjustViewSize{
+
+    NSSize boxMargin = NSMakeSize(5, 5);
+    //Matrix Size
+    //NSSize viewSize = NSMakeSize((self.cellSize.width+1)*self.numberOfColumn-1,
+                                 //  (self.cellSize.height+1)*self.numberOfRow-1);
+    
+    //[self.pageController.view setFrameSize:viewSize];
+
+    //Box Size
+//viewSize = NSMakeSize(viewSize.width + self.emotionViewContainer.contentViewMargins.width*2, viewSize.height+self.emotionViewContainer.contentViewMargins.height*2);
+
+    //[self.emotionViewContainer setFrameSize:viewSize];
+    
+    
+    //viewSize = NSMakeSize(viewSize.width+boxMargin.width*2, viewSize.height + boxMargin.height*2);
+    
+    //[_popover setContentSize:viewSize];
+    //[self.view setFrameSize:viewSize];
+    
+    
+    
+    //[self.emotionViewContainer setFrameOrigin:NSMakePoint(boxMargin.width, boxMargin.height)];
 
 
 }
@@ -89,6 +137,21 @@
         _popover.behavior = NSPopoverBehaviorSemitransient;
         _popover.delegate = self;
     }
+}
+
+-(void)popoverWillShow:(NSNotification *)notification{
+
+    //[self _adjustViewSize];
+
+}
+
+-(void)displayEmotionDialogForView:(NSView *)view relativeToRect:(NSRect)rect{
+    
+    [self _makePopoverIfNeeded];
+    [_popover showRelativeToRect:rect ofView:view preferredEdge:NSMinYEdge];
+    
+    
+    
 }
 
 -(void)displayEmotionDialogForView:(NSView *)view{
@@ -124,6 +187,8 @@
     NSButtonCell *buttonCell = [[NSButtonCell alloc]init];
     buttonCell.bezelStyle = NSRoundedBezelStyle;
     [buttonCell setBordered:NO];
+    buttonCell.imagePosition = NSImageOnly;
+    buttonCell.imageScaling = NSImageScaleProportionallyUpOrDown;
     
     NSMatrix *matrix = [[NSMatrix alloc]initWithFrame:NSMakeRect(0,
                                                                  0,
@@ -163,20 +228,22 @@
             NSButtonCell *cell = [matrix cellAtRow:i column:j];
             
             if (index<array.count) {
-                cell.title = (NSString *)[array objectAtIndex:index];
+            
+                AKEmotion *emotion = (AKEmotion *)[array objectAtIndex:index];
+                //cell.title = emotion.code;
+                cell.image = emotion.image;
             }
             else{
                 
-                cell.title = @"";
+                //cell.title = @"";
+                cell.image = nil;
             }
             index++;
             
         }
         
     }
-    
-    
-    
+
     // Since we implement this delegate method, we are reponsible for setting the representedObject.
     viewController.representedObject = object;
 }

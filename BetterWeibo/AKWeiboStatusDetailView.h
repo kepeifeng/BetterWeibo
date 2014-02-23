@@ -11,6 +11,7 @@
 #import "AKWeiboStatus.h"
 #import "PXListView.h"
 #import "AKRepostedWeiboView.h"
+#import "AKTextView.h"
 
 @interface AKWeiboStatusDetailView : NSView{
 
@@ -34,7 +35,7 @@
 @property (weak) IBOutlet NSButtonCell *commentButton;
 @property (weak) IBOutlet NSButtonCell *favButton;
 @property (weak) IBOutlet NSButtonCell *shareButton;
-@property (weak) IBOutlet AKTextField *weiboTextField;
+@property IBOutlet AKTextView *weiboTextField;
 @property (weak) IBOutlet NSMatrix *images;
 @property (weak) IBOutlet NSMatrix *toolbar;
 @property (weak) IBOutlet NSTextField *statusDateField;

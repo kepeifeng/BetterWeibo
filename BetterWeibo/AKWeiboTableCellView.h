@@ -10,6 +10,7 @@
 #import "AKTextField.h"
 #import "AKWeiboStatus.h"
 #import "AKRepostedWeiboView.h"
+#import "AKTextView.h"
 
 
 @interface AKWeiboTableCellView : NSTableCellView{
@@ -32,7 +33,9 @@
 @property (weak) IBOutlet NSButtonCell *commentButton;
 @property (weak) IBOutlet NSButtonCell *favButton;
 @property (weak) IBOutlet NSButtonCell *shareButton;
-@property (weak) IBOutlet AKTextField *weiboTextField;
+//@property (weak) IBOutlet AKTextField *weiboTextField;
+@property IBOutlet AKTextView *weiboTextField;
+
 @property (weak) IBOutlet NSMatrix *images;
 @property (weak) IBOutlet NSMatrix *toolbar;
 
@@ -40,10 +43,10 @@
 //Reposted Weibo
 //转发微博
 @property (weak) IBOutlet AKRepostedWeiboView *repostedWeiboView;
-@property (weak) IBOutlet NSTextField *repostedWeiboDateDuration;
-@property (weak) IBOutlet NSTextField *repostedWeiboUserAlias;
-@property (weak) IBOutlet AKTextField *repostedWeiboContent;
-@property (weak) IBOutlet NSMatrix *repostedWeiboImageMatrix;
+//@property (weak) IBOutlet NSTextField *repostedWeiboDateDuration;
+//@property (weak) IBOutlet NSTextField *repostedWeiboUserAlias;
+//@property (weak) IBOutlet AKTextField *repostedWeiboContent;
+//@property (weak) IBOutlet NSMatrix *repostedWeiboImageMatrix;
 
 
 //Has Reposted Weibo
@@ -62,8 +65,8 @@
 
 
 -(void)resize;
--(void)loadImages:(NSArray *)imageURL;
--(void)loadImages:(NSArray *)imageURL isForRepost:(BOOL)isForRepost;
+-(void)loadImages:(NSArray *)images;
+-(void)loadImages:(NSArray *)images isForRepost:(BOOL)isForRepost;
 -(IBAction)toolbarClicked:(id)sender;
 
 @property AKWeiboStatus *objectValue;

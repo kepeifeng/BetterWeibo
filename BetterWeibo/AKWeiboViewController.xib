@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C59" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -82,64 +82,59 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" ambiguous="YES" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bCm-jd-Kk0" customClass="AKTextField">
-                                                                <rect key="frame" x="17" y="23" width="382" height="17"/>
+                                                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qyn-Dg-5kX" customClass="AKTextView">
+                                                                <rect key="frame" x="19" y="20" width="163" height="20"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <textFieldCell key="cell" lineBreakMode="charWrapping" sendsActionOnEndEditing="YES" title="Multiline Label" id="Afr-m5-s3d">
-                                                                    <font key="font" metaFont="system"/>
-                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
+                                                            </customView>
                                                             <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyj-QC-u9f">
                                                                 <rect key="frame" x="19" y="9" width="143" height="143"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 <size key="cellSize" width="45" height="45"/>
                                                                 <size key="intercellSpacing" width="4" height="4"/>
-                                                                <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="QeB-6t-VLZ">
+                                                                <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="QeB-6t-VLZ">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                                 <cells>
                                                                     <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="1eJ-lJ-uIm">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="1eJ-lJ-uIm">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="z4V-Cl-v90">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="z4V-Cl-v90">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="HMI-Li-Ydh">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="GrA-tg-Y4I">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="bgI-2n-vym">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="Hch-yh-kPe">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="HMI-Li-Ydh">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
                                                                     </column>
                                                                     <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="Ii4-Wp-5FC">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="GrA-tg-Y4I">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="DqO-Et-b4k">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="bgI-2n-vym">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="fS2-VI-HLF">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="Hch-yh-kPe">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                    </column>
+                                                                    <column>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="Ii4-Wp-5FC">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="DqO-Et-b4k">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="fS2-VI-HLF">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
@@ -149,14 +144,12 @@
                                                         </subviews>
                                                         <constraints>
                                                             <constraint firstItem="bM0-A3-zKB" firstAttribute="leading" secondItem="b4j-wD-8kF" secondAttribute="trailing" constant="10" id="BHc-xD-nzz"/>
-                                                            <constraint firstAttribute="trailing" secondItem="bCm-jd-Kk0" secondAttribute="trailing" constant="20" id="IOg-lY-ggl"/>
                                                             <constraint firstItem="b4j-wD-8kF" firstAttribute="leading" secondItem="m7b-5M-F6z" secondAttribute="leading" constant="20" id="MvQ-t8-AGB"/>
                                                             <constraint firstAttribute="trailing" secondItem="bM0-A3-zKB" secondAttribute="trailing" constant="20" id="N64-K7-pwu"/>
-                                                            <constraint firstItem="bCm-jd-Kk0" firstAttribute="leading" secondItem="m7b-5M-F6z" secondAttribute="leading" constant="20" id="bBC-JY-HVH"/>
                                                             <constraint firstItem="bM0-A3-zKB" firstAttribute="leading" secondItem="b4j-wD-8kF" secondAttribute="trailing" constant="10" id="ihO-Li-93V"/>
                                                         </constraints>
                                                         <connections>
-                                                            <outlet property="repostedWeiboContent" destination="bCm-jd-Kk0" id="gXP-xu-An6"/>
+                                                            <outlet property="repostedWeiboContent" destination="Qyn-Dg-5kX" id="ynf-LY-phI"/>
                                                             <outlet property="repostedWeiboDateDuration" destination="bM0-A3-zKB" id="khJ-tN-XAy"/>
                                                             <outlet property="repostedWeiboImageMatrix" destination="dyj-QC-u9f" id="NJX-cr-hyR"/>
                                                             <outlet property="repostedWeiboUserAlias" destination="b4j-wD-8kF" id="K9U-yi-Lzt"/>
@@ -193,64 +186,68 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ciq-0s-4tO" customClass="AKTextField">
+                                                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ciq-0s-4tO" customClass="AKTextField">
                                                                 <rect key="frame" x="62" y="20" width="337" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" continuous="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="微博正文" id="92Z-qN-wu6">
+                                                                <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" continuous="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="微博正文" allowsEditingTextAttributes="YES" id="92Z-qN-wu6">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
+                                                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWI-69-lBX" customClass="AKTextView">
+                                                                <rect key="frame" x="64" y="15" width="333" height="22"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            </customView>
                                                             <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alE-1t-O9g">
                                                                 <rect key="frame" x="58" y="4" width="143" height="143"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 <size key="cellSize" width="45" height="45"/>
                                                                 <size key="intercellSpacing" width="4" height="4"/>
-                                                                <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="Lep-3f-hDx">
+                                                                <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="Lep-3f-hDx">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                                 <cells>
                                                                     <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="UGo-5g-fM8">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="UGo-5g-fM8">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="s9o-WM-JEm">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="s9o-WM-JEm">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="O2D-00-gvZ">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="ci0-Ul-eNr">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="hLU-10-gfx">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="overlaps" inset="2" id="SSk-JF-tQo">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="O2D-00-gvZ">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
                                                                     </column>
                                                                     <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="sLs-Zd-DXh">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="ci0-Ul-eNr">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="mJb-x0-e5V">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="hLU-10-gfx">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" inset="2" id="Mgc-rM-yeb">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="overlaps" imageScaling="proportionallyUpOrDown" inset="2" id="SSk-JF-tQo">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                    </column>
+                                                                    <column>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="sLs-Zd-DXh">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="mJb-x0-e5V">
+                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                            <font key="font" metaFont="system"/>
+                                                                        </buttonCell>
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="Mgc-rM-yeb">
                                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
@@ -315,7 +312,7 @@
                                                             <constraint firstAttribute="trailing" secondItem="fEY-3a-yLo" secondAttribute="trailing" constant="5" id="s7p-71-Jrn"/>
                                                         </constraints>
                                                     </customView>
-                                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AVa-bS-4sj">
+                                                    <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AVa-bS-4sj">
                                                         <rect key="frame" x="0.0" y="0.0" width="416" height="2"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="weibo-separator" id="VBa-kI-GjX"/>
@@ -343,7 +340,7 @@
                                                     <outlet property="toolbar" destination="fEY-3a-yLo" id="g0B-oy-c1y"/>
                                                     <outlet property="userAlias" destination="sbS-B3-XgM" id="sCY-cp-Ezo"/>
                                                     <outlet property="userImage" destination="OIB-H5-bvk" id="mKD-5U-0c6"/>
-                                                    <outlet property="weiboTextField" destination="Ciq-0s-4tO" id="o0g-4n-nZF"/>
+                                                    <outlet property="weiboTextField" destination="fWI-69-lBX" id="9Mv-dK-QhI"/>
                                                     <outlet property="weiboView" destination="un5-Rp-Ybd" id="KzW-wD-s4w"/>
                                                 </connections>
                                             </tableCellView>

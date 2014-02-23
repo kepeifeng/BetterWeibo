@@ -7,12 +7,16 @@
 //
 
 #import "AKImageViewer.h"
-
+#import "AKImageHelper.h"
 
 @implementation AKImageViewer{
 
     NSMutableDictionary *_imagesDictionary;
-    NSMutableDictionary *_connectionDataDictionary;
+    NSMutableDictionary *_connectionDictionary;
+    NSMutableDictionary *_dataDictionary;
+    NSMapTable *_connectionDataMap;
+    
+    
 
 }
 @synthesize image = _image;
@@ -47,8 +51,16 @@
     self = [super initWithWindowNibName:@"AKImageViewer" owner:self];
     if (self) {
         [self.window orderOut:nil];
+        
+        
+        //Initialize dictionaries before setting index.
+        _connectionDictionary = [NSMutableDictionary new];
+        _dataDictionary = [NSMutableDictionary new];
+        _connectionDataMap = [NSMapTable new];
+        
         self.images = imageArray;
         self.index = index;
+
         // Initialization code here.
     }
     return self;
@@ -104,7 +116,7 @@
     NSImage *image;
     
     [self.previousButton setEnabled:(index>0)];
-    [self.nextButton setEnabled:(index<_images.count)];
+    [self.nextButton setEnabled:(index<_images.count-1)];
     [self.messageView setHidden:YES];
     
     if(index<_images.count){
@@ -117,12 +129,17 @@
             //"original_pic": "http://ww1.sinaimg.cn/large/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
             urlString = [urlString stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/bmiddle/"];
             
+            self.imageView.image = nil;
             [self startLoadingImageFromURL:[NSURL URLWithString:urlString] forIndex:index];
             [_progressIndicator startAnimation:self];
+            return;
+            
             
         }
         
         self.imageView.image = image;
+        [_progressIndicator stopAnimation:self];
+        
     
     }
     else{
@@ -133,7 +150,7 @@
 
 -(void)startLoadingImageFromURL:(NSURL *)url forIndex:(NSInteger)index{
     
-    if([_connectionDataDictionary objectForKey:[NSNumber numberWithInteger:index]]){
+    if([_connectionDictionary objectForKey:[NSNumber numberWithInteger:index]]){
         return;
     }
     
@@ -144,9 +161,8 @@
     if(connection){
     
         NSMutableData *data = [NSMutableData new];
-        connection.key = [NSString stringWithFormat:@"%ld",(long)index];
-        connection.value = data;
-        [_connectionDataDictionary setObject:connection forKey:[NSNumber numberWithInteger:index]];
+        [_connectionDataMap setObject:data forKey:connection];
+        [_connectionDictionary setObject:connection forKey:[NSNumber numberWithInteger:index]];
         
     }
     
@@ -157,19 +173,29 @@
 //传送完成
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection{
     
-    NSInteger index = [connection.key integerValue];
+    NSNumber *index;
+    for (NSNumber *number in _connectionDictionary.allKeys) {
+        if([_connectionDictionary objectForKey:number] == connection){
+            index = number;
+            break;
+        }
+    }
     
-    NSImage *image = [[NSImage alloc]initWithData:(NSMutableData *)connection.value];
-    [_imagesDictionary setObject:image forKey:[NSNumber numberWithInteger:index]];
+    NSMutableData *_data = [_connectionDataMap objectForKey:connection];
     
-    if(index == self.index){
+    NSImage *image = [AKImageHelper getImageFromData:_data];
+    
+    [_imagesDictionary setObject:image forKey:index];
+    
+    if([index integerValue] == self.index){
         
         [_progressIndicator stopAnimation:self];
         self.imageView.image = image;
     
     }
     
-    [_connectionDataDictionary removeObjectForKey:[NSNumber numberWithInteger:index]];
+    [_connectionDataMap removeObjectForKey:connection];
+    [_connectionDictionary removeObjectForKey:index];
 
 
 }
@@ -179,7 +205,8 @@
 //
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
 
-    [(NSMutableData *)connection.value appendData:data];
+    NSMutableData *_data = [_connectionDataMap objectForKey:connection];
+    [_data appendData:data];
 
 }
 

@@ -7,6 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AKTextView.h"
+
 
 @protocol AKStatusTextViewDelegate <NSTextViewDelegate>
 
@@ -14,7 +16,7 @@
 
 @end
 
-@interface AKStatusTextView : NSTextView
+@interface AKStatusTextView : AKTextView
 
 @property id<AKStatusTextViewDelegate> delegate;
 

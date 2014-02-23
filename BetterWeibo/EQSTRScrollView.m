@@ -27,7 +27,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-#define REFRESH_HEADER_HEIGHT 30.0f
+#define REFRESH_HEADER_HEIGHT 42.0f
 
 // code modeled from https://github.com/leah/PullToRefresh/blob/master/Classes/PullRefreshTableViewController.m
 
@@ -137,10 +137,11 @@
 	[self.refreshArrow.layer addSublayer:self._arrowLayer];
 	
 	// Create spinner
-	_refreshSpinner = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(floor(NSMidX(self.refreshHeader.bounds) - 30),
-																			floor(NSMidY(self.refreshHeader.bounds) - 20), 
-																			60.0f, 
-																			40.0f)];
+    NSSize spinnerSize = NSMakeSize(30, 30);
+	_refreshSpinner = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(floor(NSMidX(self.refreshHeader.bounds) - spinnerSize.width/2),
+																			floor(NSMidY(self.refreshHeader.bounds) - spinnerSize.height/2),
+																			spinnerSize.width,
+																			spinnerSize.height)];
 	self.refreshSpinner.style                 = NSProgressIndicatorSpinningStyle;
 	self.refreshSpinner.displayedWhenStopped  = NO;
 	self.refreshSpinner.usesThreadedAnimation = YES;

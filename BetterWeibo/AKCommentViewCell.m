@@ -86,23 +86,69 @@
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize{
 
     [super resizeSubviewsWithOldSize:oldSize];
+    
+    
+    
     NSInteger oldHeight = self.commentField.frame.size.height;
+    [self.commentField setFrameSize:NSMakeSize(oldSize.width - 10 - 42 - 10 - 10, self.commentField.frame.size.height)];
     [self.commentField adjustFrame];
     NSInteger newHeight = self.commentField.frame.size.height;
     
-    NSInteger moveDistance = newHeight - oldHeight;
-    if(moveDistance){
-        for (NSView *subView in self.subviews) {
-            NSPoint origin = subView.frame.origin;
-            origin.y += moveDistance;
-            [subView setFrameOrigin:origin];
-        }
-        
-    }
+    NSInteger y = (self.commentField.frame.size.height <=20 )?16:10;
+    
+    [self.commentField setFrameOrigin:NSMakePoint(10 + 42 + 10, y)];
+    y += self.commentField.frame.size.height;
+    
+    y += 5;
+    [self.userAliasField setFrameOrigin:NSMakePoint(self.commentField.frame.origin.x, y)];
+    y += self.userAliasField.frame.size.height;
+    
+    [self.userAvatar setFrameOrigin:NSMakePoint(10, y - self.userAvatar.frame.size.height)];
+    
+//    NSInteger moveDistance = newHeight - oldHeight;
+//    if(moveDistance!=0){
+//        for (NSView *subView in self.subviews) {
+//            NSPoint origin = subView.frame.origin;
+//            origin.y += moveDistance;
+//            [subView setFrameOrigin:origin];
+//        }
+//        
+//    }
     
     
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @end

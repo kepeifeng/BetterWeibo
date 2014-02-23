@@ -117,7 +117,7 @@
     else if (methodAction == AKWBOPT_GET_USERS_SHOW){
     
         //TODO:update user button icon
-        AKUserProfile *userProfile = (AKUserProfile *)[userInfoDictionary objectForKey:@"userProfile"];
+        AKUserProfile *userProfile = (AKUserProfile *)[AKUserProfile getUserProfileFromDictionary:[result getObject]];
         
         //如果拿到资料的这个用户是本程序的用户，则更新到UserManager，并保存到硬盘
         if([userManager isAppUser:userProfile.IDString]){
@@ -441,6 +441,22 @@
         
         }
         
+    }
+    
+    NSInteger nextRightControlMargin = 5;
+    if(viewController.rightControls){
+    
+        for(NSControl *control in viewController.rightControls){
+            
+            [titleBarCustomView addSubview:control];
+            [control setFrame:NSMakeRect(titleBarCustomView.frame.size.width - nextRightControlMargin - control.frame.size.width, (titleBarCustomView.bounds.size.height - 36)/2, control.frame.size.width, 36)];
+            
+            [control setAutoresizingMask:NSViewMinXMargin];
+            
+            nextRightControlMargin += control.frame.size.width + 5;
+            
+        }
+    
     }
         
     

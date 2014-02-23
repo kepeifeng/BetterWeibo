@@ -10,6 +10,7 @@
 #import "NS(Attributed)String+Geometrics.h"
 #import "AKImageViewer.h"
 #import "AKViewConstant.h"
+#import "AKImageHelper.h"
 
 @implementation AKWeiboTableCellView{
 
@@ -37,20 +38,44 @@
     return self;
 }
 
+-(void)awakeFromNib{
+
+    
+    [self.weiboTextField setDrawsBackground:NO];
+    [self.weiboTextField setEditable:NO];
+    [self.weiboTextField setSelectable:YES];
+
+}
+
 
 
 - (void)drawRect:(NSRect)dirtyRect
 {
 	[super drawRect:dirtyRect];
     
-    if(self.inLiveResize){
+    NSRect drawingRect = self.frame;
     
-        
-        
-               
+    CGContextRef myContext = [[NSGraphicsContext currentContext] graphicsPort];
     
-    }
-
+    //Top Line
+    NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - 0.5);
+    NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - 0.5);
+    
+    CGContextSetLineWidth(myContext, 1);
+    CGContextSetRGBStrokeColor(myContext, 1, 1, 1, 0.8);
+    CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
+    CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
+    CGContextStrokePath(myContext);
+    
+    //Bottom Line
+    startPoint = NSMakePoint(0, 0.5);
+    endPoint = NSMakePoint(drawingRect.size.width, 0.5);
+    
+    CGContextSetLineWidth(myContext, 1);
+    CGContextSetRGBStrokeColor(myContext, 0.5, 0.5, 0.5, 0.5);
+    CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
+    CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
+    CGContextStrokePath(myContext);
 	
     // Drawing code here.
 }
@@ -72,27 +97,27 @@
 }
 
 
--(NSString *)thumbnailImageURL{
-
-    return _thumbnailImageURL;
-
-}
-
--(void)setThumbnailImageURL:(NSString *)thumbnailImageURL{
-
-    _thumbnailImageURL = thumbnailImageURL;
-    if(_thumbnailImageURL)
-    {
-        return;
-    }
-    
-    NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:thumbnailImageURL]]];
-    NSImageCell *imageCell = [[NSImageCell alloc]initImageCell:image];
-    [self.images setCell:imageCell];
-    
-    [self.images setHidden:NO];
-    
-}
+//-(NSString *)thumbnailImageURL{
+//
+//    return _thumbnailImageURL;
+//
+//}
+//
+//-(void)setThumbnailImageURL:(NSString *)thumbnailImageURL{
+//
+//    _thumbnailImageURL = thumbnailImageURL;
+//    if(_thumbnailImageURL)
+//    {
+//        return;
+//    }
+//    
+//    NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:thumbnailImageURL]]];
+//    NSImageCell *imageCell = [[NSImageCell alloc]initImageCell:image];
+//    [self.images setCell:imageCell];
+//    
+//    [self.images setHidden:NO];
+//    
+//}
 
 -(void)viewDidEndLiveResize{
 
@@ -126,6 +151,8 @@
 -(void)prepareForReuse{
 
     [super prepareForReuse];
+    
+    [self.images setHidden:YES];
     
     for(NSButtonCell *cell in [self.images cells]){
     
@@ -188,7 +215,7 @@
     [self.userImage setFrameOrigin:NSMakePoint(self.userImage.frame.origin.x, weiboViewHeight - (self.userImage.frame.size.height - self.userAlias.frame.size.height) - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP)];
 
     //Weibo Text
-    [self.weiboTextField setFrameSize:NSMakeSize(self.weiboTextField.frame.size.width, weiboHeight)];
+    [self.weiboTextField setFrameSize:NSMakeSize(self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT, weiboHeight)];
 //    [self.weiboTextField adjustFrame];
     [self.weiboTextField setFrameSize:self.weiboTextField.intrinsicContentSize];
     [self.weiboTextField setFrameOrigin:NSMakePoint(self.weiboTextField.frame.origin.x, weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP - STATUS_TEXT_MARGIN_TOP - self.weiboTextField.frame.size.height)];
@@ -269,6 +296,10 @@
     float _repostedWeiboViewHeight = 0;
     float _weiboViewHeight = 0;
     
+    static AKTextView *_textField;
+    if(!_textField){
+        _textField = [[AKTextView alloc]initWithFrame:NSMakeRect(0, 0, width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
+    }
     
     if(weibo.retweeted_status){
         
@@ -296,12 +327,13 @@
         }
         
         //        [self.repostedWeiboContent setFrameSize:self.repostedWeiboContent.intrinsicContentSize];
-        AKTextField *textField = [[AKTextField alloc]initWithFrame:NSMakeRect(0, 0, width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
+
         
         assert(weibo.retweeted_status.text);
         
-        textField.stringValue = weibo.retweeted_status.text;
-        *repostedWeiboHeight = textField.intrinsicContentSize.height;
+        [_textField setFrameSize:NSMakeSize(width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
+        _textField.stringValue = weibo.retweeted_status.text;
+        *repostedWeiboHeight = _textField.intrinsicContentSize.height;
         
         _repostedWeiboViewHeight += *repostedWeiboHeight;
         _repostedWeiboViewHeight += STATUS_TEXT_MARGIN_TOP;
@@ -364,11 +396,12 @@
     
     //[self.weiboTextField setFrameSize:self.weiboTextField.intrinsicContentSize];
     
-    AKTextField *weiboTextField = [[AKTextField alloc]initWithFrame:NSMakeRect(0, 0, width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT -STATUS_MARGIN_RIGHT, 1000)];
-    assert(weibo.text);
-    weiboTextField.stringValue = weibo.text;
+    [_textField setFrameSize:NSMakeSize(width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT -STATUS_MARGIN_RIGHT, 1000)];
     
-    *weiboHeight = weiboTextField.intrinsicContentSize.height;
+    assert(weibo.text);
+    _textField.stringValue = weibo.text;
+    
+    *weiboHeight = _textField.intrinsicContentSize.height;
     
 //    _weiboViewHeight += *weiboHeight;
 //    _weiboViewHeight += 5;
@@ -427,7 +460,7 @@
         [self removeTrackingArea:trackingArea];
     }
     
-    int opts = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
+    int opts = (NSTrackingMouseEnteredAndExited | NSTrackingEnabledDuringMouseDrag | NSTrackingActiveInActiveApp);
     trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds]
                                                  options:opts
                                                    owner:self
@@ -436,102 +469,114 @@
     
 }
 
--(void)loadImages:(NSArray *)imageURL{
+-(void)loadImages:(NSArray *)images{
     
-    [self loadImages:imageURL isForRepost:NO];
+    [self loadImages:images isForRepost:NO];
     
 
 }
 
 
--(void)loadImages:(NSArray *)imageURL isForRepost:(BOOL)isForRepost{
+-(void)loadImages:(NSArray *)images isForRepost:(BOOL)isForRepost{
     
     //assert(self.images.numberOfRows == 0);
 //    NSLog(@"COUNT = ",cell.weiboTextField.stringValue);
     
     NSMatrix *imageMatrix;
     if(isForRepost){
-        imageMatrix = self.repostedWeiboImageMatrix;
+        return;
+        imageMatrix = self.repostedWeiboView.repostedWeiboImageMatrix;
+        [self.images setHidden:YES];
     }
     else{
         imageMatrix = self.images;
+        //[self.repostedWeiboView.repostedWeiboImageMatrix setHidden:YES];
     }
     
-    if(imageURL && imageURL.count >0){
-        
-//        [imageMatrix ]
-        
-        NSInteger i = 0;
-        //第一行 第一列
-        //[imageMatrix addRow];
-        for(NSDictionary *url in imageURL){
-            
-            NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[url objectForKey:@"thumbnail_pic"]]]];
-            
-
-            NSButtonCell *imageCell = [imageMatrix cellAtRow:(NSInteger)(i/3) column:(i%3)];
-            imageCell.tag = i;
-            imageCell.image = image;
-//            if(i==1 || i==2){
-//                //i==1 2的时候，各自添加一列。
-//                [imageMatrix addColumn];
-//            }
-//            else if (i==3 || i == 6){
-//                //i==3的时候添加第二行
-//                //i==6的时候添加第三行
-//                [imageMatrix addRow];
-//            }
-            
-            //[imageMatrix putCell:imageCell atRow:(NSInteger)(i/3) column:(i%3)];
-
-            i++;
-
-        }
-        
-        assert(i<=9);
-        
-        if(imageURL.count == 1){
-        
-            imageMatrix.cellSize = NSMakeSize(LARGE_THUMBNAIL_SIZE, LARGE_THUMBNAIL_SIZE);
-        }else{
-        
-            imageMatrix.cellSize = NSMakeSize(SMALL_THUMBNAIL_SIZE, SMALL_THUMBNAIL_SIZE);
-        }
-        
-        [imageMatrix setTarget:self];
-        [imageMatrix setAction:@selector(imageCellClicked:)];
-        [imageMatrix setHidden:NO];
-        
-    }
     
-    else{
-        
-        [imageMatrix setHidden:YES];
-    }
+    [AKImageHelper putImages:images inMatrix:self.images target:self action:@selector(imageCellClicked:)];
+//    
+//    if(images && images.count >0){
+//        
+////        [imageMatrix ]
+//        
+//        NSInteger i = 0;
+//        //第一行 第一列
+//        //[imageMatrix addRow];
+//        for(NSImage *image in images){
+//            
+//
+//
+//            NSButtonCell *imageCell = [imageMatrix cellAtRow:(NSInteger)(i/3) column:(i%3)];
+//            imageCell.tag = i;
+//            imageCell.image = image;
+//
+//            i++;
+//
+//        }
+//        
+//        assert(i<=9);
+//        
+//        if(images.count == 1){
+//        
+//            imageMatrix.cellSize = NSMakeSize(LARGE_THUMBNAIL_SIZE, LARGE_THUMBNAIL_SIZE);
+//        }else{
+//        
+//            imageMatrix.cellSize = NSMakeSize(SMALL_THUMBNAIL_SIZE, SMALL_THUMBNAIL_SIZE);
+//        }
+//        
+//        [imageMatrix setTarget:self];
+//        [imageMatrix setAction:@selector(imageCellClicked:)];
+//        [imageMatrix setHidden:NO];
+//        
+//    }
+//    
+//    else{
+//        
+//        [imageMatrix setHidden:YES];
+//    }
 }
 
 -(void)imageCellClicked:(id)sender{
 
-    //NSLog(@"imageCellClicked");
     NSMatrix *imageMatrix = sender;
     NSCell *selectedCell = imageMatrix.selectedCell;
     AKWeiboStatus *status = self.objectValue;
     NSArray *imageURLArray = (status.pic_urls && status.pic_urls.count>0)?status.pic_urls:status.retweeted_status.pic_urls;
-    NSString *url = [(NSDictionary *)[imageURLArray objectAtIndex:selectedCell.tag] objectForKey:@"thumbnail_pic"];
-    //"thumbnail_pic": "http://ww1.sinaimg.cn/thumbnail/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
-    //"bmiddle_pic": "http://ww1.sinaimg.cn/bmiddle/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
-    //"original_pic": "http://ww1.sinaimg.cn/large/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
-    url = [url stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/bmiddle/"];
-    NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
+    
     
     if(!_imageViewer){
-        _imageViewer = [[AKImageViewer alloc] initWithImage:image];
+        _imageViewer = [[AKImageViewer alloc] initWithArray:imageURLArray startAtIndex:selectedCell.tag];
     }
     else{
-        _imageViewer.image = image;
+        _imageViewer.images = imageURLArray;
+        _imageViewer.index = selectedCell.tag;
     }
     
     [_imageViewer show];
+    
+    return;
+//    
+//    //NSLog(@"imageCellClicked");
+//    NSMatrix *imageMatrix = sender;
+//    NSCell *selectedCell = imageMatrix.selectedCell;
+//    AKWeiboStatus *status = self.objectValue;
+//    NSArray *imageURLArray = (status.pic_urls && status.pic_urls.count>0)?status.pic_urls:status.retweeted_status.pic_urls;
+//    NSString *url = [(NSDictionary *)[imageURLArray objectAtIndex:selectedCell.tag] objectForKey:@"thumbnail_pic"];
+//    //"thumbnail_pic": "http://ww1.sinaimg.cn/thumbnail/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
+//    //"bmiddle_pic": "http://ww1.sinaimg.cn/bmiddle/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
+//    //"original_pic": "http://ww1.sinaimg.cn/large/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
+//    url = [url stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/bmiddle/"];
+//    NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
+//    
+//    if(!_imageViewer){
+//        _imageViewer = [[AKImageViewer alloc] initWithImage:image];
+//    }
+//    else{
+//        _imageViewer.image = image;
+//    }
+//    
+//    [_imageViewer show];
 
 }
 

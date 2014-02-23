@@ -9,9 +9,26 @@
 #import "AKWeiboStatus.h"
 #import "AKUserProfile.h"
 #import "AKImageDownloader.h"
+#import "AKImageHelper.h"
+
+NSString *const ATEntityPropertyNamedThumbnailImage = @"thumbnailImages";
+
+static NSOperationQueue *ATSharedOperationQueue() {
+    static NSOperationQueue *_ATSharedOperationQueue = nil;
+    if (_ATSharedOperationQueue == nil) {
+        _ATSharedOperationQueue = [[NSOperationQueue alloc] init];
+        // We limit the concurrency to see things easier for demo purposes. The default value NSOperationQueueDefaultMaxConcurrentOperationCount will yield better results, as it will create more threads, as appropriate for your processor
+        [_ATSharedOperationQueue setMaxConcurrentOperationCount:2];
+    }
+    return _ATSharedOperationQueue;
+}
+
+@implementation AKWeiboStatus{
+
+    NSArray *_thumbnailImages;
+}
 
 
-@implementation AKWeiboStatus
 @synthesize pic_urls = _pic_urls;
 
 -(NSArray *)pic_urls{
@@ -33,6 +50,80 @@
 }
 
 
+-(BOOL)hasImages{
+
+    return (self.pic_urls && self.pic_urls.count>0);
+}
+
+// Lazily load the thumbnail image when requested
+- (NSArray *)thumbnailImages {
+    if (_thumbnailImages) {
+        // Generate the thumbnail right now, synchronously
+        return _thumbnailImages;
+    } else if (_thumbnailImages == nil && !self.isLoadingThumbnails) {
+        // Load the image lazily
+        [self loadThumbnailImages];
+    }
+    return _thumbnailImages;
+}
+
+- (void)setThumbnailImages:(NSArray *)images {
+    if (images != _thumbnailImages) {
+        _thumbnailImages = images;
+    }
+}
+
+
+-(void)loadThumbnailImages{
+    
+    if(!self.hasImages && !(self.retweeted_status && self.retweeted_status.hasImages)){
+        return;
+    }
+    
+    @synchronized (self) {
+        if (_thumbnailImages == nil && !self.isLoadingThumbnails) {
+            self.isLoadingThumbnails = YES;
+            // We would have to keep track of the block with an NSBlockOperation, if we wanted to later support cancelling operations that have scrolled offscreen and are no longer needed. That will be left as an exercise to the user.
+            [ATSharedOperationQueue() addOperationWithBlock:^(void) {
+                
+                NSMutableArray *thumbnails = [NSMutableArray new];
+                
+                NSInteger i=0;
+                
+                NSArray *pictureURLs = (self.hasImages)?self.pic_urls:self.retweeted_status.pic_urls;
+                
+                for(NSDictionary *url in pictureURLs){
+                    
+                    NSImage *image = [AKImageHelper getImageFromData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[url objectForKey:@"thumbnail_pic"]]]];
+                    
+                    [thumbnails addObject:(image)?image:[NSNull new]];
+                    i++;
+                    
+                }
+                if (thumbnails != nil) {
+                    //NSImage *thumbnailImage = ATThumbnailImageFromImage(image);
+                    // We synchronize access to the image/imageLoading pair of variables
+                    @synchronized (self) {
+                        self.isLoadingThumbnails = NO;
+                        self.thumbnailImages = thumbnails;
+                        
+                        
+                    }
+
+                } else {
+                    @synchronized (self) {
+                        //self.image = [NSImage imageNamed:NSImageNameTrashFull];
+                    }
+                }
+
+                
+            }];
+        }
+    }
+
+    
+
+}
 
 +(AKWeiboStatus *)getStatusFromDictionary:(NSDictionary *)status{
     

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <changelog xmlns="http://www.omnigroup.com/namespace/OmniPlan/v2">
-  <version>2.0</version>
+  <version>2.1</version>
   <task-change-set user="Kent Peifeng Ke" date="2013-12-13T08:12:21.467Z" timestamp="2013-12-13T08:12:21.467Z">
     <change idref="t4" to="t-1" to-position="0">
       <change idref="t4" attribute="title" type="string" to="Switching View"/>
@@ -46,20 +46,18 @@
     &quot;font-size&quot; = 25;
 }"/>
   </task-change-set>
-  <task-change-set user="Kent" date="2014-01-11T02:21:18.528Z" timestamp="2014-01-11T02:21:18.528Z">
-    <change idref="t8" to="t-1" to-position="7" resolved="yes">
-      <change idref="t8" attribute="startConstraintDate" type="date" to="2014-01-10T16:00:00.000Z"/>
+  <task-change-set user="Kent" date="2014-02-18T14:47:29.353Z" timestamp="2014-02-18T14:47:29.353Z">
+    <change idref="t8" from="t-1" from-position="8">
+      <change idref="t8" attribute="noEarlierThanConstraintDate" type="date" to="2014-01-10T16:00:00.000Z"/>
       <change idref="t8" attribute="title" type="string" to=""/>
     </change>
-    <change idref="t2" attribute="internalEffortDone" type="real" from="0" to="18000" resolved="yes"/>
-    <change idref="t7" attribute="title" type="string" from="&gt;任务 1" to="Remind" resolved="yes"/>
-  </task-change-set>
-  <task-change-set user="Kent" date="2014-01-11T02:22:13.404Z" timestamp="2014-01-11T02:22:13.404Z">
-    <change idref="t3" from="t-1" from-position="3" to="t-1" to-position="1" resolved="yes"/>
-    <change idref="t9" to="t-1" to-position="7" resolved="yes">
-      <change idref="t9" attribute="startConstraintDate" type="date" to="2014-01-10T16:00:00.000Z"/>
+    <change idref="t9" from="t-1" from-position="7">
+      <change idref="t9" attribute="noEarlierThanConstraintDate" type="date" to="2014-01-10T16:00:00.000Z"/>
       <change idref="t9" attribute="title" type="string" to="&gt;任务 1"/>
     </change>
-    <change idref="t7" attribute="title" type="string" from="Remind" to="Remind(Check New Status)" resolved="yes"/>
+    <change idref="t12" to="t-1" to-position="7">
+      <change idref="t12" attribute="noEarlierThanConstraintDate" type="date" to="2014-02-18T00:00:00.000Z"/>
+      <change idref="t12" attribute="title" type="string" to="优化"/>
+    </change>
   </task-change-set>
 </changelog>

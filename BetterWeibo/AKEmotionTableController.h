@@ -27,6 +27,7 @@
 @property NSInteger numberOfRow;
 @property NSInteger numberOfColumn;
 
+-(void)displayEmotionDialogForView:(NSView *)view relativeToRect:(NSRect)rect;
 -(void)displayEmotionDialogForView:(NSView *)view;
 
 +(AKEmotionTableController *)sharedInstance;

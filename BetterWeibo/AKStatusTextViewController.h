@@ -9,8 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 #import "AKStatusTextView.h"
+#import "AKNameSenceViewController.h"
 
-@interface AKStatusTextViewController : NSViewController<AKStatusTextViewDelegate>
+@interface AKStatusTextViewController : NSViewController<AKStatusTextViewDelegate,AKNameSenceViewControllerDelegate>
 
 
 

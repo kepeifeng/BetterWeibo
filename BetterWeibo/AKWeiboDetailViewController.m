@@ -12,6 +12,8 @@
 #import "AKWeiboTableCellView.h"
 #import "AKWeiboManager.h"
 
+
+
 #pragma mark - Constants
 
 #define LISTVIEW_CELL_IDENTIFIER		@"AKCommentViewCell"
@@ -103,8 +105,8 @@
 
     
 
-    //self.view.wantsLayer = YES;
-    //self.view.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+    self.view.wantsLayer = YES;
+    self.view.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
     
     
     //self.view.layer.contents = [NSImage imageNamed:@"app_content_background"];
@@ -155,6 +157,8 @@
 }
 
 #pragma mark - List View Delegate Methods
+
+
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
 
@@ -176,18 +180,24 @@
         text = [(AKWeiboStatus *)[_reposts objectAtIndex:row] text];
     }
     
-    NSInteger minHeight = 68;
+    NSInteger minHeight = 62;
     
     if(!_textField){
         _textField = [AKTextField new];
+        [_textField.cell setWraps:YES];
+        [_textField.cell setLineBreakMode:NSLineBreakByCharWrapping];
+        [_textField setFont:[NSFont fontWithName:@"HiraginoSansGB-W3" size:13]];
+        [_textField setBordered:NO];
+        [_textField setAlignment:NSLeftTextAlignment];
+        
     }
     
-    [_textField setFrameSize:NSMakeSize(tableView.frame.size.width - 64-20, 100)];
+    [_textField setFrameSize:NSMakeSize(tableView.bounds.size.width - 10 - 42 - 10 - 10, 100)];
     
     
     [_textField setStringValue:text];
     
-    CGFloat cellHeight = _textField.intrinsicContentSize.height+27+10;
+    CGFloat cellHeight = _textField.intrinsicContentSize.height + 5 + 27 + 10;
     
     
     return (cellHeight>minHeight)?cellHeight:minHeight;

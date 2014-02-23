@@ -12,6 +12,7 @@
 #import "AKTableRowView.h"
 #import "AKLoadMoreCell.h"
 #import "AKWeiboDetailViewController.h"
+#import "AKStatusEditorWindowController.h"
 
 @interface AKWeiboViewController ()
 
@@ -19,6 +20,7 @@
 
 @implementation AKWeiboViewController{
 
+    NSMutableArray *_observedVisibleItems;
 
     
     
@@ -51,11 +53,14 @@
         self.leftControls = [NSArray arrayWithObject:listButton];
         
         
-        NSButton *postButton = [[NSButton alloc]init];
+        NSButton *postButton = [[NSButton alloc]initWithFrame:NSMakeRect(0, 0, 40, 40)];
         postButton.image = [NSImage imageNamed:@"main_navbar_post_button"];
         postButton.alternateImage = [NSImage imageNamed:@"main_navbar_post_highlighted_button"];
         postButton.imagePosition = NSImageOnly;
+        postButton.target = self;
+        postButton.action = @selector(postButtonClicked:);
         [postButton setBordered:NO];
+        
         
         self.rightControls = [NSArray arrayWithObject:postButton];
         
@@ -103,11 +108,20 @@
 
 }
 
+-(void)postButtonClicked:(id)sender{
+
+//    [[AKStatusEditorWindowController sharedInstance] showWindow:self];
+    [[[AKStatusEditorWindowController sharedInstance] window]makeKeyAndOrderFront:self];
+
+}
+
 
 -(void)tabDidActived{
 
     if(weiboArray.count == 0)
     {
+        
+        [self.scrollView.contentView scrollToPoint:NSMakePoint(0, -42)];
         [self.scrollView startLoading];
     }
     
@@ -282,11 +296,11 @@
     }
     
     if (weibo.thumbnail_pic) {
-        cell.thumbnailImageURL = weibo.thumbnail_pic;
+        //cell.thumbnailImageURL = weibo.thumbnail_pic;
     }
     
-    [cell loadImages:weibo.pic_urls];
-    [cell loadImages:weibo.retweeted_status.pic_urls isForRepost:YES];
+    //[cell loadImages:weibo.pic_urls];
+    //[cell loadImages:weibo.retweeted_status.pic_urls isForRepost:YES];
     if(cell.hasRepostedWeibo)
     {
         
@@ -297,6 +311,59 @@
     
     
     cell.objectValue = weibo;
+    
+    //如果本条微博或转发的微博中包含有图片，则加载/显示图片
+    if(weibo.hasImages || (weibo.retweeted_status && weibo.retweeted_status.hasImages)){
+    
+        
+        
+        // Use KVO to observe for changes of the thumbnail image
+        if (_observedVisibleItems == nil) {
+            _observedVisibleItems = [NSMutableArray new];
+        }
+        if (![_observedVisibleItems containsObject:weibo]) {
+            [weibo addObserver:self forKeyPath:ATEntityPropertyNamedThumbnailImage options:0 context:NULL];
+            [weibo loadThumbnailImages];
+            [_observedVisibleItems addObject:weibo];
+        }
+        
+        // Hide/show progress based on the thumbnail image being loaded or not.
+        
+        //如果本微博有图片，不过还没加载
+        if (weibo.hasImages){
+            if(!weibo.thumbnailImages){
+                //        [cellView.progessIndicator setHidden:NO];
+                //        [cellView.progessIndicator startAnimation:nil];
+                //        [cellView.imageView setHidden:YES];
+            }
+            else{
+            
+                [cell loadImages:weibo.thumbnailImages];
+            
+            }
+
+        }
+        //要不然如果转发微博有带图片,不过还没加载
+        else if (weibo.retweeted_status && weibo.retweeted_status.hasImages ){
+            if(!weibo.thumbnailImages){
+                //        [cellView.progessIndicator setHidden:NO];
+                //        [cellView.progessIndicator startAnimation:nil];
+                //        [cellView.imageView setHidden:YES];
+                
+            }
+            else{
+            
+                [cell.repostedWeiboView loadImages:weibo.thumbnailImages];
+            
+            }
+        
+        }
+        
+    
+    }
+    
+    [cell.images setHidden:!weibo.hasImages];
+    
     //[cell.weiboTextField setFrameSize:NSMakeSize(660, 100)];
     
     //[cell resize];
@@ -358,6 +425,49 @@
     
     
 }
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:ATEntityPropertyNamedThumbnailImage]) {
+        // Find the row and reload it.
+        // Note that KVO notifications may be sent from a background thread (in this case, we know they will be)
+        // We should only update the UI on the main thread, and in addition, we use NSRunLoopCommonModes to make sure the UI updates when a modal window is up.
+        [self performSelectorOnMainThread:@selector(_reloadRowForEntity:) withObject:object waitUntilDone:NO modes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+    }
+}
+
+
+- (void)_reloadRowForEntity:(id)object {
+    NSInteger row = [weiboArray indexOfObject:object];
+    if (row != NSNotFound) {
+        AKWeiboStatus *entity = [weiboArray objectAtIndex:row];
+        AKWeiboTableCellView *cellView = [self.tableView viewAtColumn:0 row:row makeIfNecessary:NO];
+        if (cellView) {
+            // Fade the imageView in, and fade the progress indicator out
+            //[NSAnimationContext beginGrouping];
+            //[[NSAnimationContext currentContext] setDuration:0.8];
+            
+//            [cellView.imageView setAlphaValue:0];
+//            cellView.imageView.image = entity.thumbnailImage;
+//            [cellView.imageView setHidden:NO];
+
+            if(entity.hasImages){
+                
+                [cellView loadImages:entity.thumbnailImages];
+                
+            }else{
+            
+                [cellView.repostedWeiboView loadImages:entity.thumbnailImages];
+            
+            }
+            
+            
+            //[[cellView.imageView animator] setAlphaValue:1.0];
+            //[cellView.progessIndicator setHidden:YES];
+            //[NSAnimationContext endGrouping];
+        }
+    }
+}
+
 
 #pragma -mark Super class method override
 

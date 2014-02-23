@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+
+
+extern NSString *const ATEntityPropertyNamedImage;
+extern NSString *const ATEntityPropertyNamedThumbnailImage;
 @class AKUserProfile;
 /**
  *  微博内容
@@ -115,6 +119,10 @@
  *微博流内的推广微博ID
  */
 @property NSArray * ad;
+
+@property (readonly, retain, nonatomic) NSArray * thumbnailImages;
+
+@property BOOL isLoadingThumbnails;
  
 /*
 @property NSString * weiboId;
@@ -129,12 +137,18 @@
 @property NSString *numberOfLikes;
  */
 //@property BOOL hasRepostedWeibo;
-//@property AKWeiboStatus *repostedWeibo;
+//@property AKWeiboStatus *
+
+@property (readonly) BOOL hasImages;
+
+-(void)loadThumbnailImages;
 
 +(AKWeiboStatus *)getStatusFromDictionary:(NSDictionary *)statusDictionary;
 +(AKWeiboStatus *)getStatusFromDictionary:(NSDictionary *)statusDictionary forStatus:(AKWeiboStatus *)repostedStatus;
 
 @end
+
+
 
 /**
  *  Weibo Visibility

@@ -12,6 +12,8 @@
 
 @interface AKNameSenceViewController : NSViewController<NSPopoverDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
+-(id)init;
+
 @property id<AKNameSenceViewControllerDelegate> delegate;
 @property (strong) IBOutlet NSTableView *tableView;
 
@@ -23,6 +25,7 @@
 
 
 -(void)displayNameSenceForView:(NSView *)view relativeToRect:(NSRect)rect;
+-(void)closeNameSence;
 
 +(instancetype)sharedInstance;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <omniplan xmlns="http://www.omnigroup.com/namespace/OmniPlan/v2">
-  <window x="0" y="4" w="1440" h="874">
+  <window x="406" y="110" w="1440" h="874">
     <editing-scenario>nN5HOI1t324</editing-scenario>
     <view>task</view>
     <change-tracking/>
@@ -13,7 +13,7 @@
         <column name="Notes" width="20"/>
         <column name="Title" width="394"/>
         <column name="Effort" width="70"/>
-        <selected-items-at-filter-time idrefs="t9 t4 t7 t2 t5 t8 t3 t6"/>
+        <selected-items-at-filter-time idrefs="t8 t13 t4 t9 t11 t5 t6 t12 t2 t7 t10 t3"/>
       </outline>
       <gantt-view x="-29" y="0" w="930" h="770">
         <view-mode>actual</view-mode>
@@ -60,14 +60,14 @@
     </task-view>
     <resource-view>
       <split-view-divider-position>306</split-view-divider-position>
-      <outline x="0" y="0" w="306" h="924">
+      <outline x="0" y="0" w="306" h="770">
         <column name="IM" width="20"/>
         <column name="Notes" width="20"/>
         <column name="Type" width="49"/>
         <column name="Resource" width="135"/>
         <column name="#" width="75"/>
       </outline>
-      <timeline x="-355" y="0" w="1585" h="924">
+      <timeline x="-356" y="0" w="1105" h="770">
         <task-bar-label task-type="group" position="left">
           <key>Title</key>
         </task-bar-label>
@@ -109,7 +109,7 @@
     </resource-view>
     <calendar>
       <split-view-divider-position>290</split-view-divider-position>
-      <outline x="0" y="0" w="290" h="893">
+      <outline x="0" y="0" w="290" h="739">
         <column name="IM" width="20"/>
         <column name="Notes" width="20"/>
         <column name="Type" width="49"/>
@@ -120,7 +120,7 @@
     </calendar>
   </window>
   <project>
-    <next-task-id>10</next-task-id>
+    <next-task-id>14</next-task-id>
     <next-resource-id>2</next-resource-id>
     <scenario id="nN5HOI1t324" name="Actual" filename="Actual.xml"/>
     <date-display dates="true" times="true" seconds="false"/>
