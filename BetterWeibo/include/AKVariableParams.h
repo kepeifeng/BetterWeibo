@@ -17,6 +17,11 @@ struct AKVariableParamsOpaque;
 }
 
 /**
+ *  若指定此参数则在发送请求时使用这个参数作为Access Token
+ */
+@property NSString *accessToken;
+
+/**
  *  若指定此参数，则返回ID比since_id大的微博（即比since_id时间晚的微博），默认为0。
  */
 @property long long since_id;

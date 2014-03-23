@@ -49,6 +49,8 @@
 
 }
 
+
+
 -(void)drawImage:(NSImage *)image withFrame:(NSRect)frame inView:(NSView *)controlView{
 
     //NSLog(@"isHighlight = %ld",(long)self.isHighlighted);
@@ -63,22 +65,14 @@
     NSRect iconDrawingRect = NSMakeRect(iconDrawingPoint.x, iconDrawingPoint.y, icon.size.width, icon.size.height);
     
     [image compositeToPoint:NSMakePoint(frame.origin.x, frame.origin.y+frame.size.height) fromRect:drawingRect operation:NSCompositeSourceOver];
-    //[image drawInRect:frame fromRect:drawingRect operation:NSCompositeSourceOver fraction:1];
-//    [icon drawInRect:iconDrawingRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
-//    [icon drawAtPoint:iconDrawingPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
-    
 
-    
-
-    
-    
     if(self.lightUpIndicator){
         
-        [lightIndicatorImage drawInRect:NSMakeRect(5, 5, 10, 10) fromRect:NSMakeRect(0, 10, 10, 10) operation:NSCompositeSourceOver fraction:1];
+        [lightIndicatorImage drawInRect:NSMakeRect(5, 5 + frame.origin.y, 10, 10) fromRect:NSMakeRect(0, 10, 10, 10) operation:NSCompositeSourceOver fraction:1];
     
     }
     else{
-            [lightIndicatorImage drawInRect:NSMakeRect(5, 5, 10, 10) fromRect:NSMakeRect(0, 0, 10, 10) operation:NSCompositeSourceOver fraction:1];
+        [lightIndicatorImage drawInRect:NSMakeRect(5, 5 + frame.origin.y, 10, 10) fromRect:NSMakeRect(0, 0, 10, 10) operation:NSCompositeSourceOver fraction:1];
     
     }
     
@@ -111,6 +105,12 @@
     
 }
 
+-(void)setState:(NSInteger)value{
+
+    NSLog(@"State Value = %ld",value);
+    [super setState:value];
+    
+}
 
 -(AKTabButtonType)tabButtonType{
     

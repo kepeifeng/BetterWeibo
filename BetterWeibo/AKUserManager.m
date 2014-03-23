@@ -198,7 +198,20 @@ static AKUserManager * _defaultUserManager;
 -(void)updateUserProfile:(AKUserProfile *)userProfile{
 
     //保存用户到内存
-    [_userProfiles setObject:userProfile forKey:userProfile.IDString];
+    AKUserProfile *oldUserProfile = [_userProfiles objectForKey:userProfile.IDString];
+    
+    if(oldUserProfile){
+    
+        oldUserProfile.screen_name = userProfile.screen_name;
+        oldUserProfile.profile_image_url = userProfile.profile_image_url;
+        oldUserProfile.avatar_hd = userProfile.avatar_hd;
+        oldUserProfile.avatar_large = userProfile.avatar_large;
+        oldUserProfile.description = userProfile.description;
+        
+    }
+    else{
+        [_userProfiles setObject:userProfile forKey:userProfile.IDString];
+    }
     //保存用户资料到硬盘
     [self createUserProfile:userProfile];
 
@@ -206,7 +219,17 @@ static AKUserManager * _defaultUserManager;
 
 -(void)updateUserAccessToken:(AKAccessTokenObject *)accessTokenObject;{
 
-    [_userAccessTokens setObject:accessTokenObject forKey:accessTokenObject.userID];
+    AKAccessTokenObject *oldAccessTokenObject = (AKAccessTokenObject *)[_userAccessTokens objectForKey:accessTokenObject.userID];
+    if(oldAccessTokenObject){
+        oldAccessTokenObject.accessToken = accessTokenObject.accessToken;
+        oldAccessTokenObject.expireIn = accessTokenObject.expireIn;
+        oldAccessTokenObject.scope = accessTokenObject.scope;
+        oldAccessTokenObject.createAt = accessTokenObject.createAt;
+    }else{
+    
+        [_userAccessTokens setObject:accessTokenObject forKey:accessTokenObject.userID];
+    }
+    
     [self saveAccessToken:accessTokenObject];
 
 }
@@ -331,4 +354,16 @@ static AKUserManager * _defaultUserManager;
 
 }
 
+-(AKAccessTokenObject *)getAccessTokenByUserID:(NSString *)userID{
+    return [_userAccessTokens objectForKey:userID];
+}
+
+-(AKUserProfile *)getUserProfileByUserID:(NSString *)userID{
+    return [_userProfiles objectForKey:userID];
+}
+
+
+-(AKUserProfile *)userAtIndex:(NSUInteger)index{
+    return [[self allUserProfiles] objectAtIndex:index];
+}
 @end

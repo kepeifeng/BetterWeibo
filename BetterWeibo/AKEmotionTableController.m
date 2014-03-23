@@ -7,10 +7,10 @@
 //
 
 #import "AKEmotionTableController.h"
-#import "AKEmotion.h"
+
 
 @interface AKEmotionTableController ()
-@property (strong) NSMutableArray *data;
+@property (strong) NSArray *data;
 @property (assign) id initialSelectedObject;
 @end
 
@@ -20,6 +20,16 @@
 
 }
 
+- (id)init
+{
+    self = [self initWithNibName:@"AKEmotionTableController" bundle:[NSBundle bundleForClass:[self class]]];
+    
+    if (self) {
+        
+                                                                   
+    }
+    return self;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -30,35 +40,39 @@
         self.numberOfColumn = 10;
         self.numberOfRow = 4;
         self.cellSize = NSMakeSize(32, 32);
-        [self loadTestData];
+        //self.data = [AKEmotion allEmotions];
+        [self loadData];
         
     }
     return self;
 }
 
--(void)loadTestData{
+-(void)loadData{
 
-    NSMutableArray *array = [NSMutableArray array];
-    for(NSInteger i=0;i<100;i++){
+//    NSMutableArray *array = [NSMutableArray array];
+//    for(NSInteger i=0;i<100;i++){
+//    
+//        AKEmotion *emo = [AKEmotion new];
+//        emo.code = [NSString stringWithFormat:@"emo-%ld", i];
+//        emo.image = [NSImage imageNamed:@"avatar_default"];
+//   
+//        [array addObject:emo];
+//    }
+//
     
-        AKEmotion *emo = [AKEmotion new];
-        emo.code = [NSString stringWithFormat:@"emo-%ld", i];
-        emo.image = [NSImage imageNamed:@"avatar_default"];
-   
-        [array addObject:emo];
-    }
-    
-    self.data = [NSMutableArray array];
+    NSArray *array = [AKEmotion allEmotions];
+    NSMutableArray *dataByPage = [NSMutableArray array];
     
     NSInteger numberOfCells = self.numberOfRow * self.numberOfColumn;
     for(NSInteger i=0; i<=array.count/(self.numberOfRow * self.numberOfColumn); i++) {
         
         NSArray *tmpArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*numberOfCells, (i<(NSInteger)(array.count/numberOfCells))?(numberOfCells):(array.count%numberOfCells))]];
         
-        [self.data addObject:tmpArray];
+        [dataByPage addObject:tmpArray];
         
     }
     
+    self.data = dataByPage;
     
 
 
@@ -150,8 +164,6 @@
     [self _makePopoverIfNeeded];
     [_popover showRelativeToRect:rect ofView:view preferredEdge:NSMinYEdge];
     
-    
-    
 }
 
 -(void)displayEmotionDialogForView:(NSView *)view{
@@ -159,7 +171,14 @@
     [self _makePopoverIfNeeded];
     [_popover showRelativeToRect:view.bounds ofView:view preferredEdge:NSMinYEdge];
     
+}
 
+-(BOOL)isShown{
+    return [_popover isShown];
+}
+
+-(void)closeEmotionDialog{
+    [_popover close];
 }
 
 +(AKEmotionTableController *)sharedInstance{
@@ -185,10 +204,12 @@
     
     NSViewController *viewController = [NSViewController new];
     NSButtonCell *buttonCell = [[NSButtonCell alloc]init];
-    buttonCell.bezelStyle = NSRoundedBezelStyle;
+    buttonCell.bezelStyle = NSThickSquareBezelStyle;
     [buttonCell setBordered:NO];
     buttonCell.imagePosition = NSImageOnly;
-    buttonCell.imageScaling = NSImageScaleProportionallyUpOrDown;
+    buttonCell.imageScaling = NSImageScaleProportionallyDown;
+    [buttonCell setButtonType:NSMomentaryLightButton];
+    [buttonCell setFocusRingType:NSFocusRingTypeNone];
     
     NSMatrix *matrix = [[NSMatrix alloc]initWithFrame:NSMakeRect(0,
                                                                  0,
@@ -200,11 +221,27 @@
     matrix.backgroundColor = [NSColor lightGrayColor];
     matrix.drawsBackground = YES;
     matrix.drawsCellBackground = YES;
+    matrix.mode =NSHighlightModeMatrix;
+    matrix.target = self;
+    matrix.action = @selector(emotionMatrixClicked:);
     viewController.view = matrix;
     
     
     
     return viewController;
+}
+
+-(void)emotionMatrixClicked:(id)sender{
+
+    NSMatrix *matrix = sender;
+    NSInteger index = [(NSButtonCell *)matrix.selectedCell tag];
+    AKEmotion *emotion = [(NSArray *)self.pageController.selectedViewController.representedObject objectAtIndex:index];
+    if(self.delegate){
+        [self.delegate emotionTable:self emotionSelected:emotion];
+    }
+    NSLog(@"Emotion %@ selected",emotion.code);
+
+
 }
 
 -(void)pageController:(NSPageController *)pageController prepareViewController:(NSViewController *)viewController withObject:(id)object {
@@ -232,11 +269,14 @@
                 AKEmotion *emotion = (AKEmotion *)[array objectAtIndex:index];
                 //cell.title = emotion.code;
                 cell.image = emotion.image;
+                [cell setEnabled:YES];
+                cell.tag = index;
             }
             else{
                 
                 //cell.title = @"";
                 cell.image = nil;
+                [cell setEnabled:NO];
             }
             index++;
             

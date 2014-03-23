@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+extern NSString *const AKAccessTokenObjectPropertyNamedAccessToken;
 
 @interface AKAccessTokenObject : NSObject<NSCoding>
 /*

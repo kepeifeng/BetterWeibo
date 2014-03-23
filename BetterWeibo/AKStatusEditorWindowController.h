@@ -10,21 +10,28 @@
 #import "INAppStoreWindow.h"
 #import "AKStatusTextView.h"
 #import "AKImageSelector.h"
+#import "AKWeiboManager.h"
+#import "AKEmotionTableController.h"
 
-@interface AKStatusEditorWindowController : NSWindowController<NSOpenSavePanelDelegate,AKStatusTextViewDelegate, AKImageSelectorDelegate>
+
+
+@interface AKStatusEditorWindowController : NSWindowController<NSOpenSavePanelDelegate,AKStatusTextViewDelegate, AKImageSelectorDelegate, AKWeiboManagerDelegate, AKEmotionTableControllerDelegate>
 
 @property (readonly) INAppStoreWindow * myWindow;
 
 @property (nonatomic, retain) NSMutableArray *windowControllers;
 @property (strong) IBOutlet NSMatrix *imageMatrix;
-@property (strong) IBOutlet NSButton *postButton;
+@property (strong) NSButton *postButton;
+//Comment on or Repost the target status.
+
 
 - (IBAction)postButtonClicked:(id)sender;
 - (IBAction)toolBarClicked:(id)sender;
-- (IBAction)imageMatrixClicked:(id)sender;
 
 @property (weak) IBOutlet AKImageSelector *imageSelector;
 @property (weak) IBOutlet NSPopUpButton *userSelector;
+@property (strong) IBOutlet AKStatusTextView *statusTextView;
+@property (strong) IBOutlet NSTextField *countField;
 
 +(instancetype)sharedInstance;
 

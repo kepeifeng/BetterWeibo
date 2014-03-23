@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "INAppStoreWindow.h"
-#import "AKWindowController.h"
+//#import "AKWindowController.h"
 #import "INWindowButton.h"
 #import "AKTabControl.h"
 #import "AKWeibo.h"
@@ -17,7 +17,7 @@
 
 @protocol AKWeiboManagerDelegate;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, NSURLConnectionDataDelegate,AKTabControlDelegate>{
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSURLConnectionDataDelegate,AKTabControlDelegate, AKWeiboManagerDelegate>{
     
 #pragma mark - Private Variables
     

@@ -8,6 +8,8 @@
 
 #import "AKAccessTokenObject.h"
 
+NSString *const AKAccessTokenObjectPropertyNamedAccessToken = @"accessToken";
+
 @implementation AKAccessTokenObject
 
 -(id)initWithCoder:(NSCoder *)aDecoder{

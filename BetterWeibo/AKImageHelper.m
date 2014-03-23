@@ -11,6 +11,31 @@
 
 @implementation AKImageHelper
 
++(NSImage *)getSquareImageFrom:(NSImage *)image{
+
+    NSSize originImageSize = image.size;
+    if(originImageSize.width == originImageSize.height){
+        return image;
+    }
+    NSInteger squareBorderLength = MIN(image.size.width, image.size.height);
+//    NSSize sqareImageSize = NSMakeSize(squareBorderLength, squareBorderLength);
+    
+    NSRect drawingRect = NSMakeRect((originImageSize.width - squareBorderLength)/2,
+                                    (originImageSize.height - squareBorderLength)/2,
+                                    squareBorderLength,
+                                    squareBorderLength);
+    
+    NSImage *squareImage = [[NSImage alloc] initWithSize:drawingRect.size];
+    
+    [squareImage lockFocus];
+    [image drawInRect:NSMakeRect(0, 0, squareBorderLength, squareBorderLength) fromRect:drawingRect operation:NSCompositeSourceOver fraction:1];
+    [squareImage unlockFocus];
+    
+    return squareImage;
+
+    
+}
+
 +(NSImage *)getImageFromData:(NSData *)data{
 
     NSImage *image = [[NSImage alloc]initWithData:data];
@@ -26,8 +51,8 @@
         if ([imageRep pixelsHigh] > height) height = [imageRep pixelsHigh];
     }
     
-    NSLog(@"Width from NSBitmapImageRep: %f",(CGFloat)width);
-    NSLog(@"Height from NSBitmapImageRep: %f",(CGFloat)height);
+//    NSLog(@"Width from NSBitmapImageRep: %f",(CGFloat)width);
+//    NSLog(@"Height from NSBitmapImageRep: %f",(CGFloat)height);
     [image setSize:NSMakeSize(width, height)];
     
     return image;
@@ -78,5 +103,46 @@
     
 
 }
+
++(void)getThreePartImageFrom:(NSImage *)image leftWidth:(NSUInteger)leftPartWidth rightWidth:(NSUInteger)rightPartWidth leftPart:(NSImage **)leftPart middlePart:(NSImage **)middlePart rightPart:(NSImage **)rightPart{
+    
+    NSImage *_leftPartImage;
+    NSImage *_middlePartImage;
+    NSImage *_rightPartImage;
+    
+    
+    _leftPartImage = [[NSImage alloc]initWithSize:NSMakeSize(leftPartWidth, image.size.height)];
+    _middlePartImage = [[NSImage alloc]initWithSize:NSMakeSize(image.size.width - leftPartWidth - rightPartWidth, image.size.height)];
+    _rightPartImage = [[NSImage alloc]initWithSize:NSMakeSize(rightPartWidth, image.size.height)];
+    
+    //For Normal Status Button
+    [_leftPartImage lockFocus];
+    [image drawInRect:NSMakeRect(0, 0, _leftPartImage.size.width, _leftPartImage.size.height)
+             fromRect:NSMakeRect(0, 0, _leftPartImage.size.width, _leftPartImage.size.height)
+            operation:NSCompositeSourceOver
+             fraction:1];
+    [_leftPartImage unlockFocus];
+    
+    [_middlePartImage lockFocus];
+    [image drawInRect:NSMakeRect(0, 0, _middlePartImage.size.width, _middlePartImage.size.height)
+             fromRect:NSMakeRect(_leftPartImage.size.width, 0, _middlePartImage.size.width, _middlePartImage.size.height)
+            operation:NSCompositeSourceOver
+             fraction:1];
+    [_middlePartImage unlockFocus];
+    
+    [_rightPartImage lockFocus];
+    [image drawInRect:NSMakeRect(0, 0, _rightPartImage.size.width, _rightPartImage.size.height)
+             fromRect:NSMakeRect(image.size.width - _rightPartImage.size.width, 0, _rightPartImage.size.width, _rightPartImage.size.height)
+            operation:NSCompositeSourceOver
+             fraction:1];
+    [_rightPartImage unlockFocus];
+    
+    *leftPart = _leftPartImage;
+    *middlePart = _middlePartImage;
+    *rightPart = _rightPartImage;
+    
+    
+}
+
 
 @end

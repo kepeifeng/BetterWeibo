@@ -13,7 +13,10 @@
 @interface AKImageItem : NSView
 
 @property id<AKImageItemDelegate> delegate;
-@property NSImage *image;
+@property (readonly) NSImage *image;
+@property NSURL *filePath;
+@property (readonly) BOOL isEnabled;
+-(void)setEnabled:(BOOL)flag;
 
 @end
 

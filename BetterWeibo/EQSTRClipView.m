@@ -34,6 +34,7 @@
 - (BOOL)isRefreshing;
 - (NSView *)headerView;
 - (CGFloat)minimumScroll;
+
 @end
 
 @implementation EQSTRClipView
@@ -41,6 +42,11 @@
 	NSPoint constrained = [super constrainScrollPoint:proposedNewOrigin];
 	CGFloat scrollValue = proposedNewOrigin.y; // this is the y value where the top of the document view is
 	BOOL over           = scrollValue <= self.minimumScroll;
+    const NSRect clipViewBounds = self.bounds;
+    NSView* const documentView = self.documentView;
+    const NSRect documentFrame = documentView.frame;
+
+    
 	
 	if (self.isRefreshing && scrollValue <= 0) { // if we are refreshing
 		if (over) // and if we are scrolled above the refresh view
@@ -48,6 +54,13 @@
 		
 		return NSMakePoint(constrained.x, proposedNewOrigin.y);
 	}
+    
+    const NSRect footerFrame = [self footerView].frame;
+    if (self.isBottomRefreshing && proposedNewOrigin.y >  documentFrame.size.height - clipViewBounds.size.height) {
+        const CGFloat maxHeight = documentFrame.size.height - clipViewBounds.size.height + footerFrame.size.height + 1;
+        constrained.y = MIN(maxHeight, proposedNewOrigin.y);
+    }
+    
 	return constrained;
 }
 
@@ -56,20 +69,40 @@
 }
 
 - (NSRect)documentRect { //this is to make scrolling feel more normal so that the spinner is within the scrolled area
-	NSRect sup = [super documentRect];
+	NSRect documentRect = [super documentRect];
 	if (self.isRefreshing) {
-		sup.size.height += self.headerView.frame.size.height;
-		sup.origin.y    -= self.headerView.frame.size.height;
+		documentRect.size.height += self.headerView.frame.size.height;
+		documentRect.origin.y    -= self.headerView.frame.size.height;
 	}
-	return sup;
+    
+    if(self.isBottomRefreshing){
+    
+        const NSRect footerFrame = [self footerView].frame;
+        documentRect.size.height += footerFrame.size.height;
+        
+    }
+    
+	return documentRect;
 }
 
 - (BOOL)isRefreshing {
 	return [(EQSTRScrollView *)self.superview isRefreshing];
 }
 
+
+-(BOOL)isBottomRefreshing{
+
+    return [(EQSTRScrollView *)self.superview isBottomRefreshing];
+}
+
 - (NSView *)headerView {
 	return [(EQSTRScrollView *)self.superview refreshHeader];
+}
+
+-(NSView *)footerView{
+
+    return [(EQSTRScrollView *)self.superview refreshFooter];
+
 }
 
 - (CGFloat)minimumScroll {

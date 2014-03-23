@@ -8,6 +8,7 @@
 
 #import "AKTextView.h"
 #import "RegexKitLite.h"
+#import "AKEmotion.h"
 
 #define DEFAULT_FONT_SIZE 13.0
 
@@ -19,6 +20,15 @@
     if (self) {
         // Initialization code here.
         self.minimalHeight = 0;
+        self.textContainerInset = NSMakeSize(0, 0);
+    }
+    return self;
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if(self){
+        self.textContainerInset = NSMakeSize(0, 0);
     }
     return self;
 }
@@ -80,10 +90,12 @@
 	NSArray *linkMatches = [self scanStringForLinks:statusString];
 	NSArray *usernameMatches = [self scanStringForUsernames:statusString];
 	NSArray *hashtagMatches = [self scanStringForHashtags:statusString];
+    NSArray *emotions = [self scanStringForEmotions:statusString];
 	
 	// Iterate across the string matches from our regular expressions, find the range
 	// of each match, add new attributes to that range
 	for (NSString *linkMatchedString in linkMatches) {
+        
 		NSRange range = [statusString rangeOfString:linkMatchedString];
 		if( range.location != NSNotFound ) {
 			// Add custom attribute of LinkMatch to indicate where our URLs are found. Could be blue
@@ -100,18 +112,30 @@
 	}
 	
 	for (NSString *usernameMatchedString in usernameMatches) {
-		NSRange range = [statusString rangeOfString:usernameMatchedString];
-		if( range.location != NSNotFound ) {
-			// Add custom attribute of UsernameMatch to indicate where our usernames are found
-			NSDictionary *linkAttr2 = [[NSDictionary alloc] initWithObjectsAndKeys:
-									   [NSColor blackColor], NSForegroundColorAttributeName,
-									   [NSCursor pointingHandCursor], NSCursorAttributeName,
-									   [NSFont boldSystemFontOfSize:DEFAULT_FONT_SIZE], NSFontAttributeName,
-									   usernameMatchedString, @"UsernameMatch",
-									   nil];
-			[attributedStatusString addAttributes:linkAttr2 range:range];
+        
+        NSUInteger count = 0, length = [statusString length];
+        NSRange range = NSMakeRange(0, length);
+        while(range.location != NSNotFound)
+        {
+            range = [statusString rangeOfString: usernameMatchedString options:0 range:range];
+            if(range.location != NSNotFound)
+            {
 
-		}
+                // Add custom attribute of UsernameMatch to indicate where our usernames are found
+                NSDictionary *linkAttr2 = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                           [NSColor blackColor], NSForegroundColorAttributeName,
+                                           [NSCursor pointingHandCursor], NSCursorAttributeName,
+                                           [NSFont boldSystemFontOfSize:DEFAULT_FONT_SIZE], NSFontAttributeName,
+                                           usernameMatchedString, @"UsernameMatch",
+                                           nil];
+                [attributedStatusString addAttributes:linkAttr2 range:range];
+                
+                
+                range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
+                count++; 
+            }
+        }
+
 	}
 	
 	for (NSString *hashtagMatchedString in hashtagMatches) {
@@ -127,6 +151,34 @@
 			[attributedStatusString addAttributes:linkAttr3 range:range];
 
 		}
+	}
+    
+    for (NSString *emotionCode in emotions) {
+        
+        AKEmotion *emotion;
+        if(!( emotion = [[AKEmotion emotionDictionary]objectForKey:emotionCode])){
+        
+            continue;
+        }
+        
+		NSUInteger length = [statusString length];
+        NSRange range = NSMakeRange(0, length);
+
+        //assert(range.length+range.location<=statusString.length);
+        range = [statusString rangeOfString: emotionCode options:0 range:range];
+        if( range.location != NSNotFound ) {
+            // Add custom attribute of HashtagMatch to indicate where our hashtags are found
+            NSTextAttachmentCell *textAttachmentCell = [[NSTextAttachmentCell alloc] initImageCell:emotion.image];
+            NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+            [textAttachment setAttachmentCell:textAttachmentCell];
+            NSAttributedString *emotionIconString = [NSAttributedString attributedStringWithAttachment:textAttachment];
+
+            assert(range.length+range.location<=attributedStatusString.length);
+            [attributedStatusString replaceCharactersInRange:NSMakeRange(range.location, range.length) withAttributedString:emotionIconString];
+
+            statusString = attributedStatusString.string;
+        }
+
 	}
     
     [self.textStorage setAttributedString:attributedStatusString];
@@ -166,18 +218,31 @@
 		
 		// Depending on what they clicked we could open a URL or perhaps pop open a profile HUD
 		// if they clicked on a username. For now, we'll just throw it out to the log.
+        
+        NSString *attribute;
+        AKAttributeType attributeType;
 		if( [attributes objectForKey:@"LinkMatch"] != nil ) {
 			// Remember what object we stashed in this attribute? Oh yeah, it's a URL string. Boo ya!
 			NSLog( @"LinkMatch: %@", [attributes objectForKey:@"LinkMatch"] );
-		}
-		
-		if( [attributes objectForKey:@"UsernameMatch"] != nil ) {
+            attribute =[attributes objectForKey:@"LinkMatch"];
+            attributeType = AKLinkAttribute;
+		}else if( [attributes objectForKey:@"UsernameMatch"] != nil ) {
 			NSLog( @"UsernameMatch: %@", [attributes objectForKey:@"UsernameMatch"] );
-		}
-		
-		if( [attributes objectForKey:@"HashtagMatch"] != nil ) {
+            attribute = [attributes objectForKey:@"UsernameMatch"];
+            attributeType = AKUserNameAttribute;
+		}else if( [attributes objectForKey:@"HashtagMatch"] != nil ) {
 			NSLog( @"HashtagMatch: %@", [attributes objectForKey:@"HashtagMatch"] );
+            attribute = [attributes objectForKey:@"HashtagMatch"];
+            attributeType = AKHashTagAttribute;
 		}
+        
+        if(self.delegate){
+        
+            [self.delegate textView:self attributeClicked:attribute ofType:attributeType atIndex:charIndex];
+        
+        }
+        
+        
 		
 	}
 	
@@ -190,12 +255,23 @@
 // and hashtags out of tweets. Getting the escaping just right is a pain in the ass, so be forewarned.
 
 - (NSArray *)scanStringForLinks:(NSString *)string {
-	return [string componentsMatchedByRegex:@"\\b(([\\w-]+://?|www[.])[^\\s()<>]+(?:\\([\\w\\d]+\\)|([^[:punct:]\\s]|/)))"];
+	return [string componentsMatchedByRegex:@"https?://[a-zA-Z0-9\\-.]+(?:(?:/[a-zA-Z0-9\\-._?,'+\\&%$=~*!():@\\\\]*)+)?"];
     
 }
 
 - (NSArray *)scanStringForUsernames:(NSString *)string {
-	return [string componentsMatchedByRegex:@"@[\u4e00-\u9fa5a-zA-Z0-9_-]{2,30}"];
+	NSArray *array = [string componentsMatchedByRegex:@"@[\u4e00-\u9fa5a-zA-Z0-9_-]{2,30}"];
+    NSMutableArray *copy = [NSMutableArray arrayWithArray:array];
+    NSInteger index = [array count] - 1;
+    for (id object in [array reverseObjectEnumerator]) {
+        if ([copy indexOfObject:object inRange:NSMakeRange(0, index)] != NSNotFound) {
+            [copy removeObjectAtIndex:index];
+        }
+        index--;
+    }
+    
+    return copy;
+    
     //	return [string componentsMatchedByRegex:@"@{1}([-A-Za-z0-9_]{2,})"];
 }
 
@@ -204,6 +280,11 @@
     //    return [string componentsMatchedByRegex:@"[\\s]{1,}#{1}([^\\s]{2,})"];
 }
 
+
+- (NSArray *)scanStringForEmotions:(NSString *)string {
+	return [string componentsMatchedByRegex:@"\\[[\u4e00-\u9fa5a-zA-Z0-9_-]{1,10}\\]"];
+    
+}
 
 
 @end

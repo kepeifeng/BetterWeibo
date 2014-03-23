@@ -13,12 +13,11 @@
 #import "NS(Attributed)String+Geometrics.h"
 #import "EQSTRScrollView.h"
 #import "AKWeiboManager.h"
-
-
+#import "AKTextView.h"
 
 @protocol AKWeiboViewControllerDelegate;
 
-@interface AKWeiboViewController : AKTabViewController< NSTableViewDataSource,NSTableViewDelegate>{
+@interface AKWeiboViewController : AKTabViewController< NSTableViewDataSource,NSTableViewDelegate, AKWeiboManagerDelegate,AKTextViewDelegate>{
 
     NSMutableArray *weiboArray;
 }
@@ -29,7 +28,11 @@
 @property AKWeiboManager *weiboManager;
 @property AKWeiboTimelineType timelineType;
 -(void)addStatuses:(NSArray *)statuses;
--(void)tabDidActived;
+//-(void)tabDidActived;
+@property (readonly) NSString *searchQuery;
+-(void)searchForStatus:(NSString *)status;
+- (IBAction)favButtonClicked:(id)sender;
+
 
 @end
 

@@ -7,6 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AKEmotion.h"
+@protocol AKEmotionTableControllerDelegate;
 
 @interface AKEmotionTableController : NSViewController<NSPopoverDelegate, NSPageControllerDelegate>{
     
@@ -14,7 +16,9 @@
     
 }
 
+@property id<AKEmotionTableControllerDelegate> delegate;
 @property IBOutlet NSPageController *pageController;
+@property (readonly,nonatomic) BOOL isShown;
 
 @property (strong) IBOutlet NSBox *emotionViewContainer;
 
@@ -29,7 +33,14 @@
 
 -(void)displayEmotionDialogForView:(NSView *)view relativeToRect:(NSRect)rect;
 -(void)displayEmotionDialogForView:(NSView *)view;
+-(void)closeEmotionDialog;
 
 +(AKEmotionTableController *)sharedInstance;
+
+@end
+
+@protocol AKEmotionTableControllerDelegate
+
+-(void)emotionTable:(AKEmotionTableController *)emotionTable emotionSelected:(AKEmotion *)emotion;
 
 @end

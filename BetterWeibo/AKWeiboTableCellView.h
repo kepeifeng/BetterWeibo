@@ -11,6 +11,7 @@
 #import "AKWeiboStatus.h"
 #import "AKRepostedWeiboView.h"
 #import "AKTextView.h"
+#import "AKUserButton.h"
 
 
 @interface AKWeiboTableCellView : NSTableCellView{
@@ -22,10 +23,11 @@
 @property AKWeiboStatus *status;
 @property NSString *thumbnailImageURL;
 
+
 //Weibo Contents
 //微博内容
 @property (weak) IBOutlet NSView *weiboView;
-@property (weak) IBOutlet NSImageView *userImage;
+@property (weak) IBOutlet AKUserButton *userImage;
 @property (weak) IBOutlet NSTextField *userAlias;
 @property (weak) IBOutlet NSImageView *favMark;
 @property (weak) IBOutlet NSTextField *dateDuration;
@@ -70,6 +72,7 @@
 -(IBAction)toolbarClicked:(id)sender;
 
 @property AKWeiboStatus *objectValue;
+
 
 
 @end

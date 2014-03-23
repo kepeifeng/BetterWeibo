@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "AKWeiboStatus.h"
+extern NSString *const AKUserProfilePropertyNamedProfileImage;
+extern NSString *const AKUserProfilePropertyNamedIsProcessingFollowingRequest;
 
 @interface AKUserProfile : NSObject<NSCoding>
 
@@ -24,12 +26,12 @@
 /**
  *  Access Token
  */
-@property NSString * accessToken;
+//@property NSString * accessToken;
 
 /**
  *  Access Token有效期
  */
-@property NSString * accessTokenExpiresIn;
+//@property NSString * accessTokenExpiresIn;
 
 /**
  *用户名
@@ -242,10 +244,17 @@
 
 @property NSInteger star;
 
+@property BOOL isLoadingAvatarImage;
+
+@property BOOL isProcessingFollowingRequest;
+
+
+-(void)loadAvatarImages;
+
 +(AKUserProfile *)getUserProfileByID:(NSString *)userID;
 +(AKUserProfile *)getUserProfileFromDictionary:(NSDictionary *)userProfileDictionary;
 +(void)addUserToDictionary:(AKUserProfile *)userProfile;
-
++(NSImage *)defaultAvatarImage;
 
 
 @end

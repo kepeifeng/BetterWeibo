@@ -10,6 +10,7 @@
 #import "AKMessageViewController.h"
 #import "AKBlockViewController.h"
 #import "AKUserManager.h"
+#import "AKStatusEditorWindowController.h"
 
 @implementation AppDelegate{
 
@@ -19,6 +20,8 @@
     AKWeiboManager * weiboManager;
     NSMutableData *receivedData;
     AKUserManager *userManager;
+    NSStatusItem *statusBarItem;
+    NSTimer *_checkRemindTimer;
 }
 
 
@@ -59,8 +62,6 @@
         //Load Users
         [self.loginView setHidden:YES];
         
-        //NSArray *userProfileArray = [[AKUserManager defaultUserManager]getAllUserProfile];
-        
         for(AKAccessTokenObject *accessToken in userProfileArray){
         
             [tabView addControlGroup:accessToken.userID];
@@ -73,14 +74,62 @@
     else{
     
         //Display Login View
-
         [self.loginView setHidden:NO];
 
     }
     
+    //Setup Status Bar
+    [self setupStatusBarMenu];
     
+    //Start checking reminds
+    _checkRemindTimer = [NSTimer scheduledTimerWithTimeInterval:60*30 target:self selector:@selector(checkNewReminds) userInfo:nil repeats:YES];
     
-    //NSUserDefault.NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints = YES;
+}
+
+-(void)awakeFromNib{
+
+    self.loginView.wantsLayer = YES;
+    self.loginView.layer.backgroundColor = CGColorCreateGenericRGB(0.1, 0.1, 0.1, 1);
+
+}
+
+-(void)checkNewReminds{
+
+    NSArray *allUserProfile = [userManager allUserProfiles];
+    
+    for(AKUserProfile *user in allUserProfile){
+    
+        [weiboManager checkUnreadForUser:user callbackTarget:self];
+    }
+
+}
+
+-(void)setupStatusBarMenu{
+
+    NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
+    statusBarItem = [statusBar statusItemWithLength:NSVariableStatusItemLength];
+    
+    NSImage *normalImage = [NSImage imageNamed:@"menubar-icon-normal"];
+//    [normalImage setSize:NSMakeSize(19, 21)];
+    statusBarItem.image = normalImage;
+    NSImage *alternateImage=[NSImage imageNamed:@"menubar-icon-highlight"];
+//    alternateImage.size = NSMakeSize(19, 21);
+    statusBarItem.alternateImage = alternateImage;
+    statusBarItem.highlightMode = YES;
+
+    NSMenu *menu = [[NSMenu alloc] init];
+    
+    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:@"新微博" action:@selector(newStatusMenuItemClicked:) keyEquivalent:@""];
+    [menu addItem:menuItem];
+    
+    statusBarItem.menu = menu;
+
+}
+
+-(void)newStatusMenuItemClicked:(id)sender{
+
+//    NSLog(@"newStatusMenuItemClicked:");
+    [[AKStatusEditorWindowController sharedInstance] showWindow:self];
     
 }
 
@@ -104,6 +153,10 @@
         //在tabView中，建立该用户的UI
         if(![tabView isUserExist:accessTokenObject.userID]){
         
+            AKUserProfile *userProfile = [AKUserProfile new];
+            userProfile.IDString = userID;
+            userProfile.ID = [userID longLongValue];
+            [userManager updateUserProfile:userProfile];
             [tabView addControlGroup:accessTokenObject.userID];
         
         }
@@ -126,35 +179,6 @@
             
         }
 
-    
-    }
-    else if (methodAction == AKWBOPT_GET_STATUSES_HOME_TIMELINE || methodAction == AKWBOPT_GET_STATUSES_MENTIONS || methodAction == AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE || methodAction == AKWBOPT_GET_FAVORITES){
-        
-        AKWeiboTimelineType timelineType;
-        switch (methodAction) {
-            case AKWBOPT_GET_STATUSES_HOME_TIMELINE:
-                timelineType = AKFriendsTimeline;
-                break;
-                
-            case AKWBOPT_GET_STATUSES_MENTIONS:
-                timelineType = AKMentionTimeline;
-                break;
-                
-            case AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE:
-                timelineType = AKPublicTimeline;
-                break;
-            case AKWBOPT_GET_FAVORITES:
-                timelineType = AKFavoriteTimeline;
-                break;
-                
-            default:
-                return;
-                break;
-        }
-        
-        
-        NSArray *statusesArray = [userInfoDictionary objectForKey:@"statuses"];
-        [tabView addStatuses:statusesArray timelineType:timelineType forUser:userID];
     
     }
     
@@ -197,6 +221,11 @@
     self.window.verticallyCenterTitle = YES;
     self.window.titleTextLeftMargin = 23.0;
     self.window.titleTextColor = [NSColor colorWithCalibratedWhite:0.88 alpha:1];
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowBlurRadius = 0;
+    shadow.shadowColor = [NSColor blackColor];
+    shadow.shadowOffset = NSMakeSize(-1, 1);
+    self.window.titleTextShadow = shadow;
     self.window.titleBarDrawingBlock = ^(BOOL drawsAsMainWindow, CGRect drawingRect, CGPathRef clippingPath) {
         
         NSImage *windowImage ;
@@ -403,6 +432,7 @@
 
 -(void)viewDidSelected:(NSViewController *)aViewController{
 
+    return;
     
     if(![aViewController isKindOfClass:[AKTabViewController class]]){
         return;
@@ -422,9 +452,8 @@
         [titleBarCustomView setAutoresizingMask:NSViewWidthSizable];
     }
     else{
-        for(NSView *subView in titleBarCustomView.subviews){
-            [subView removeFromSuperview];
-        }
+        //Remove All Sub Views in titlebar
+        [[titleBarCustomView subviews] makeObjectsPerformSelector: @selector(removeFromSuperview)];
     }
 
     NSInteger nextLeftMargin = 5;
@@ -433,7 +462,7 @@
         for(NSControl *control in viewController.leftControls){
         
             [titleBarCustomView addSubview:control];
-            [control setFrame:NSMakeRect(nextLeftMargin, (titleBarCustomView.bounds.size.height - 36)/2, control.frame.size.width, 36)];
+            [control setFrame:NSMakeRect(nextLeftMargin, (titleBarCustomView.bounds.size.height - control.frame.size.height)/2, control.frame.size.width, control.frame.size.height)];
             
             [control setAutoresizingMask:NSViewMaxXMargin];
             
@@ -458,11 +487,21 @@
         }
     
     }
-        
     
+}
+
+#pragma mark - Weibo Manager Delegate
+
+-(void)OnDelegateComplete:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption httpHeader:(NSString *)httpHeader result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
+
+    
+}
+
+-(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption errCode:(NSInteger)errCode subErrCode:(NSInteger)subErrCode result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
 
 }
 
-// connection:didReceiveResponse:, connection:didreceivedData:, connection:didFailWithError:, and connectionDidFinishLoading:
+-(void)OnDelegateWillRelease:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption pTask:(AKUserTaskInfo *)pTask{
 
+}
 @end

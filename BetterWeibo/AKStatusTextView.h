@@ -16,8 +16,8 @@
 
 @end
 
-@interface AKStatusTextView : AKTextView
+@interface AKStatusTextView : NSTextView
 
-@property id<AKStatusTextViewDelegate> delegate;
+@property (nonatomic, assign) id<AKStatusTextViewDelegate> delegate;
 
 @end

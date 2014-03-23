@@ -32,7 +32,6 @@
     userProfile.IDString = @"2128178903";
     userProfile.accessToken = @"2.00LYcB1CwuHMpB49be915aaf0Cmenf";
     userProfile.accessTokenExpiresIn = @"125901";
-    
 
     
     [weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];

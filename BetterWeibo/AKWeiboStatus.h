@@ -12,6 +12,7 @@
 
 extern NSString *const ATEntityPropertyNamedImage;
 extern NSString *const ATEntityPropertyNamedThumbnailImage;
+extern NSString *const AKWeiboStatusPropertyNamedFavorited;
 @class AKUserProfile;
 /**
  *  微博内容
@@ -23,7 +24,7 @@ extern NSString *const ATEntityPropertyNamedThumbnailImage;
  /**
  *微博创建时间
  */
-@property NSString * created_at;
+@property NSDate * created_at;
  /**
  *微博ID
  */
@@ -40,6 +41,8 @@ extern NSString *const ATEntityPropertyNamedThumbnailImage;
  *微博信息内容
  */
 @property NSString * text;
+
+@property (readonly) NSAttributedString *attributedText;
  /**
  *微博来源
  */
@@ -119,6 +122,8 @@ extern NSString *const ATEntityPropertyNamedThumbnailImage;
  *微博流内的推广微博ID
  */
 @property NSArray * ad;
+
+@property (readonly, nonatomic) NSString * dateDuration;
 
 @property (readonly, retain, nonatomic) NSArray * thumbnailImages;
 

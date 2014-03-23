@@ -38,7 +38,7 @@
 //@property IBOutlet AKPanelView *view;
 
 
-//-(void)tabButtonClicked:(id)sender;
+-(void)tabDidActived;
 
 -(void)goToViewOfController:(NSViewController *)viewController;
 

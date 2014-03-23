@@ -7,48 +7,26 @@
 //
 
 #import "AKSearchViewController.h"
+#import "AKWeiboViewController.h"
+#import "AKUserTableViewController.h"
+
 
 @interface AKSearchViewController ()
 
 @end
 
-@implementation AKSearchViewController
+@implementation AKSearchViewController{
+    AKWeiboViewController *_weiboViewController;
+    AKUserTableViewController *_userTableViewController;
+}
+
+@synthesize searchType = _searchType;
 
 -(id)init{
 
-    self = [super initWithNibName:@"AKSearchViewController" bundle:nil];
+    self = [self initWithNibName:@"AKSearchViewController" bundle:[NSBundle bundleForClass:[self class]]];
     if (self) {
-        self.title = @"搜    索";
-        self.button = [[AKTabButton alloc]init];
-        self.button.tabButtonIcon = AKTabButtonIconSearch;
-        self.button.tabButtonType = AKTabButtonMiddle;
-        
-//        [self.button setAction:@selector(tabButtonClicked:)];
-//        [self.button setTarget:self];
-        
-        
-        //List Button
-        NSButton *listButton = [[NSButton alloc]initWithFrame:NSMakeRect(0, 0, 40, 40)];
-        listButton.image = [NSImage imageNamed:@"main_navbar_list_button"];
-        listButton.alternateImage = [NSImage imageNamed:@"main_navbar_list_highlighted_button"];
-        listButton.imagePosition = NSImageOnly;
-        
-        self.leftControls = [NSArray arrayWithObject:listButton];
-        
-        
-        NSButton *postButton = [[NSButton alloc]init];
-        postButton.image = [NSImage imageNamed:@"main_navbar_post_button"];
-        postButton.alternateImage = [NSImage imageNamed:@"main_navbar_post_highlighted_button"];
-        postButton.imagePosition = NSImageOnly;
-        
-        self.rightControls = [NSArray arrayWithObject:postButton];
-        
-        
 
-        
-        
-        
-        
     }
     return self;
 
@@ -59,8 +37,92 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Initialization code here.
+        self.title = @"搜    索";
+        self.button = [[AKTabButton alloc]init];
+        self.button.tabButtonIcon = AKTabButtonIconSearch;
+        self.button.tabButtonType = AKTabButtonMiddle;
+        
+        _weiboViewController = [[AKWeiboViewController alloc] init];
+        _userTableViewController = [[AKUserTableViewController alloc] init];
+        self.searchType = AKSearchUser;
     }
     return self;
 }
+
+-(void)awakeFromNib{
+    
+    self.searchFieldView.backgroundType = AKViewCustomBackground;
+    self.searchFieldView.customBackgroundImage = [NSImage imageNamed:@"search-field"];
+    self.searchFieldView.customLeftWidth = 47;
+    self.searchFieldView.customRightWidth = 28;
+    
+    self.searchBarView.backgroundType = AKViewLightGrayGraient;
+    
+    self.searchType = _searchType;
+    
+    [[self.searchTab tabViewItemAtIndex:0] setView:_weiboViewController.view];
+    [[self.searchTab tabViewItemAtIndex:1] setView:_userTableViewController.view];
+
+
+}
+
+-(AKSearchType)searchType{
+    return _searchType;
+}
+
+-(void)setSearchType:(AKSearchType)searchType{
+    _searchType = searchType;
+    
+    for(NSMenuItem *item in self.searchOptionButton.menu.itemArray){
+        item.state = (item.tag == searchType)?NSOnState:NSOffState;
+        [self.searchOptionButton selectItem:item];
+    }
+    
+    [self.searchTab selectTabViewItemAtIndex:_searchType];
+}
+
+
+- (IBAction)searchOptionSelected:(id)sender {
+    NSLog(@"searchOptionSelected");
+    
+    NSMenuItem *selectedItem = [(NSPopUpButton *)sender selectedItem];
+    if(selectedItem.isEnabled){
+        return;
+    }
+    NSInteger selectedTag = selectedItem.tag;
+    self.searchType = selectedTag;
+    
+}
+
+-(void)startSearch{
+    
+    NSString *searchString = [self.searchField.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if([searchString length] == 0){
+        NSBeep();
+        return;
+    }
+    if(self.searchType == AKSearchUser){
+//        [[AKWeiboManager currentManager] searchUser:self.searchField.stringValue callbackTarget:self];
+        [_userTableViewController searchUser:self.searchField.stringValue];
+    }else{
+
+    }
+
+
+}
+
+- (IBAction)searchFieldEndEditing:(id)sender {
+    
+    [self startSearch];
+//    NSLog(@"searchFieldActived");
+    
+    
+}
+
+- (IBAction)searchButtonClicked:(id)sender {
+    [self startSearch];
+}
+
+
 
 @end

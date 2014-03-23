@@ -11,8 +11,8 @@
 #import "AKCommentViewCell.h"
 #import "AKWeiboTableCellView.h"
 #import "AKWeiboManager.h"
-
-
+#import "AKTableRowView.h"
+#import "AKProfileViewController.h"
 
 #pragma mark - Constants
 
@@ -32,7 +32,7 @@
     NSTrackingArea *trackingArea;
     BOOL isRepostTabActived;
     //For cell height calculation usage.
-    AKTextField *_textField;
+    AKTextView *_textField;
 }
 
 @synthesize status = _status;
@@ -77,7 +77,8 @@
         self.statusDetailView.commentListView.delegate =self;
         self.statusDetailView.commentListView.dataSource = self;
         [self.statusDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-        
+        self.statusDetailView.weiboTextField.delegate = self;
+        self.statusDetailView.repostedWeiboView.repostedWeiboContent.delegate = self;
         
         
 
@@ -158,6 +159,14 @@
 
 #pragma mark - List View Delegate Methods
 
+-(NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row{
+    
+    //    NSLog(@"NEW ROWVIEW");
+    AKTableRowView *tableRowView = [[AKTableRowView alloc]init];
+    return tableRowView;
+    
+    
+}
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
@@ -183,16 +192,10 @@
     NSInteger minHeight = 62;
     
     if(!_textField){
-        _textField = [AKTextField new];
-        [_textField.cell setWraps:YES];
-        [_textField.cell setLineBreakMode:NSLineBreakByCharWrapping];
-        [_textField setFont:[NSFont fontWithName:@"HiraginoSansGB-W3" size:13]];
-        [_textField setBordered:NO];
-        [_textField setAlignment:NSLeftTextAlignment];
-        
+        _textField = [AKTextView new];
     }
     
-    [_textField setFrameSize:NSMakeSize(tableView.bounds.size.width - 10 - 42 - 10 - 10, 100)];
+    [_textField setFrameSize:NSMakeSize(tableView.bounds.size.width - 10 - 48 - 10 - 10, 100)];
     
     
     [_textField setStringValue:text];
@@ -225,7 +228,8 @@
         
         [cell.userAliasField setStringValue:comment.user.screen_name];
         [cell.commentField setStringValue:comment.text];
-        [cell.userAvatar setImage:comment.user.profileImage];
+//        [cell.userAvatar setImage:comment.user.profileImage];
+        cell.userAvatar.userProfile = comment.user;
     
         
     }
@@ -235,7 +239,7 @@
         
         [cell.userAliasField setStringValue:status.user.screen_name];
         [cell.commentField setStringValue:status.text];
-        [cell.userAvatar setImage:status.user.profileImage];
+        cell.userAvatar.userProfile = status.user;
         
     }
     
@@ -251,7 +255,8 @@
     if(methodOption == AKWBOPT_GET_COMMENTS_SHOW){
 //        NSLog(@"getStatusCommentCallback");
         
-        _comments = [NSMutableArray new];
+        
+//        _comments = [NSMutableArray new];
         NSArray *commentArray = [(NSDictionary *)[result getObject] objectForKey:@"comments"];
         for (NSDictionary *commentItem in commentArray) {
         
@@ -264,7 +269,7 @@
         [self.statusDetailView.commentListView reloadData];
 
     }else if (methodOption == AKWBOPT_GET_STATUSES_REPOST_TIMELINE){
-        _reposts = [NSMutableArray new];
+//        _reposts = [NSMutableArray new];
         NSArray *repostArray = [(NSDictionary *)[result getObject] objectForKey:@"reposts"];
         for (NSDictionary *repostItem in repostArray) {
             
@@ -292,6 +297,28 @@
 
 }
 
+-(void)textView:(AKTextView *)textView attributeClicked:(NSString *)attribute ofType:(AKAttributeType)attributeType atIndex:(NSUInteger)index{
+    
+    if(attributeType == AKLinkAttribute){
+        
+        [[NSWorkspace sharedWorkspace]openURL:[NSURL URLWithString:attribute]];
+        
+    }
+    else if(attributeType == AKUserNameAttribute){
+        
+        AKProfileViewController *profileViewController = [[AKProfileViewController alloc] init];
+        profileViewController.userID = [[AKID alloc] initWithIdType:AKIDTypeScreenname text:[attribute substringFromIndex:1] key:nil];
+        [self goToViewOfController:profileViewController];
+        
+    }
+    else if(attributeType == AKHashTagAttribute){
+        
+        
+        
+    }
+
+
+}
 
 
 - (IBAction)tabBarSelectionChanged:(id)sender {
@@ -307,6 +334,17 @@
     
     [self.statusDetailView.tab selectTabViewItemAtIndex:[segmentedControl selectedSegment] ];
     
+    for(NSTabViewItem* tabViewItem in self.statusDetailView.tab.tabViewItems){
+        
+        NSView *tabView = tabViewItem.view;
+        for(NSView *subView in [tabView subviews]){
+            
+            [subView setFrame:NSMakeRect(0, 0, tabView.frame.size.width, tabView.frame.size.height)];
+            
+        }
+        
+        
+    }
     
 }
 @end

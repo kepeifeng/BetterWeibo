@@ -8,8 +8,27 @@
 
 #import "AKUserProfile.h"
 
+NSString *const AKUserProfilePropertyNamedProfileImage = @"profileImage";
+NSString *const AKUserProfilePropertyNamedIsProcessingFollowingRequest = @"isProcessingFollowingRequest";
+
+
+
+
+static NSOperationQueue *ATSharedOperationQueue() {
+    static NSOperationQueue *_ATSharedOperationQueue = nil;
+    if (_ATSharedOperationQueue == nil) {
+        _ATSharedOperationQueue = [[NSOperationQueue alloc] init];
+        // We limit the concurrency to see things easier for demo purposes. The default value NSOperationQueueDefaultMaxConcurrentOperationCount will yield better results, as it will create more threads, as appropriate for your processor
+        [_ATSharedOperationQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
+    }
+    return _ATSharedOperationQueue;
+}
+
 @implementation AKUserProfile
 @synthesize profile_image_url = _profile_image_url;
+@synthesize profileImage = _profileImage;
+//@synthesize avatar_hd = _avatar_hd;
+@synthesize avatar_large = _avatar_large;
 
 static NSMutableDictionary *userDictionary;
 
@@ -19,8 +38,8 @@ static NSMutableDictionary *userDictionary;
     if(self){
     
         self.IDString = [aDecoder decodeObjectForKey:@"userID"];
-        self.accessToken = [aDecoder decodeObjectForKey:@"accessToken"];
-        self.accessTokenExpiresIn = [aDecoder decodeObjectForKey:@"expireIn"];
+//        self.accessToken = [aDecoder decodeObjectForKey:@"accessToken"];
+//        self.accessTokenExpiresIn = [aDecoder decodeObjectForKey:@"expireIn"];
     
     
     }
@@ -33,8 +52,8 @@ static NSMutableDictionary *userDictionary;
     
     
     [aCoder encodeObject:self.IDString forKey:@"userID"];
-    [aCoder encodeObject:self.accessToken forKey:@"accessToken"];
-    [aCoder encodeObject:self.accessTokenExpiresIn forKey:@"expireIn"];
+//    [aCoder encodeObject:self.accessToken forKey:@"accessToken"];
+//    [aCoder encodeObject:self.accessTokenExpiresIn forKey:@"expireIn"];
 
 }
 
@@ -49,11 +68,79 @@ static NSMutableDictionary *userDictionary;
 
     _profile_image_url = profile_image_url;
     
-    NSImage *profileImage = [[NSImage alloc]initWithContentsOfURL:[NSURL URLWithString:profile_image_url]];
-    self.profileImage = profileImage;
-
 }
 
+-(NSString *)avatar_large{
+    return _avatar_large;
+}
+
+-(void)setAvatar_large:(NSString *)avatar_large{
+    _avatar_large = avatar_large;
+    if(!self.isLoadingAvatarImage){
+        [self loadAvatarImages];
+    }
+
+}
+//-(NSString *)avatar_large{
+//    return _avatar_hd;
+//}
+//-(void)setAvatar_hd:(NSString *)avatar_hd{
+//    _avatar_hd = avatar_hd;
+//
+//}
+
+-(NSImage *)profileImage{
+    if(_profileImage){
+        return _profileImage;
+    }else if(!self.isLoadingAvatarImage){
+        [self loadAvatarImages];
+    }
+    return _profileImage;
+}
+
+-(void)setProfileImage:(NSImage *)profileImage{
+    if(_profileImage != profileImage){
+        _profileImage = profileImage;
+    }
+}
+
+-(void)loadAvatarImages{
+    
+    @synchronized (self) {
+        if (!self.isLoadingAvatarImage) {
+            self.isLoadingAvatarImage = YES;
+            // We would have to keep track of the block with an NSBlockOperation, if we wanted to later support cancelling operations that have scrolled offscreen and are no longer needed. That will be left as an exercise to the user.
+            [ATSharedOperationQueue() addOperationWithBlock:^(void) {
+                
+                NSImage *profileImage;
+                if(self.avatar_large){
+                    profileImage = [[NSImage alloc]initWithContentsOfURL:[NSURL URLWithString:self.avatar_large]];
+                }
+                
+                if(!self.avatar_large || !profileImage){
+                    profileImage = [AKUserProfile defaultAvatarImage];
+                }
+                
+                @synchronized (self) {
+                    self.profileImage = profileImage;
+                    self.isLoadingAvatarImage = NO;
+                }
+
+            }];
+        }
+    }
+    
+}
+
++(NSImage *)defaultAvatarImage{
+
+    static NSImage *gAvatar;
+    if(!gAvatar){
+        gAvatar = [NSImage imageNamed:@"avatar_default"];
+    }
+    return gAvatar;
+    
+}
 
 +(AKUserProfile *)getUserProfileByID:(NSString *)userID{
 

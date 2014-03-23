@@ -7,6 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AKUserProfile.h"
+#import "AKUserButtonCell.h"
 
 @interface AKUserButton : NSButton{
 
@@ -14,9 +16,12 @@
     NSImage *_topLayerImage;
 }
 
-@property NSString *avatarURL;
-@property NSImage *avatarImage;
+@property AKUserProfile *userProfile;
+//@property NSString *avatarURL;
+//@property (readonly) NSImage *avatarImage;
+//@property NSImage *image;
 @property NSString *userID;
+@property AKUserButtonBorderType borderType;
 
 
 @end

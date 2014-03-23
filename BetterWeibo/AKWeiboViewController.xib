@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C59" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AKWeiboViewController">
@@ -18,20 +18,20 @@
             <rect key="frame" x="0.0" y="0.0" width="418" height="330"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNJ-dZ-GMy" customClass="EQSTRScrollView">
+                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="161" horizontalPageScroll="10" verticalLineScroll="161" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNJ-dZ-GMy" customClass="EQSTRScrollView">
                     <rect key="frame" x="0.0" y="0.0" width="418" height="330"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="T8Q-fk-CDl" customClass="EQSTRClipView">
-                        <rect key="frame" x="1" y="1" width="416" height="328"/>
+                        <rect key="frame" x="0.0" y="0.0" width="418" height="330"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="dTs-sz-RrF">
-                                <rect key="frame" x="0.0" y="0.0" width="416" height="328"/>
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="161" rowSizeStyle="automatic" viewBased="YES" id="dTs-sz-RrF">
+                                <rect key="frame" x="0.0" y="0.0" width="418" height="330"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" red="0.95686274509803926" green="0.95686274509803926" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn identifier="weiboItem" width="416" minWidth="100" maxWidth="780" id="uuD-pv-y0G">
+                                    <tableColumn identifier="weiboItem" width="418" minWidth="100" maxWidth="780" id="uuD-pv-y0G">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -45,7 +45,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView identifier="weiboItem" id="bdM-Af-qhh" customClass="AKWeiboTableCellView">
-                                                <rect key="frame" x="0.0" y="0.0" width="416" height="161"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="418" height="161"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OCG-pq-jrb">
@@ -155,20 +155,11 @@
                                                             <outlet property="repostedWeiboUserAlias" destination="b4j-wD-8kF" id="K9U-yi-Lzt"/>
                                                         </connections>
                                                     </customView>
-                                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="un5-Rp-Ybd">
+                                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="un5-Rp-Ybd">
                                                         <rect key="frame" x="0.0" y="0.0" width="416" height="79"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <subviews>
-                                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OIB-H5-bvk">
-                                                                <rect key="frame" x="5" y="14" width="53" height="53"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="47" id="btk-Vl-BfC"/>
-                                                                    <constraint firstAttribute="width" constant="47" id="syU-oU-v9B"/>
-                                                                </constraints>
-                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" image="NSActionTemplate" id="24v-Wp-6i4"/>
-                                                            </imageView>
-                                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbS-B3-XgM">
+                                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbS-B3-XgM">
                                                                 <rect key="frame" x="62" y="47" width="276" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="用户名" id="Qs6-AU-qZM">
@@ -184,15 +175,6 @@
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
-                                                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ciq-0s-4tO" customClass="AKTextField">
-                                                                <rect key="frame" x="62" y="20" width="337" height="17"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" continuous="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="微博正文" allowsEditingTextAttributes="YES" id="92Z-qN-wu6">
-                                                                    <font key="font" metaFont="system"/>
-                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
                                                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWI-69-lBX" customClass="AKTextView">
@@ -254,7 +236,7 @@
                                                                     </column>
                                                                 </cells>
                                                             </matrix>
-                                                            <matrix hidden="YES" verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEY-3a-yLo">
+                                                            <matrix hidden="YES" verticalHuggingPriority="750" misplaced="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEY-3a-yLo">
                                                                 <rect key="frame" x="271" y="5" width="140" height="29"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
@@ -281,13 +263,16 @@
                                                                         </buttonCell>
                                                                     </column>
                                                                     <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_fav" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_fav" lineBreakMode="charWrapping" tag="3" inset="2" id="yO7-IS-yv7">
+                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_fav" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_fav" lineBreakMode="charWrapping" tag="2" inset="2" id="yO7-IS-yv7">
                                                                             <behavior key="behavior" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
+                                                                            <connections>
+                                                                                <action selector="favButtonClicked:" target="-2" id="AO6-hL-rYD"/>
+                                                                            </connections>
                                                                         </buttonCell>
                                                                     </column>
                                                                     <column>
-                                                                        <buttonCell type="bevel" title="Radio" bezelStyle="regularSquare" image="weibo-toolbar-normal_share" imagePosition="only" alignment="left" alternateImage="weibo-toolbar-active_share" lineBreakMode="charWrapping" tag="4" inset="2" id="2mR-Lm-bZF">
+                                                                        <buttonCell type="bevel" title="Radio" bezelStyle="regularSquare" image="weibo-toolbar-normal_share" imagePosition="only" alignment="left" alternateImage="weibo-toolbar-active_share" lineBreakMode="charWrapping" tag="3" inset="2" id="2mR-Lm-bZF">
                                                                             <behavior key="behavior" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
@@ -297,22 +282,23 @@
                                                                     <action selector="toolbarClicked:" target="bdM-Af-qhh" id="vlF-dX-3z0"/>
                                                                 </connections>
                                                             </matrix>
+                                                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zar-7A-pI6" customClass="AKUserButton">
+                                                                <rect key="frame" x="7" y="15" width="48" height="50"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="M23-6z-Bqt">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                            </button>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstItem="OIB-H5-bvk" firstAttribute="top" secondItem="un5-Rp-Ybd" secondAttribute="top" constant="15" id="MHV-Xm-Ahn"/>
                                                             <constraint firstAttribute="trailing" secondItem="cH7-mG-ZnJ" secondAttribute="trailing" constant="20" id="McE-Yb-ux2"/>
                                                             <constraint firstAttribute="bottom" secondItem="fEY-3a-yLo" secondAttribute="bottom" constant="5" id="OAI-bJ-VVp"/>
                                                             <constraint firstAttribute="height" constant="79" id="WH5-iO-Zuj"/>
-                                                            <constraint firstItem="Ciq-0s-4tO" firstAttribute="leading" secondItem="OIB-H5-bvk" secondAttribute="trailing" constant="10" id="lAG-CV-L0i"/>
-                                                            <constraint firstItem="Ciq-0s-4tO" firstAttribute="leading" secondItem="OIB-H5-bvk" secondAttribute="trailing" constant="10" id="mBw-0f-XiO"/>
-                                                            <constraint firstItem="sbS-B3-XgM" firstAttribute="leading" secondItem="OIB-H5-bvk" secondAttribute="trailing" constant="10" id="mmS-2E-Lf0"/>
-                                                            <constraint firstItem="cH7-mG-ZnJ" firstAttribute="leading" secondItem="sbS-B3-XgM" secondAttribute="trailing" constant="11" id="oUW-aB-HY5"/>
-                                                            <constraint firstItem="OIB-H5-bvk" firstAttribute="leading" secondItem="un5-Rp-Ybd" secondAttribute="leading" constant="8" id="p7e-oR-hS1"/>
-                                                            <constraint firstAttribute="trailing" secondItem="Ciq-0s-4tO" secondAttribute="trailing" constant="20" id="qZi-H8-YXA"/>
                                                             <constraint firstAttribute="trailing" secondItem="fEY-3a-yLo" secondAttribute="trailing" constant="5" id="s7p-71-Jrn"/>
                                                         </constraints>
                                                     </customView>
-                                                    <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AVa-bS-4sj">
+                                                    <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AVa-bS-4sj">
                                                         <rect key="frame" x="0.0" y="0.0" width="416" height="2"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="weibo-separator" id="VBa-kI-GjX"/>
@@ -339,13 +325,13 @@
                                                     <outlet property="shareButton" destination="2mR-Lm-bZF" id="JYj-c8-gIq"/>
                                                     <outlet property="toolbar" destination="fEY-3a-yLo" id="g0B-oy-c1y"/>
                                                     <outlet property="userAlias" destination="sbS-B3-XgM" id="sCY-cp-Ezo"/>
-                                                    <outlet property="userImage" destination="OIB-H5-bvk" id="mKD-5U-0c6"/>
+                                                    <outlet property="userImage" destination="zar-7A-pI6" id="1Rq-eG-o4q"/>
                                                     <outlet property="weiboTextField" destination="fWI-69-lBX" id="9Mv-dK-QhI"/>
                                                     <outlet property="weiboView" destination="un5-Rp-Ybd" id="KzW-wD-s4w"/>
                                                 </connections>
                                             </tableCellView>
                                             <tableCellView identifier="loadMoreCell" id="T4d-tZ-6nf" customClass="AKLoadMoreCell">
-                                                <rect key="frame" x="0.0" y="161" width="416" height="49"/>
+                                                <rect key="frame" x="0.0" y="161" width="418" height="49"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="57A-kx-XS3">
@@ -388,7 +374,6 @@
         </customView>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
         <image name="fav_mark" width="41" height="41"/>
         <image name="weibo-separator" width="301" height="2"/>
         <image name="weibo-toolbar-active_comment" width="35" height="29"/>

@@ -52,7 +52,7 @@
     NSDictionary *paramDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                      appKey,@"appKey",
                                      accessToken,@"accessToken",
-                                     [NSString stringWithUTF8String:(const char*)[data bytes]], @"data", nil];
+                                     [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding], @"data", nil];
     return [cacheDB executeUpdate:insertStatement withParameterDictionary:paramDictionary];
     
 

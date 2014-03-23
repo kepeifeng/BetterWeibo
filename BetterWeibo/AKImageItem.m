@@ -22,6 +22,8 @@
 }
 
 @synthesize image = _image;
+@synthesize isEnabled = _isEnabled;
+@synthesize filePath = _filePath;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -80,15 +82,48 @@
 
 }
 
+-(BOOL)isEnabled{
+    return _isEnabled;
+}
+
+-(void)setEnabled:(BOOL)flag{
+
+    _isEnabled = flag;
+    if (!_isEnabled) {
+        [_closeButton setHidden:YES];
+    }
+    [_closeButton setEnabled:_isEnabled];
+    
+    
+}
+
 -(void)mouseEntered:(NSEvent *)theEvent{
 
+    if(!self.isEnabled){
+        return;
+    }
+    
     [_closeButton setHidden:NO];
     
 }
 
 -(void)mouseExited:(NSEvent *)theEvent{
     
+    
+    if(!self.isEnabled){
+        return;
+    }
+    
     [_closeButton setHidden:YES];
+}
+
+-(NSURL *)filePath{
+    return _filePath;
+}
+
+-(void)setFilePath:(NSURL *)filePath{
+    _filePath = filePath;
+    self.image = [[NSImage alloc] initWithContentsOfURL:filePath];
 }
 
 -(NSImage *)image{

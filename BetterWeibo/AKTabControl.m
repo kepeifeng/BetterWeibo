@@ -42,6 +42,7 @@
     NSMutableDictionary *weiboViewGroup;
     NSView *activedView;
     
+    //A List of User ID string
     NSMutableArray *userIDList;
     AKUserManager *userManager;
 }
@@ -117,8 +118,8 @@
 
 -(BOOL)isUserExist:(NSString *)userID{
 
-    for (AKUserProfile *userProfile in userIDList) {
-        if([userProfile.IDString isEqualToString:userID]){
+    for (NSString *userIDItem in userIDList) {
+        if([userIDItem isEqualToString:userID]){
         
             return YES;
         
@@ -152,6 +153,8 @@
     AKUserButton *userButton = [[AKUserButton alloc]initWithFrame:NSMakeRect(0, 0, 48, 49)];
     //userButton.avatarURL = userProfile.profile_image_url;
     userButton.tag = index;
+    userButton.borderType = AKUserButtonBorderTypeGlassOutline;
+    userButton.userProfile = [[AKUserManager defaultUserManager]getUserProfileByUserID:userID];
     userButton.userID = userID;
     [userButton setTarget:self];
     [userButton setAction:@selector(userButtonClicked:)];
@@ -189,6 +192,7 @@
     buttonMatrixTopMargin = 10;
     buttonMatrix = [[NSMatrix alloc]initWithFrame:buttonMatrixFrame mode:NSRadioModeMatrix cellClass:[AKTabButton class] numberOfRows:0 numberOfColumns:1];
     buttonMatrix.mode = NSRadioModeMatrix;
+    buttonMatrix.allowsEmptySelection = NO;
     
     buttonMatrix.autorecalculatesCellSize = NO;
     buttonMatrix.autosizesCells = NO;
@@ -269,8 +273,10 @@
 
     
     //私信
+    /*
     AKMessageViewController *messageViewController = [[AKMessageViewController alloc]init];
     [self addViewController:messageViewController forUser:userID];
+    */
     
     //收藏
 //    AKTabViewController *favoriteViewController = [[AKFavoriteViewController alloc]init];
@@ -285,7 +291,10 @@
     
     
     //我
-    AKTabViewController *profileViewController = [[AKProfileViewController alloc]init];
+    AKProfileViewController *profileViewController = [[AKProfileViewController alloc]init];
+    profileViewController.delegate = self;
+    profileViewController.timelineType = AKUserTimeline;
+    profileViewController.userID = [[AKID alloc] initWithIdType:AKIDTypeID text:userID key:nil];
     [self addViewController:profileViewController forUser:userID];
     
     //搜索
@@ -303,6 +312,13 @@
     
     }
     
+    if(!activedView){
+    
+        [buttonMatrix selectCellAtRow:0 column:0];
+        [(NSButtonCell *)buttonMatrix.selectedCell performClick:buttonMatrix];
+        [(NSButtonCell *)buttonMatrix.selectedCell setState:NSOnState];
+        
+    }
     lastControlMatrixOrigin = buttonMatrix.frame.origin;
     
     
@@ -326,34 +342,65 @@
     //AKUserProfile *targetUser = [userIDList objectAtIndex:index];
     NSString *targetUserID = userID;
     
+    userManager.currentUserID = userID;
+    
     NSInteger y = self.bounds.size.height;
     
-    for(AKWeiboViewGroupItem *viewGroup in weiboViewGroup){
+    [NSAnimationContext beginGrouping];
+    for(AKWeiboViewGroupItem *viewGroup in weiboViewGroup.allValues){
         
         //AKUserProfile *userProfile = [userIDList objectAtIndex:i];
         NSButton * userButton = viewGroup.userButton; // [userButtonDictionary objectForKey:userProfile.IDString];
         NSMatrix *userControlMatrix = viewGroup.userControlMatrix; //[userControlMatrixDictionary objectForKey:userProfile.IDString];
         
+        NSSize newMatrixSize;
+        //如果找到当前用户的控件组
         if([viewGroup.userID isEqualToString: currentUserID]){
             
-            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
+            newMatrixSize = NSMakeSize(userControlMatrix.frame.size.width, 0);
+            
+            //隐藏用户边栏按钮条
+//            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
+            
         }
+        //如果是目标用户的控件组
         else if ([viewGroup.userID isEqualToString: targetUserID]){
             
-            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
+            newMatrixSize = NSMakeSize(userControlMatrix.frame.size.width,
+                                       userControlMatrix.cellSize.height * userControlMatrix.cells.count);
+            
+            //如果该边栏没有按钮被激活 则激活第一个按钮
+            if(![userControlMatrix selectedCell]){
+                [userControlMatrix selectCellAtRow:0 column:0];
+                [(NSButtonCell *)userControlMatrix.selectedCell performClick:userControlMatrix];
+                [(NSButtonCell *)userControlMatrix.selectedCell setState:NSOnState];
+            }
+            //现实用户边栏按钮条
+//            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
             
         }
         
         y = y - 10 - userButton.frame.size.height;
-        [userButton setFrameOrigin:NSMakePoint(userButton.frame.origin.x, y)];
         
-        y = y - 10 - userControlMatrix.frame.size.height;
-        [userControlMatrix setFrameOrigin:NSMakePoint(userControlMatrix.frame.origin.x, y)];
+        NSRect newUserButtonFrame = userButton.frame;
+        newUserButtonFrame.origin.y = y;
+        [userButton.animator setFrame:newUserButtonFrame];
+//        [userButton setFrameOrigin:NSMakePoint(userButton.frame.origin.x, y)];
+        
+//        y = y - 10 - userControlMatrix.frame.size.height;
+        y = y - 10 - newMatrixSize.height;
+        NSRect newMatrixFrame = userControlMatrix.frame;
+        newMatrixFrame.origin.y = y;
+        newMatrixFrame.size = newMatrixSize;
+        [userControlMatrix.animator setFrame:newMatrixFrame];
+//        [userControlMatrix setFrameOrigin:NSMakePoint(userControlMatrix.frame.origin.x, y)];
     
     }
+    
+    [NSAnimationContext endGrouping];
     [self.targetTabView selectTabViewItemWithIdentifier:targetUserID];
     
-    userManager.currentUserID = userID;
+
     //currentIndex = index;
     
     
@@ -440,17 +487,13 @@
     
     [buttonMatrix setFrameSize:NSMakeSize(buttonMatrix.frame.size.width, buttonMatrix.frame.size.height + 48)];
     [buttonMatrix setFrameOrigin:NSMakePoint(buttonMatrix.frame.origin.x, buttonMatrix.frame.origin.y - 48)];
-//    [buttonMatrix intrinsicContentSize];
 
     
     AKTabViewItem *newTabViewItem = [[AKTabViewItem alloc]initWithIdentifier:[NSString stringWithFormat:@"tab%ld",self.targetTabView.numberOfTabViewItems+1]];
     
     newTabViewItem.tabViewController = viewController;
-    //newTabViewItem.view = viewController.view;
-    
     [newTabViewItem setView:viewController.view];
-    
-//  viewController.view.needsDisplay = YES;
+
     
     //Add tab view item to dictionary for later use.
     [tabViewItemAndControllerDictionary setObject:newTabViewItem forKey: viewController.identifier];
@@ -459,27 +502,15 @@
     
     [newTabViewItem.view setFrame:NSMakeRect(0, 0, self.targetTabView.frame.size.width, self.targetTabView.frame.size.height)];
     
-    if(!activedView && buttonMatrix.numberOfRows == 1){
-        [buttonMatrix selectCellAtRow:0 column:0];
-        [viewController.button performClick:viewController.button];
-    }
-
-
+//    if(!activedView && buttonMatrix.numberOfRows == 1){
+//        [buttonMatrix selectCellAtRow:0 column:0];
+//        [viewController.button performClick:viewController.button];
+//    }
     
-    //[buttonMatrix sizeToCells];
-    
-
-    
-
-
 }
 
 -(void)tabButtonClicked:(id)sender
 {
-    
-    //NSLog(@"tabViewController = %@ , buttonClicked = %@",aTabViewController, buttonClicked);
-    
-    
     
     NSString *tabViewControllerID = [(AKTabButton *)[(NSMatrix *)sender selectedCell] tag];
     AKTabViewItem *tabViewItem = (AKTabViewItem *)[tabViewItemAndControllerDictionary objectForKey:tabViewControllerID];
@@ -487,9 +518,9 @@
     
 
 
-    if([tabViewItem.tabViewController isKindOfClass:[AKWeiboViewController class]]){
+    if([tabViewItem.tabViewController isKindOfClass:[AKTabViewController class]]){
         
-        [(AKWeiboViewController *)tabViewItem.tabViewController tabDidActived];
+        [(AKTabViewController *)tabViewItem.tabViewController tabDidActived];
     
     }
 
@@ -542,7 +573,7 @@
     }
 
     AKUserButton *userButton = viewGroup.userButton;
-    userButton.avatarURL =url;
+//    userButton.avatarURL =url;
     
 
 }

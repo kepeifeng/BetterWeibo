@@ -7,7 +7,10 @@
 //
 
 #import "AKTabViewController.h"
+#import "AKWeiboViewController.h"
 
-@interface AKProfileViewController : AKTabViewController
+@interface AKProfileViewController : AKWeiboViewController
+
+@property AKID *userID;
 
 @end

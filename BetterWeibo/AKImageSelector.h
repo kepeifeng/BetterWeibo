@@ -18,12 +18,18 @@
 @property NSInteger numberOfRows;
 @property NSSize cellSize;
 
-@property (nonatomic, readonly) NSArray * images;
+@property (nonatomic, readonly) NSArray * imageItems;
 @property (readonly) NSInteger count;
+@property (readonly) BOOL isEnabled;
 
--(void)addImage:(NSImage *)image;
--(void)removeImage:(NSImage *)image;
--(void)removeImageAtIndex:(NSInteger)index;
+-(NSArray *)allFileURLs;
+-(void)addImageItemFromFileURL:(NSURL *)url;
+-(void)addImageItem:(AKImageItem *)imageItem;
+-(void)removeImageItem:(AKImageItem *)imageItem;
+-(void)removeImageItemAtIndex:(NSInteger)index;
+-(void)removeAllImages;
+
+-(void)setEnabled:(BOOL)flag;
 
 
 @end

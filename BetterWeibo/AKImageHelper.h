@@ -10,7 +10,9 @@
 
 @interface AKImageHelper : NSObject
 
++(NSImage *)getSquareImageFrom:(NSImage *)image;
 +(NSImage *)getImageFromData:(NSData *)data;
 +(void)putImages:(NSArray *)images inMatrix:(NSMatrix *)imageMatrix target:(id)target action:(SEL)action;
 
++(void)getThreePartImageFrom:(NSImage *)image leftWidth:(NSUInteger)leftPartWidth rightWidth:(NSUInteger)rightPartWidth leftPart:(NSImage **)leftPart middlePart:(NSImage **)middlePart rightPart:(NSImage **)rightPart;
 @end

@@ -11,11 +11,21 @@
 #import "AKImageViewer.h"
 #import "AKViewConstant.h"
 #import "AKImageHelper.h"
+#import "INPopoverController.h"
+#import "AKPopupStatusEditorViewController.h"
+
+@interface AKWeiboTableCellView()
+
+@property (readonly)INPopoverController *popoverStatusEditior;
+
+@end
 
 @implementation AKWeiboTableCellView{
 
     NSTrackingArea *trackingArea;
     AKImageViewer *_imageViewer;
+    
+    NSMenu *_shareButtonContextMenu;
 
 }
 
@@ -23,30 +33,49 @@
 @synthesize weiboTextField = _weiboTextField;
 @synthesize status = _status;
 @synthesize thumbnailImageURL = _thumbnailImageURL;
+static INPopoverController *gPopoverController;
 
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
 
-        
-        // Initialization code here.
-     
-        
-        
+        self.userImage.borderType = AKUserButtonBorderTypeBezel;
+    }
+    return self;
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder{
+
+    self = [super initWithCoder:aDecoder];
+    if(self){
+        self.userImage.borderType = AKUserButtonBorderTypeBezel;
     }
     return self;
 }
 
 -(void)awakeFromNib{
 
-    
+    self.userImage.borderType = AKUserButtonBorderTypeBezel;
     [self.weiboTextField setDrawsBackground:NO];
     [self.weiboTextField setEditable:NO];
     [self.weiboTextField setSelectable:YES];
+    if(!_shareButtonContextMenu){
+        _shareButtonContextMenu = [[NSMenu alloc] init];
 
+        NSMenuItem *menuItem = [[NSMenuItem alloc]initWithTitle:@"复制微博" action:@selector(copyStatusMenuClicked:) keyEquivalent:@""];
+        menuItem.target = self;
+        [_shareButtonContextMenu addItem:menuItem];
+
+        /*
+        menuItem = [[NSMenuItem alloc] initWithTitle:@"在浏览器查看微博" action:@selector(openStatusInBrowser:) keyEquivalent:@""];
+        menuItem.target = self;
+        [_shareButtonContextMenu addItem:menuItem];
+        */
+        
+        
+    }
 }
-
 
 
 - (void)drawRect:(NSRect)dirtyRect
@@ -91,33 +120,14 @@
 
     _status = status;
 
-    
-    
-
 }
 
 
-//-(NSString *)thumbnailImageURL{
-//
-//    return _thumbnailImageURL;
-//
-//}
-//
-//-(void)setThumbnailImageURL:(NSString *)thumbnailImageURL{
-//
-//    _thumbnailImageURL = thumbnailImageURL;
-//    if(_thumbnailImageURL)
-//    {
-//        return;
-//    }
-//    
-//    NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:thumbnailImageURL]]];
-//    NSImageCell *imageCell = [[NSImageCell alloc]initImageCell:image];
-//    [self.images setCell:imageCell];
-//    
-//    [self.images setHidden:NO];
-//    
-//}
+-(INPopoverController *)popoverStatusEditior{
+
+    [self _makePopupPanelIfNeeded];
+    return gPopoverController;
+}
 
 -(void)viewDidEndLiveResize{
 
@@ -214,10 +224,16 @@
     //User Avatar
     [self.userImage setFrameOrigin:NSMakePoint(self.userImage.frame.origin.x, weiboViewHeight - (self.userImage.frame.size.height - self.userAlias.frame.size.height) - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP)];
 
+    
     //Weibo Text
     [self.weiboTextField setFrameSize:NSMakeSize(self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT, weiboHeight)];
 //    [self.weiboTextField adjustFrame];
     [self.weiboTextField setFrameSize:self.weiboTextField.intrinsicContentSize];
+    
+//    if([self.weiboTextField.string rangeOfString:@"［关注中非共和国局势］"].location != NSNotFound){
+//        
+//        NSLog(@"(width = %f, height = %f) (resize) ",self.frame.size.width, self.weiboTextField.frame.size.height);
+//    }
     [self.weiboTextField setFrameOrigin:NSMakePoint(self.weiboTextField.frame.origin.x, weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP - STATUS_TEXT_MARGIN_TOP - self.weiboTextField.frame.size.height)];
     
 
@@ -239,7 +255,7 @@
         
         
         [self.images setFrameSize:weiboImageMatrixSize];
-        [self.images setFrameOrigin:NSMakePoint(60, 10)];
+        [self.images setFrameOrigin:NSMakePoint(60, STATUS_PADDING_BOTTOM)];
     }
     
     //Favorite Mark
@@ -303,6 +319,14 @@
     
     if(weibo.retweeted_status){
         
+        if(!weibo.retweeted_status.user){
+        
+            _repostedWeiboViewHeight = REPOST_STATUS_MESSAGE_BLOCK_HEIGH;
+            
+        }else{
+        
+        
+        
         _repostedWeiboViewHeight += REPOST_STATUS_PADDING_BOTTOM;
         if(weibo.retweeted_status.pic_urls && weibo.retweeted_status.pic_urls.count>0){
             
@@ -330,9 +354,10 @@
 
         
         assert(weibo.retweeted_status.text);
-        
+
         [_textField setFrameSize:NSMakeSize(width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
-        _textField.stringValue = weibo.retweeted_status.text;
+//        [_textField setStringValue:weibo.retweeted_status.text];
+        [_textField.textStorage setAttributedString:weibo.retweeted_status.attributedText];
         *repostedWeiboHeight = _textField.intrinsicContentSize.height;
         
         _repostedWeiboViewHeight += *repostedWeiboHeight;
@@ -340,27 +365,8 @@
         //UserAlias
         _repostedWeiboViewHeight += USER_ALIAS_HEIGHT;
         _repostedWeiboViewHeight += REPOST_STATUS_PADDING_TOP;
-//        _repostedWeiboViewHeight += REPOST_STATUS_MARGIN_TOP;
-        
-        
-//        if(*repostedWeiboHeight > USER_AVATAR_SIZE - 17 - STATUS_TEXT_MARGIN_TOP){
-//        
-//            _repostedWeiboViewHeight += *repostedWeiboHeight;
-//            _repostedWeiboViewHeight += STATUS_TEXT_MARGIN_TOP;
-//            _repostedWeiboViewHeight += 17;
-//            
-//        }
-//        else{
-//        
-//            _repostedWeiboViewHeight += USER_AVATAR_SIZE;
-//        
-//        }
-        
-        
-        
-//        _repostedWeiboViewHeight += 10;
 
-        
+        }
     }
     
     *repostedWeiboViewHeight = _repostedWeiboViewHeight;
@@ -399,9 +405,14 @@
     [_textField setFrameSize:NSMakeSize(width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT -STATUS_MARGIN_RIGHT, 1000)];
     
     assert(weibo.text);
-    _textField.stringValue = weibo.text;
+//    [_textField setStringValue:weibo.text];
+    [_textField.textStorage setAttributedString:weibo.attributedText];
     
     *weiboHeight = _textField.intrinsicContentSize.height;
+//    if([weibo.text rangeOfString:@"民航局长李家祥"].location != NSNotFound){
+//    
+//        NSLog(@"width = %f, height = %f (calculate) ",width, *weiboHeight);
+//    }
     
 //    _weiboViewHeight += *weiboHeight;
 //    _weiboViewHeight += 5;
@@ -430,7 +441,7 @@
     
     *weiboViewHeight = _weiboViewHeight;
     
-    cellHeight = _repostedWeiboViewHeight + _weiboViewHeight + 2;
+    cellHeight = _repostedWeiboViewHeight + _weiboViewHeight;
     //[self setFrameSize:NSMakeSize(self.frame.size.width, cellHeight)];
     
     return cellHeight;
@@ -450,23 +461,44 @@
 
 -(void)mouseExited:(NSEvent *)theEvent{
 
+    if(self.popoverStatusEditior.popoverIsVisible){
+        return;
+    }
     [self.toolbar setHidden:YES];
 
 }
 
-- (void)updateTrackingAreas {
-    
-    if(trackingArea != nil) {
-        [self removeTrackingArea:trackingArea];
-    }
-    
-    int opts = (NSTrackingMouseEnteredAndExited | NSTrackingEnabledDuringMouseDrag | NSTrackingActiveInActiveApp);
+- (void) createTrackingArea
+{
+    int opts = (NSTrackingMouseEnteredAndExited | NSTrackingActiveInActiveApp);
     trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds]
                                                  options:opts
                                                    owner:self
                                                 userInfo:nil];
     [self addTrackingArea:trackingArea];
     
+    NSPoint mouseLocation = [[self window] mouseLocationOutsideOfEventStream];
+    mouseLocation = [self convertPoint: mouseLocation
+                              fromView: nil];
+    
+    if (NSPointInRect(mouseLocation, [self bounds]))
+    {
+        [self mouseEntered: nil];
+    }
+    else
+    {
+        [self mouseExited: nil];
+    }
+}
+        
+- (void)updateTrackingAreas {
+    
+    if(trackingArea != nil) {
+        [self removeTrackingArea:trackingArea];
+    }
+
+    [self createTrackingArea];
+    [super updateTrackingAreas];
 }
 
 -(void)loadImages:(NSArray *)images{
@@ -495,46 +527,7 @@
     
     
     [AKImageHelper putImages:images inMatrix:self.images target:self action:@selector(imageCellClicked:)];
-//    
-//    if(images && images.count >0){
-//        
-////        [imageMatrix ]
-//        
-//        NSInteger i = 0;
-//        //第一行 第一列
-//        //[imageMatrix addRow];
-//        for(NSImage *image in images){
-//            
-//
-//
-//            NSButtonCell *imageCell = [imageMatrix cellAtRow:(NSInteger)(i/3) column:(i%3)];
-//            imageCell.tag = i;
-//            imageCell.image = image;
-//
-//            i++;
-//
-//        }
-//        
-//        assert(i<=9);
-//        
-//        if(images.count == 1){
-//        
-//            imageMatrix.cellSize = NSMakeSize(LARGE_THUMBNAIL_SIZE, LARGE_THUMBNAIL_SIZE);
-//        }else{
-//        
-//            imageMatrix.cellSize = NSMakeSize(SMALL_THUMBNAIL_SIZE, SMALL_THUMBNAIL_SIZE);
-//        }
-//        
-//        [imageMatrix setTarget:self];
-//        [imageMatrix setAction:@selector(imageCellClicked:)];
-//        [imageMatrix setHidden:NO];
-//        
-//    }
-//    
-//    else{
-//        
-//        [imageMatrix setHidden:YES];
-//    }
+
 }
 
 -(void)imageCellClicked:(id)sender{
@@ -543,42 +536,99 @@
     NSCell *selectedCell = imageMatrix.selectedCell;
     AKWeiboStatus *status = self.objectValue;
     NSArray *imageURLArray = (status.pic_urls && status.pic_urls.count>0)?status.pic_urls:status.retweeted_status.pic_urls;
-    
-    
-    if(!_imageViewer){
-        _imageViewer = [[AKImageViewer alloc] initWithArray:imageURLArray startAtIndex:selectedCell.tag];
-    }
-    else{
-        _imageViewer.images = imageURLArray;
-        _imageViewer.index = selectedCell.tag;
-    }
-    
+
+    _imageViewer = [AKImageViewer sharedInstance];
+    _imageViewer.images = imageURLArray;
+    _imageViewer.index = selectedCell.tag;
     [_imageViewer show];
     
     return;
-//    
-//    //NSLog(@"imageCellClicked");
-//    NSMatrix *imageMatrix = sender;
-//    NSCell *selectedCell = imageMatrix.selectedCell;
-//    AKWeiboStatus *status = self.objectValue;
-//    NSArray *imageURLArray = (status.pic_urls && status.pic_urls.count>0)?status.pic_urls:status.retweeted_status.pic_urls;
-//    NSString *url = [(NSDictionary *)[imageURLArray objectAtIndex:selectedCell.tag] objectForKey:@"thumbnail_pic"];
-//    //"thumbnail_pic": "http://ww1.sinaimg.cn/thumbnail/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
-//    //"bmiddle_pic": "http://ww1.sinaimg.cn/bmiddle/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
-//    //"original_pic": "http://ww1.sinaimg.cn/large/d3976c6ejw1ebbzpeeadwj20d107b74e.jpg"
-//    url = [url stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/bmiddle/"];
-//    NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-//    
-//    if(!_imageViewer){
-//        _imageViewer = [[AKImageViewer alloc] initWithImage:image];
-//    }
-//    else{
-//        _imageViewer.image = image;
-//    }
-//    
-//    [_imageViewer show];
 
 }
+
+
+-(void)_makePopupPanelIfNeeded{
+
+    if(!gPopoverController){
+        AKPopupStatusEditorViewController *popupStatusEditorController = [[AKPopupStatusEditorViewController alloc] init];
+        gPopoverController = [[INPopoverController alloc] initWithContentViewController:popupStatusEditorController];
+        gPopoverController.borderColor = [NSColor colorWithWhite:0.1 alpha:1];
+        gPopoverController.color = [NSColor colorWithWhite:0.2 alpha:1];
+        gPopoverController.topHighlightColor = [NSColor colorWithWhite:0.5 alpha:1];
+        popupStatusEditorController.popoverController = gPopoverController;
+        
+    }
+
+
+}
+
+-(void)repostButtonClicked:(id)sender{
+    
+    //NSMatrix *toolbar = sender;
+    
+    NSButtonCell *selectedButtonCell = (NSButtonCell *)[(NSMatrix *)sender selectedCell];
+    NSRect buttonCellBounds = NSMakeRect(0, 0, selectedButtonCell.cellSize.width, selectedButtonCell.cellSize.height);
+
+    if (self.popoverStatusEditior.popoverIsVisible) {
+        [self.popoverStatusEditior closePopover:nil];
+    } else {
+        [(AKPopupStatusEditorViewController *)self.popoverStatusEditior.contentViewController repostStatus:self.objectValue];
+        [self.popoverStatusEditior presentPopoverFromRect:buttonCellBounds
+                                                   inView:sender
+                                  preferredArrowDirection:INPopoverArrowDirectionUp
+                                    anchorsToPositionView:YES];
+    }
+    
+}
+-(void)commentButtonClicked:(id)sender{
+    
+    //NSMatrix *toolbar = sender;
+    
+    NSButtonCell *selectedButtonCell = (NSButtonCell *)[(NSMatrix *)sender selectedCell];
+    NSRect buttonCellBounds = NSMakeRect(selectedButtonCell.cellSize.width, 0, selectedButtonCell.cellSize.width, selectedButtonCell.cellSize.height);
+    
+    if (self.popoverStatusEditior.popoverIsVisible) {
+        [self.popoverStatusEditior closePopover:nil];
+    } else {
+        
+        [(AKPopupStatusEditorViewController *)self.popoverStatusEditior.contentViewController commentOnStatus:self.objectValue];
+        [self.popoverStatusEditior presentPopoverFromRect:buttonCellBounds
+                                                   inView:sender
+                                  preferredArrowDirection:INPopoverArrowDirectionUp
+                                    anchorsToPositionView:YES];
+    }
+    
+}
+
+-(void)favButtonClicked:(id)sender{
+
+    
+
+}
+
+-(void)shareButtonClicked:(id)sender{
+    
+    NSMatrix *toolbarMatrix = sender;
+//    NSMenu *menu = [(NSButtonCell *)toolbarMatrix.selectedCell menu];
+    [_shareButtonContextMenu popUpMenuPositioningItem:nil atLocation:NSMakePoint(toolbarMatrix.frame.size.width, 0) inView:toolbarMatrix];
+}
+
+
+-(void)copyStatusMenuClicked:(id)sender{
+    
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    [pasteboard setString:self.objectValue.text forType:NSStringPboardType];
+    
+}
+
+-(void)openStatusInBrowser:(id)sender{
+    
+    NSString *urlString = @"";
+    [[NSWorkspace sharedWorkspace]openURL:[NSURL URLWithString:urlString]];
+    
+}
+
 
 -(IBAction)toolbarClicked:(id)sender{
     
@@ -586,18 +636,22 @@
     switch (clickedButton.tag) {
         case 0:
             //转发
+            [self repostButtonClicked:sender];
             break;
             
         case 1:
             //评论
+            [self commentButtonClicked:sender];
             break;
             
         case 2:
             //收藏
+            [self favButtonClicked:sender];
             break;
             
         case 3:
             //其它
+            [self shareButtonClicked:sender];
             break;
             
         default:

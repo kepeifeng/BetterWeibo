@@ -12,9 +12,11 @@
 @implementation AKImageSelector{
 
     NSButton * _addImageButton;
-    NSMutableArray *_images;
+//    NSMutableArray *_images;
     NSMutableArray *_imageItems;
 }
+
+@synthesize isEnabled = _isEnabled;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -22,7 +24,6 @@
     if (self) {
         // Initialization code here.
         
-        _images = [NSMutableArray new];
         _imageItems = [NSMutableArray new];
         _addImageButton = [[NSButton alloc]init];
         _addImageButton.image = [NSImage imageNamed:@"add-button"];
@@ -39,6 +40,7 @@
         _addImageButton.target = self;
         _addImageButton.action = @selector(addImageButtonClicked:);
         
+        [self setEnabled:YES];
         [self addSubview:_addImageButton];
         
     }
@@ -121,6 +123,22 @@
     // Drawing code here.
 }
 
+
+
+
+-(BOOL)isEnabled{
+    return _isEnabled;
+}
+
+-(void)setEnabled:(BOOL)flag{
+    _isEnabled = flag;
+    [_addImageButton setEnabled:_isEnabled];
+    for (AKImageItem* item in _imageItems) {
+        [item setEnabled:_isEnabled];
+    }
+
+}
+
 -(void)addImageButtonClicked:(id)sender{
 
     if(self.delegate){
@@ -130,33 +148,39 @@
 }
 
 -(NSInteger)count{
-    return _images.count;
+    return _imageItems.count;
 }
 
--(NSArray *)images{
-    return _images;
+-(NSArray *)imageItems{
+    return _imageItems;
 }
 
-- (void)addImage:(NSImage *)image{
-    
-    if ([_images containsObject:image]) {
-        
-        return;
-    }
-    
-    if (_images.count == self.numberOfRows * self.numberOfColumns) {
-        
-        
-        
-        return;
-    }
-    
-    
-    
-    [_images addObject:image];
+-(void)addImageItemFromFileURL:(NSURL *)url{
+
     AKImageItem *imageItem = [[AKImageItem alloc] initWithFrame:NSMakeRect(0, 0, self.cellSize.width, self.cellSize.height)];
-    imageItem.image = image;
+    imageItem.filePath = url;
     imageItem.delegate = self;
+    [self addImageItem:imageItem];
+
+}
+
+- (void)addImageItem:(AKImageItem *)imageItem{
+    
+    if ([_imageItems containsObject:imageItem]) {
+        
+        return;
+    }
+    
+    if (_imageItems.count == self.numberOfRows * self.numberOfColumns) {
+        
+        return;
+    }
+    
+    
+//    AKImageItem *imageItem = [[AKImageItem alloc] initWithFrame:NSMakeRect(0, 0, self.cellSize.width, self.cellSize.height)];
+//    imageItem.image = image;
+    imageItem.delegate = self;
+    [imageItem setEnabled:self.isEnabled];
     [_imageItems addObject:imageItem];
     
     [self addSubview:imageItem];
@@ -173,16 +197,16 @@
 }
 
 
--(void)removeImage:(NSImage *)image{
+-(void)removeImageItem:(AKImageItem *)imageItem{
     
-    NSInteger index = [_images indexOfObject:image];
-    [self removeImageAtIndex:index];
+    NSInteger index = [_imageItems indexOfObject:imageItem];
+    [self removeImageItemAtIndex:index];
 
 }
 
--(void)removeImageAtIndex:(NSInteger)index{
+-(void)removeImageItemAtIndex:(NSInteger)index{
     
-    [_images removeObjectAtIndex:index];
+//    [_imageItems removeObjectAtIndex:index];
     AKImageItem *imageItem = [_imageItems objectAtIndex:index];
     [imageItem removeFromSuperview];
     [_imageItems removeObjectAtIndex:index];
@@ -194,12 +218,33 @@
 
 }
 
+-(void)removeAllImages{
+
+    for (NSView *item in _imageItems) {
+        [item removeFromSuperview];
+    }
+    [_imageItems removeAllObjects];
+    [self resizeSubviewsWithOldSize:self.frame.size];
+    if(self.delegate){
+        [self.delegate imageSelector:self numberOfImagesChanged:self.count];
+    }
+
+}
+
+-(NSArray *)allFileURLs{
+    
+    NSMutableArray *fileURLs = [NSMutableArray new];
+    for(AKImageItem *imageItem in _imageItems){
+        [fileURLs addObject:imageItem.filePath];
+    }
+    return fileURLs;
+    
+}
 
 
 #pragma mark - Image Item
 -(void)imageItemCloseButtonClicked:(AKImageItem *)imageItem{
-    [self removeImage:imageItem.image];
-    
+    [self removeImageItem:imageItem];
 
 }
 

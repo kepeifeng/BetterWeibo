@@ -16,6 +16,7 @@
 
 @implementation AKWeiboStatusDetailView{
     AKImageViewer *_imageViewer;
+    NSMutableArray *_observedObjectArray;
     
 }
 @synthesize hasRepostedWeibo = _hasRepostedWeibo;
@@ -26,6 +27,11 @@
 
 #pragma mark - Setup
 
+-(void)dealloc{
+    for (AKWeiboStatus *status in _observedObjectArray) {
+        [status removeObserver:self forKeyPath:ATEntityPropertyNamedThumbnailImage];
+    }
+}
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -61,19 +67,8 @@
 }
 
 -(void)awakeFromNib{
-
-//    NSRect insetRect = NSInsetRect([[self.window contentView] bounds], 30, 30);
-//    AKTextView *statusView = [[AKTextView alloc] initWithFrame:insetRect];
-//	[statusView setBackgroundColor:[NSColor clearColor]];
-//    [statusView setAutoresizingMask:NSViewNotSizable];
-//	[statusView setTextContainerInset:NSZeroSize];
-//	[statusView setEditable:NO];
-//	[statusView setSelectable:YES];
-//    self.weiboTextField = statusView;
-	
-	// Add to window and we're done.
-//	[self.statusView addSubview:statusView];
     
+    self.userImage.borderType = AKUserButtonBorderTypeBezel;
     self.repostedWeiboView.autoresizingMask = NSViewWidthSizable;
     self.statusDateField.autoresizingMask = NSViewMaxXMargin | NSViewMinXMargin;
     //self.repostedWeiboDateDuration.autoresizingMask = NSViewMinXMargin | NSViewMinYMargin;
@@ -99,22 +94,12 @@
     
     _status = status;
     [self.userAlias setStringValue:status.user.screen_name];
-    [self.weiboTextField setStringValue:status.text];
+    [self.weiboTextField.textStorage setAttributedString:status.attributedText];
     
     if(status.retweeted_status){
     
         self.repostedWeiboView.repostedStatus = status.retweeted_status;
         
-        
-//        
-//        [self.repostedWeiboContent setStringValue:status.retweeted_status.text];
-//        [self.repostedWeiboUserAlias setStringValue:status.retweeted_status.user.screen_name];
-//        
-//        if(status.retweeted_status.pic_urls && status.retweeted_status.pic_urls.count>0){
-//        
-//            [self loadImages:status.retweeted_status.pic_urls isForRepost:YES];
-//        
-//        }
         
     }else{
     
@@ -123,14 +108,23 @@
         
     }
     
+    self.userImage.userProfile = status.user;
 //    AKWeiboStatus * _status = _status;
     
     //如果本条微博或转发的微博中包含有图片，则加载/显示图片
     if(_status.hasImages || (_status.retweeted_status && _status.retweeted_status.hasImages)){
+    
+        if(!_observedObjectArray){
+            _observedObjectArray = [NSMutableArray new];
+        }
         
-        //[self loadImages:status.pic_urls isForRepost:NO];
-        [_status addObserver:self forKeyPath:ATEntityPropertyNamedThumbnailImage options:0 context:NULL];
-        [_status loadThumbnailImages];
+        
+        if(![_observedObjectArray containsObject:_status]){
+            [_status addObserver:self forKeyPath:ATEntityPropertyNamedThumbnailImage options:0 context:NULL];
+            [_status loadThumbnailImages];
+            [_observedObjectArray addObject:_status];
+        }
+        
         //[_observedVisibleItems addObject:weibo];
         
         
@@ -168,8 +162,8 @@
     
     [self adjustPosition];
     
-    [self.tabBar setLabel:[NSString stringWithFormat:@"评论", status.comments_count] forSegment:0 ];
-    [self.tabBar setLabel:[NSString stringWithFormat:@"转发", status.reposts_count] forSegment:1];
+    [self.tabBar setLabel:@"评论" forSegment:0 ];
+    [self.tabBar setLabel:@"转发" forSegment:1];
     
 }
 
@@ -278,75 +272,22 @@
     //Repost View Part
     if(_status.retweeted_status){
         //For new layout
-
-        NSSize repostedWeiboViewSize = self.repostedWeiboView.intrinsicContentSize;
-//        repostedWeiboViewSize.height = 1000;
+        NSSize repostedWeiboViewSize;
+        if(!_status.retweeted_status.user){
         
+            repostedWeiboViewSize = statusViewSize;
+            repostedWeiboViewSize.height = REPOST_STATUS_MESSAGE_BLOCK_HEIGH;
+            
+        
+        }else{
+        
+            repostedWeiboViewSize = self.repostedWeiboView.intrinsicContentSize;
+        
+        }
         [self.repostedWeiboView setFrameSize:repostedWeiboViewSize];
         [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, y)];
         repostY = self.repostedWeiboView.frame.size.height;
-        
-        //=====
-        
-        
-        /*
-        //For old layout
-        NSSize repostedWeiboViewSize = statusViewSize;
-        repostedWeiboViewSize.height = 1000;
-        
-        [self.repostedWeiboView setFrameSize:repostedWeiboViewSize];
-        
-        [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, y)];
-        
-        
-        repostY += REPOST_STATUS_PADDING_BOTTOM;
-        
-        //Images
-        if(_status.retweeted_status.pic_urls && _status.retweeted_status.pic_urls.count>0)
-        {
-            NSSize weiboImageMatrixSize;
-            if(_status.retweeted_status.pic_urls.count ==1){
-                
-                weiboImageMatrixSize = NSMakeSize(LARGE_THUMBNAIL_SIZE, LARGE_THUMBNAIL_SIZE);
-                
-            }
-            else{
-                
-                weiboImageMatrixSize = NSMakeSize(self.repostedWeiboImageMatrix.numberOfColumns * (SMALL_THUMBNAIL_SIZE+SMALL_THUMBNAIL_SPACING)-SMALL_THUMBNAIL_SPACING,
-                                                  ((NSInteger)((_status.retweeted_status.pic_urls.count+2)/3)) * (SMALL_THUMBNAIL_SIZE+SMALL_THUMBNAIL_SPACING)-SMALL_THUMBNAIL_SPACING);
-                
-            }
-            
-            
-            [self.repostedWeiboImageMatrix setFrameSize:weiboImageMatrixSize];
-            [self.repostedWeiboImageMatrix setFrameOrigin:NSMakePoint(60, repostY)];
-            
-            repostY+=self.repostedWeiboImageMatrix.frame.size.height+IMAGE_MARGIN_TOP;
-            
-        
-        }
-        
-        //Text
-        [self.repostedWeiboContent setFrameSize:NSMakeSize(statusViewSize.width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
-        [self.repostedWeiboContent setFrameSize:self.repostedWeiboContent.intrinsicContentSize];
-        
-        [self.repostedWeiboContent setFrameOrigin:NSMakePoint(REPOST_STATUS_PADDING_LEFT, repostY)];
-        
-        repostY+=self.repostedWeiboContent.frame.size.height + STATUS_TEXT_MARGIN_TOP;
-        
-        //User Alias
-        [self.repostedWeiboUserAlias setFrameOrigin:NSMakePoint(self.repostedWeiboContent.frame.origin.x, repostY)];
-        
-        repostY += REPOST_STATUS_PADDING_TOP;
-        
-        repostedWeiboViewSize = self.repostedWeiboView.frame.size;
-        repostedWeiboViewSize.height = repostY;
-        
-        [self.repostedWeiboView setFrameSize:repostedWeiboViewSize];
-        */
-        //User Avatar
-        //[self.userImage setFrameOrigin:NSMakePoint(USER_AVATAR_MARGIN_LEFT, y-self.userImage.frame.size.height)];
-        
+       
     }
     
     y+=repostY;
@@ -374,18 +315,7 @@
         for(NSView *subView in [tabView subviews]){
         
             [subView setFrame:NSMakeRect(0, 0, tabView.frame.size.width, tabView.frame.size.height)];
-//            if([subView isKindOfClass:[NSScrollView class]]){
-//            
-//                [(NSView *)((NSScrollView *)subView).documentView setFrame:NSMakeRect(0, 0, tabView.frame.size.width, tabView.frame.size.height)];
-//            
-//            }
-            
 
-//            for(NSView *scrollViewInTab in [subView subviews]){
-//                
-//                [scrollViewInTab setFrame:NSMakeRect(0, 0, tabView.frame.size.width, tabView.frame.size.height)];
-//                
-//            }
         }
   
         
@@ -439,42 +369,12 @@
     
     _hasRepostedWeibo = hasRepostedWeibo;
     
-    [self.repostedWeiboView setHidden:!hasRepostedWeibo];
+    //[self.repostedWeiboView setHidden:!hasRepostedWeibo];
     
     
     //[self resize];
     
 }
-
-
-//
-//-(void)mouseEntered:(NSEvent *)theEvent{
-//    
-//    [self.toolbar setHidden:NO];
-//    
-//    
-//}
-//
-//-(void)mouseExited:(NSEvent *)theEvent{
-//    
-//    [self.toolbar setHidden:YES];
-//    
-//}
-
-//- (void)updateTrackingAreas {
-//    
-//    if(trackingArea != nil) {
-//        [self removeTrackingArea:trackingArea];
-//    }
-//    
-//    int opts = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
-//    trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds]
-//                                                 options:opts
-//                                                   owner:self
-//                                                userInfo:nil];
-//    [self addTrackingArea:trackingArea];
-//    
-//}
 
 
 -(void)loadImages:(NSArray *)images{
@@ -503,46 +403,7 @@
     
     
     [AKImageHelper putImages:images inMatrix:self.images target:self action:@selector(imageCellClicked:)];
-//    
-//    if(imageURL && imageURL.count >0){
-//        
-//        //        [imageMatrix ]
-//        
-//        NSInteger i = 0;
-//        //第一行 第一列
-//        //[imageMatrix addRow];
-//        for(NSDictionary *url in imageURL){
-//            
-//            NSImage *image = [[NSImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[url objectForKey:@"thumbnail_pic"]]]];
-//            
-//            
-//            NSButtonCell *imageCell = [imageMatrix cellAtRow:(NSInteger)(i/3) column:(i%3)];
-//            imageCell.tag = i;
-//            imageCell.image = image;
-//            i++;
-//            
-//        }
-//        
-//        assert(i<=9);
-//        
-//        if(imageURL.count == 1){
-//            
-//            imageMatrix.cellSize = NSMakeSize(LARGE_THUMBNAIL_SIZE, LARGE_THUMBNAIL_SIZE);
-//        }else{
-//            
-//            imageMatrix.cellSize = NSMakeSize(SMALL_THUMBNAIL_SIZE, SMALL_THUMBNAIL_SIZE);
-//        }
-//        
-//        [imageMatrix setTarget:self];
-//        [imageMatrix setAction:@selector(imageCellClicked:)];
-//        [imageMatrix setHidden:NO];
-//        
-//    }
-//    
-//    else{
-//        
-//        [imageMatrix setHidden:YES];
-//    }
+
 }
 
 -(void)imageCellClicked:(id)sender{
@@ -552,16 +413,11 @@
     NSCell *selectedCell = imageMatrix.selectedCell;
     AKWeiboStatus *status = self.status;
     NSArray *imageURLArray = (status.pic_urls && status.pic_urls.count>0)?status.pic_urls:status.retweeted_status.pic_urls;
-    
-    
-    if(!_imageViewer){
-        _imageViewer = [[AKImageViewer alloc] initWithArray:imageURLArray startAtIndex:selectedCell.tag];
-    }
-    else{
-        _imageViewer.images = imageURLArray;
-        _imageViewer.index = selectedCell.tag;
-    }
-    
+
+    _imageViewer = [AKImageViewer sharedInstance];
+    _imageViewer.images = imageURLArray;
+    _imageViewer.index = selectedCell.tag;
+
     [_imageViewer show];
     
 }

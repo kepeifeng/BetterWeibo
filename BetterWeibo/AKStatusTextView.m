@@ -9,6 +9,9 @@
 #import "AKStatusTextView.h"
 
 @implementation AKStatusTextView
+
+@dynamic delegate;
+
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
@@ -25,6 +28,11 @@
     // Drawing code here.
 }
 
+
+-(void)doCommandBySelector:(SEL)aSelector{
+    [super doCommandBySelector:aSelector];
+    [self.delegate textView:self doCommandBySelector:aSelector];
+}
 
 
 
@@ -45,10 +53,7 @@
             rect.origin.x -= textViewBounds.origin.x;
             rect.origin.y -= textViewBounds.origin.y;
             rect.origin.y = textViewBounds.size.height - rect.origin.y - 10; //this 10 is tricky, if without, my control shows a little below the text, which makes it ugly.
-            
-            NSLog(@"rect %@", NSStringFromRect(rect));
-            NSLog(@"bounds %@", NSStringFromRect([self bounds]));
-            
+
             [self.delegate atKeyPressed:self position:rect];
         
             

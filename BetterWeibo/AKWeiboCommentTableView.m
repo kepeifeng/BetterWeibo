@@ -28,7 +28,7 @@
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize{
 
-    NSRange visibleRows = [self rowsInRect:self.visibleRect];
+    NSRange visibleRows = NSMakeRange(0, self.numberOfRows);
     [NSAnimationContext beginGrouping];
     [[NSAnimationContext currentContext] setDuration:0];
     [self noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:visibleRows]];

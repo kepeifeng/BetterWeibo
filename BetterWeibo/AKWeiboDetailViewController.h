@@ -12,8 +12,8 @@
 #import "AKTabViewController.h"
 #import "AKWeiboStatusDetailView.h"
 #import "AKWeiboManager.h"
-
-@interface AKWeiboDetailViewController : AKTabViewController<PXListViewDelegate, AKWeiboManagerDelegate, NSTableViewDataSource, NSTableViewDelegate>{
+#import "AKTextView.h"
+@interface AKWeiboDetailViewController : AKTabViewController<AKWeiboManagerDelegate, NSTableViewDataSource, NSTableViewDelegate, AKTextViewDelegate>{
 
 
 

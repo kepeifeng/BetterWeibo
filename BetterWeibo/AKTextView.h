@@ -8,11 +8,28 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef NS_ENUM(NSUInteger, AKAttributeType){
+
+    AKUserNameAttribute,
+    AKLinkAttribute,
+    AKHashTagAttribute
+};
+
+@protocol AKTextViewDelegate;
+
 @interface AKTextView : NSTextView
 -(void)adjustFrame;
 
+@property id<AKTextViewDelegate> delegate;
 @property NSInteger minimalHeight;
 
 -(void)setStringValue:(NSString *)aString;
+
+@end
+
+@protocol AKTextViewDelegate <NSTextViewDelegate>
+
+@optional
+-(void)textView:(AKTextView *)textView attributeClicked:(NSString *)attribute ofType:(AKAttributeType)attributeType atIndex:(NSUInteger)index;
 
 @end

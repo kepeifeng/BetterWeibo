@@ -13,6 +13,12 @@
 @property NSString *code;
 @property NSURL *URL;
 @property NSImage *image;
+@property NSString *categoryName;
 
+-(id)initWithCode:(NSString *)code URL:(NSURL *)url image:(NSImage *)image categoryName:(NSString *)category;
+
++(NSArray *)allEmotions;
++(NSDictionary *)allEmotionsByCategory;
++(NSDictionary *)emotionDictionary;
 
 @end

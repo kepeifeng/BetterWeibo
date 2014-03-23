@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C59" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AKWeiboDetailViewController">
@@ -127,11 +127,6 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="W86-mc-K3P">
-                            <rect key="frame" x="16" y="91" width="53" height="53"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" image="NSActionTemplate" id="EnU-q2-P6E"/>
-                        </imageView>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="SHT-ve-mw6">
                             <rect key="frame" x="74" y="304" width="181" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -236,6 +231,14 @@
                             <rect key="frame" x="74" y="47" width="234" height="69"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </customView>
+                        <button verticalHuggingPriority="750" id="GNs-Kk-7Wu" customClass="AKUserButton">
+                            <rect key="frame" x="12" y="93" width="48" height="50"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tMU-pY-Dkj">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
                     </subviews>
                 </customView>
                 <segmentedControl verticalHuggingPriority="750" id="zF3-Bl-MBq">
@@ -262,14 +265,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="yqd-pI-K6l">
+                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="64" horizontalPageScroll="10" verticalLineScroll="64" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="yqd-pI-K6l">
                                         <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <clipView key="contentView" id="UEt-ly-WO0">
                                             <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" viewBased="YES" id="OdF-xO-W5a">
+                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="62" rowSizeStyle="automatic" viewBased="YES" id="OdF-xO-W5a">
                                                     <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -302,26 +305,23 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="jxn-ZP-Ugb">
-                                                                            <rect key="frame" x="7" y="7" width="48" height="48"/>
+                                                                        <customView id="kNx-zV-mlO" customClass="AKTextView">
+                                                                            <rect key="frame" x="62" y="3" width="255" height="30"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="photo" id="KCB-Sq-W3R"/>
-                                                                        </imageView>
-                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="QsM-A5-blC" customClass="AKTextField">
-                                                                            <rect key="frame" x="60" y="18" width="254" height="17"/>
+                                                                        </customView>
+                                                                        <button verticalHuggingPriority="750" id="ZWx-xf-6z0" customClass="AKUserButton">
+                                                                            <rect key="frame" x="10" y="2" width="48" height="48"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" lineBreakMode="charWrapping" sendsActionOnEndEditing="YES" alignment="left" title="评论" allowsEditingTextAttributes="YES" id="sF0-gm-oXl">
-                                                                                <font key="font" size="13" name="HiraginoSansGB-W3"/>
-                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                            </textFieldCell>
-                                                                        </textField>
+                                                                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bbv-Nt-61h">
+                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="system"/>
+                                                                            </buttonCell>
+                                                                        </button>
                                                                     </subviews>
                                                                     <connections>
-                                                                        <outlet property="commentField" destination="QsM-A5-blC" id="7wz-NH-6bx"/>
-                                                                        <outlet property="textField" destination="D91-VK-K9a" id="AdW-bc-pEt"/>
+                                                                        <outlet property="commentField" destination="kNx-zV-mlO" id="Zkj-Yy-aSY"/>
                                                                         <outlet property="userAliasField" destination="D91-VK-K9a" id="UIG-EY-AnQ"/>
-                                                                        <outlet property="userAvatar" destination="jxn-ZP-Ugb" id="h9I-7c-VVi"/>
+                                                                        <outlet property="userAvatar" destination="ZWx-xf-6z0" id="6GN-Cy-iyo"/>
                                                                     </connections>
                                                                 </tableCellView>
                                                             </prototypeCellViews>
@@ -336,7 +336,7 @@
                                             <color key="backgroundColor" red="0.86274516580000005" green="0.42352944609999998" blue="0.1294117719" alpha="1" colorSpace="deviceRGB"/>
                                         </clipView>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="svI-Ic-amR">
-                                            <rect key="frame" x="0.0" y="-16" width="0.0" height="16"/>
+                                            <rect key="frame" x="0.0" y="240" width="328" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="gM9-O2-a1Y">
@@ -352,14 +352,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="Os3-CW-LWM">
+                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="64" horizontalPageScroll="10" verticalLineScroll="64" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="Os3-CW-LWM">
                                         <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <clipView key="contentView" id="Cpe-qv-o9E">
                                             <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" viewBased="YES" id="uuc-7d-BrP">
+                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="62" rowSizeStyle="automatic" viewBased="YES" id="uuc-7d-BrP">
                                                     <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -392,26 +392,23 @@
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="nLr-qR-tgv">
-                                                                            <rect key="frame" x="7" y="7" width="48" height="48"/>
+                                                                        <customView id="mil-N2-G8k" customClass="AKTextView">
+                                                                            <rect key="frame" x="62" y="3" width="253" height="30"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="photo" id="XI6-jE-dxI"/>
-                                                                        </imageView>
-                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="Q1d-eA-SlH" customClass="AKTextField">
-                                                                            <rect key="frame" x="60" y="19" width="257" height="17"/>
+                                                                        </customView>
+                                                                        <button verticalHuggingPriority="750" id="Bbb-ia-DUE" customClass="AKUserButton">
+                                                                            <rect key="frame" x="10" y="7" width="48" height="48"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" lineBreakMode="charWrapping" sendsActionOnEndEditing="YES" alignment="left" title="评论" allowsEditingTextAttributes="YES" id="Pcd-8h-aNS">
-                                                                                <font key="font" size="13" name="HiraginoSansGB-W3"/>
-                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                            </textFieldCell>
-                                                                        </textField>
+                                                                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="TQi-a8-gOM">
+                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="system"/>
+                                                                            </buttonCell>
+                                                                        </button>
                                                                     </subviews>
                                                                     <connections>
-                                                                        <outlet property="commentField" destination="Q1d-eA-SlH" id="Twr-iO-Bim"/>
-                                                                        <outlet property="textField" destination="7EH-BS-oY9" id="89Y-Yc-a4Q"/>
+                                                                        <outlet property="commentField" destination="mil-N2-G8k" id="JD0-i9-Kty"/>
                                                                         <outlet property="userAliasField" destination="7EH-BS-oY9" id="vCi-eH-zrK"/>
-                                                                        <outlet property="userAvatar" destination="nLr-qR-tgv" id="Ce1-Gx-h3j"/>
+                                                                        <outlet property="userAvatar" destination="Bbb-ia-DUE" id="8MY-l1-V9z"/>
                                                                     </connections>
                                                                 </tableCellView>
                                                             </prototypeCellViews>
@@ -437,12 +434,6 @@
                                 </subviews>
                             </view>
                         </tabViewItem>
-                        <tabViewItem label="Item 2" identifier="" id="YCN-CK-Gre">
-                            <view key="view" id="5ig-JL-4hv">
-                                <rect key="frame" x="0.0" y="0.0" width="328" height="256"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </view>
-                        </tabViewItem>
                     </tabViewItems>
                 </tabView>
             </subviews>
@@ -463,13 +454,12 @@
                 <outlet property="tabBar" destination="zF3-Bl-MBq" id="eJe-C4-Lnz"/>
                 <outlet property="toolbar" destination="UiW-I1-b9h" id="rNy-ly-yiV"/>
                 <outlet property="userAlias" destination="cGl-La-VHu" id="fxS-gt-HNg"/>
-                <outlet property="userImage" destination="W86-mc-K3P" id="IOo-b8-bAE"/>
+                <outlet property="userImage" destination="GNs-Kk-7Wu" id="Bhr-BH-HYF"/>
                 <outlet property="weiboTextField" destination="a4q-tK-70O" id="vwX-4d-BfN"/>
             </connections>
         </customView>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
         <image name="weibo-toolbar-active_comment" width="35" height="29"/>
         <image name="weibo-toolbar-active_fav" width="35" height="29"/>
         <image name="weibo-toolbar-active_share" width="35" height="29"/>

@@ -1065,7 +1065,7 @@ NS_INLINE CGGradientRef INCreateGradientWithColors(NSColor *startingColor, NSCol
     BOOL isMainWindowAndActive = ([self isMainWindow] && [[NSApplication sharedApplication] isActive]);
     for (NSView *childView in [_titleBarView subviews]) {
         if ([childView isKindOfClass:[NSControl class]]) {
-            [(NSControl *)childView setEnabled:isMainWindowAndActive];
+            //[(NSControl *)childView setEnabled:isMainWindowAndActive];
         }
     }
 }

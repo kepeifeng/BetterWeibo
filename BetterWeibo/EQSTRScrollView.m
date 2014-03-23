@@ -33,7 +33,10 @@
 
 @interface EQSTRScrollView ()
 @property (nonatomic, assign) BOOL _overRefreshView;
+@property (nonatomic, assign) BOOL _overBottomRefreshView;
 @property (nonatomic, retain) CALayer *_arrowLayer;
+@property (nonatomic,strong) NSProgressIndicator* bottomProgressIndicator;
+
 - (BOOL)overRefreshView;
 - (void)createHeaderView;
 - (void)viewBoundsChanged:(NSNotification*)note;
@@ -42,12 +45,17 @@
 
 @end
 
-@implementation EQSTRScrollView
+@implementation EQSTRScrollView{
+
+
+
+} 
 
 #pragma mark - Private Properties
 
 @synthesize _overRefreshView;
 @synthesize _arrowLayer;
+@synthesize _overBottomRefreshView;
 
 #pragma mark - Public Properties
 
@@ -56,6 +64,9 @@
 @synthesize refreshSpinner = _refreshSpinner;
 @synthesize refreshArrow   = _refreshArrow;
 @synthesize refreshBlock   = _refreshBlock;
+@synthesize refreshBottomBlock = _refreshBottomBlock;
+@synthesize refreshFooter = _refreshFooter;
+@synthesize isBottomRefreshing = _isBottomRefreshing;
 
 #pragma mark - Dealloc
 - (void)dealloc {
@@ -68,6 +79,7 @@
 
 - (void)viewDidMoveToWindow {
 	[self createHeaderView];
+    [self createFooterView];
 }
 
 - (NSClipView *)contentView {
@@ -174,6 +186,90 @@
 	[self reflectScrolledClipView:self.contentView];
 }
 
+-(NSView*) newEdgeViewForSide:(BSRefreshableScrollViewSide) edgeSide progressIndicator:(NSProgressIndicator*) indicatorView
+{
+    NSView* const contentView = self.contentView;
+    NSView* const documentView = self.documentView;
+    const NSRect indicatorViewBounds = indicatorView.bounds;
+    
+    
+    NSView* edgeView = [[NSView alloc] initWithFrame:NSZeroRect];
+    [edgeView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [edgeView setWantsLayer:YES];
+    
+    [edgeView addSubview:indicatorView];
+    
+    // vertically centered
+    [edgeView addConstraint:[NSLayoutConstraint constraintWithItem:indicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:edgeView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+    
+    // horizontally centered
+    [edgeView addConstraint:[NSLayoutConstraint constraintWithItem:indicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:edgeView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    
+    [contentView addSubview:edgeView];
+    
+    
+    if (edgeSide  &  (BSRefreshableScrollViewSideTop | BSRefreshableScrollViewSideBottom) ) {
+        // span horizontally
+        [contentView addConstraint:[NSLayoutConstraint constraintWithItem:edgeView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:contentView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+        [contentView addConstraint:[NSLayoutConstraint constraintWithItem:edgeView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:contentView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+        
+        
+        // set height
+        [contentView addConstraint:[NSLayoutConstraint constraintWithItem:edgeView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:indicatorViewBounds.size.height]];
+        
+        if (edgeSide & BSRefreshableScrollViewSideTop) {
+            // above the content view top
+            [contentView addConstraint:[NSLayoutConstraint constraintWithItem:edgeView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:documentView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+        } else if(edgeSide & BSRefreshableScrollViewSideBottom) {
+            [contentView addConstraint:[NSLayoutConstraint constraintWithItem:edgeView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:documentView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+        }
+    }
+    
+    return edgeView;
+}
+
+@synthesize bottomProgressIndicator = _bottomProgressIndicator;
+
+-(NSProgressIndicator *)bottomProgressIndicator
+{
+    if (!_bottomProgressIndicator) {
+        _bottomProgressIndicator = [NSProgressIndicator new];
+        [_bottomProgressIndicator setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [_bottomProgressIndicator setIndeterminate:YES];
+        [_bottomProgressIndicator setStyle:NSProgressIndicatorSpinningStyle];
+        [_bottomProgressIndicator setControlSize: NSRegularControlSize];
+        [_bottomProgressIndicator setDisplayedWhenStopped:NO];
+        [_bottomProgressIndicator setAlphaValue:1];
+        [_bottomProgressIndicator sizeToFit];
+    }
+    return _bottomProgressIndicator;
+}
+
+- (void)createFooterView {
+	// delete old stuff if any
+	if (_refreshFooter) {
+		[_refreshFooter removeFromSuperview];
+        //		[_refreshHeader release];
+		_refreshFooter = nil;
+	}
+	
+	
+	// add header view to clipview
+	//NSRect contentRect = [self.contentView.documentView frame];
+	_refreshFooter = [self newEdgeViewForSide:BSRefreshableScrollViewSideBottom progressIndicator:self.bottomProgressIndicator];
+    
+    _refreshFooter.wantsLayer = YES;
+    _refreshFooter.layer.backgroundColor = CGColorCreateGenericRGB(0.8, 0.8, 0.8, 1);
+
+	//[self.contentView addSubview:_refreshFooter];
+    
+    
+    //	[_refreshArrow release];
+    //	[_refreshSpinner release];
+	
+}
+
+
 #pragma mark - Detecting Scroll
 
 - (void)scrollWheel:(NSEvent *)event {
@@ -181,13 +277,16 @@
 		if (self._overRefreshView && ! self.isRefreshing) {
 			[self startLoading];
 		}
+        else if(self._overBottomRefreshView && !self.isBottomRefreshing){
+            [self startBottomLoading];
+        }
 	}
 	
 	[super scrollWheel:event];
 }
 
 - (void)viewBoundsChanged:(NSNotification *)note {
-	if (self.isRefreshing)
+	if (self.isRefreshing || self.isBottomRefreshing)
 		return;
 	
 	BOOL start = [self overRefreshView];
@@ -204,6 +303,16 @@
 		self._overRefreshView = NO;
 		
 	}
+    
+    BOOL bottomReadyToRefresh = [self overBottomRefreshView];
+    if(bottomReadyToRefresh){
+        self._overBottomRefreshView = YES;
+    }
+    else{
+        self._overBottomRefreshView = NO;
+    }
+    
+    
 	
 }
 
@@ -217,11 +326,65 @@
 	return (scrollValue <= minimumScroll);
 }
 
+-(BOOL)overBottomRefreshView{
+    
+    NSView* const documentView = self.documentView;
+    const NSRect documentFrame = documentView.frame;
+    
+	NSClipView *clipView  = self.contentView;
+	NSRect bounds         = clipView.bounds;
+	
+	CGFloat scrollValue   = bounds.origin.y;
+	CGFloat minimumScroll = self.minimumScroll;
+	
+	return (bounds.origin.y + bounds.size.height - documentFrame.size.height > minimumScroll);
+    
+
+}
+
 - (CGFloat)minimumScroll {
 	return 0 - self.refreshHeader.frame.size.height;
 }
 
 #pragma mark - Refresh
+- (void)startBottomLoading{
+
+    [self willChangeValueForKey:@"isBottomRefreshing"];
+	_isBottomRefreshing = YES;
+	[self didChangeValueForKey:@"isBottomRefreshing"];
+	
+	//self.refreshArrow.hidden = YES;
+	[self.bottomProgressIndicator startAnimation:self];
+	
+	if (self.refreshBottomBlock) {
+		self.refreshBottomBlock(self);
+	}
+    
+}
+
+-(void)stopBottomLoading{
+
+
+	[self.bottomProgressIndicator stopAnimation:self];
+	
+	// now fake an event of scrolling for a natural look
+	
+	[self willChangeValueForKey:@"isBottomRefreshing"];
+	_isBottomRefreshing = NO;
+	[self didChangeValueForKey:@"isBottomRefreshing"];
+	
+	CGEventRef cgEvent   = CGEventCreateScrollWheelEvent(NULL,
+														 kCGScrollEventUnitLine,
+														 2,
+														 1,
+														 0);
+	
+	NSEvent *scrollEvent = [NSEvent eventWithCGEvent:cgEvent];
+	[self scrollWheel:scrollEvent];
+	CFRelease(cgEvent);
+    
+
+}
 
 - (void)startLoading {
 	[self willChangeValueForKey:@"isRefreshing"];

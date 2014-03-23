@@ -72,6 +72,10 @@
             argument = "-NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints YES"
             isEnabled = "NO">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "NSKVODeallocateBreak"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>

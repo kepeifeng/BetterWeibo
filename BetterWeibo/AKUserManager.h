@@ -33,5 +33,9 @@
 @property (readonly) AKUserProfile *currentUserProfile;
 
 -(NSString *)getUserIDByAccessToken:(NSString *)accessToken;
+-(AKAccessTokenObject *)getAccessTokenByUserID:(NSString *)userID;
+-(AKUserProfile *)getUserProfileByUserID:(NSString *)userID;
+
+-(AKUserProfile *)userAtIndex:(NSUInteger)index;
 
 @end

@@ -17,10 +17,12 @@
     BOOL logined;
     id<AKWeiboMethodProtocol> weiboMethods;
     NSMutableArray *userProfileArray;
-    AKAccessTokenObject *currentAccessToken;
+    AKAccessTokenObject *_currentAccessToken;
     AKCacheDatabaseManager *cacheManager;
     AKUserManager *userManager;
     NSMutableDictionary * callbackDictionary;
+    
+    NSMutableArray *_observedObjects;
 
 }
 
@@ -30,6 +32,15 @@
 
 static id<AKWeibo> weibo;
 static AKWeiboManager * _currentManager;
+
+-(void)dealloc{
+
+    for(AKAccessTokenObject *accessTokenObject in _observedObjects){
+        [accessTokenObject removeObserver:self forKeyPath:AKAccessTokenObjectPropertyNamedAccessToken];
+    }
+    
+}
+
 
 -(id)initWithClientID:(NSString *)clientID appSecret:(NSString *)appSecret redirectURL:(NSString *)redirectURL{
 
@@ -85,6 +96,7 @@ static AKWeiboManager * _currentManager;
 
 -(void)setAccessToken:(AKAccessTokenObject *)accessToken{
     
+    _currentAccessToken = accessToken;
     [weibo setAccessToken:accessToken.accessToken];
 
 
@@ -97,18 +109,10 @@ static AKWeiboManager * _currentManager;
     //https://api.weibo.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=YOUR_REGISTERED_REDIRECT_URI
     //https://api.weibo.com/oauth2/access_token?client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&grant_type=authorization_code&redirect_uri=YOUR_REGISTERED_REDIRECT_URI&code=CODE
     
-    NSString *authorizeURL =[NSString stringWithFormat:@"https://api.weibo.com/oauth2/authorize?client_id=%@&response_type=code&redirect_uri=%@", _clientID, [_redirectURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSString *authorizeURL =[NSString stringWithFormat:@"https://api.weibo.com/oauth2/authorize?diplay=client&client_id=%@&response_type=code&redirect_uri=%@", _clientID, [_redirectURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     [[NSWorkspace sharedWorkspace]openURL:[NSURL URLWithString:authorizeURL]];
-    
-    
-    
-    //[method oauth2Code:@"84f2dc2b14d64160dd0b39b01d572604" url:redirectURL pTask:nil];
-    
-    
-    
-    //    [weibo stopAll];
-    //    [weibo shutDown];
+
 }
 
 -(void)setOauth2Code:(NSString *)code{
@@ -117,8 +121,29 @@ static AKWeiboManager * _currentManager;
 
 }
 -(void)currentUserIDChanged:(NSNotification*)notification{
+    
+    if(!_observedObjects){
+        _observedObjects = [NSMutableArray new];
+    }
+    AKAccessTokenObject *accessTokenObject = [userManager currentAccessToken];
+    if(![_observedObjects containsObject:accessTokenObject]){
+        [accessTokenObject addObserver:self forKeyPath:AKAccessTokenObjectPropertyNamedAccessToken options:0 context:NULL];
+        [_observedObjects addObject:accessTokenObject];
+    }
 
-    [weibo setAccessToken:[[userManager currentAccessToken] accessToken]];
+    [self setAccessToken:accessTokenObject];
+
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    
+    if([keyPath isEqualToString:AKAccessTokenObjectPropertyNamedAccessToken]){
+        AKAccessTokenObject *accessTokenObject = object;
+        if (_currentAccessToken == accessTokenObject) {
+            [self setAccessToken:accessTokenObject];
+        }
+        
+    }
 
 }
 
@@ -172,6 +197,7 @@ static AKWeiboManager * _currentManager;
     variableParams.feature = feature;
     variableParams.trim_user = trimUser;
     
+    
     switch (timelineType) {
         case AKFriendsTimeline:
             [weiboMethods getStatusesHomeTimeline:variableParams pTask:nil];
@@ -187,14 +213,94 @@ static AKWeiboManager * _currentManager;
        
         case AKPublicTimeline:
             [weiboMethods getStatusesPublicTimeline:variableParams pTask:nil];
-            
-//        case AKUserTimeline:
-//            [weiboMethods getStatusesUserTimeline:@"" var:variableParams pTask:nil];
-       
-        default:
             break;
+            
+        case AKUserTimeline:
+            AKID *userIDObject = [[AKID alloc]initWithIdType:AKIDTypeID text:userID key:@""];
+            [weiboMethods getStatusesUserTimeline:userIDObject var:variableParams pTask:nil];
+            break;
+            
     }
     
+
+}
+
+-(void)getStatusForUser:(AKID *)userID sinceWeiboID:(NSString *)sinceWeiboID maxWeiboID:(NSString *)maxWeiboID count:(int)count page:(int)page baseApp:(BOOL)baseApp feature:(int)feature trimUser:(int)trimUser timelineType:(AKWeiboTimelineType)timelineType callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    
+    NSLog(@"正在获取微博...");
+    AKVariableParams *variableParams = [[AKVariableParams alloc]init];
+    
+    variableParams.since_id = (sinceWeiboID)?[sinceWeiboID longLongValue]:0;
+    variableParams.max_id = (maxWeiboID)?[maxWeiboID longLongValue]:0;
+    variableParams.count = count;
+    variableParams.page = page;
+    variableParams.base_app = baseApp;
+    variableParams.feature = feature;
+    variableParams.trim_user = trimUser;
+    
+    AKUserTaskInfo *task = [self newTask:target];
+    
+    switch (timelineType) {
+        case AKFriendsTimeline:
+            [weiboMethods getStatusesHomeTimeline:variableParams pTask:task];
+            break;
+            
+        case AKMentionTimeline:
+            [weiboMethods getStatusesMentions:variableParams pTask:task];
+            break;
+            
+        case AKFavoriteTimeline:
+            [weiboMethods getFavorites:variableParams pTask:task];
+            break;
+            
+        case AKPublicTimeline:
+            [weiboMethods getStatusesPublicTimeline:variableParams pTask:task];
+            break;
+            
+        case AKUserTimeline:
+            
+            [weiboMethods getStatusesUserTimeline:userID var:variableParams pTask:task];
+            break;
+            
+    }
+
+
+}
+
+-(void)postStatus:(NSString *)status forUser:(AKUserProfile *)user callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    AKVariableParams *params = [AKVariableParams new];
+    params.accessToken = [[[AKUserManager defaultUserManager] getAccessTokenByUserID:user.IDString] accessToken];
+    [weiboMethods postStatusesUpdate:status var:params pTask:taskInfo];
+
+}
+-(void)postStatus:(NSString *)status withImages:(NSArray *)images forUser:(AKUserProfile *)user callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    AKVariableParams *params = [AKVariableParams new];
+    params.accessToken = [[[AKUserManager defaultUserManager] getAccessTokenByUserID:user.IDString] accessToken];
+    if(!images || images.count==0){
+        [weiboMethods postStatusesUpdate:status var:params pTask:taskInfo];
+    }
+    [weiboMethods postStatusesUpload:status filePath:images var:params pTask:taskInfo];
+
+}
+
+
+-(void)postFavorite:(NSString *)statusID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+    
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods postFavoritesCreate:statusID var:nil pTask:taskInfo];
+
+}
+
+
+-(void)postRemoveFavorite:(NSString *)statusID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+    
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods postFavoritesDestroy:statusID var:nil pTask:taskInfo];
 
 }
 
@@ -202,6 +308,13 @@ static AKWeiboManager * _currentManager;
 -(void)getUserDetail:(NSString *)userID{
 
     [weiboMethods getUsersShow:[[AKID alloc] initWithIdType:AKIDTypeID text:userID key:nil] extend:nil var:nil pTask:nil];
+
+}
+
+-(void)getUserDetail:(AKID *)userID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    AKUserTaskInfo *task = [self newTask:target];
+    [weiboMethods getUsersShow:userID extend:nil var:nil pTask:task];
 
 }
 
@@ -268,11 +381,122 @@ static AKWeiboManager * _currentManager;
 
 
 
+/**
+ *  转发一条微博
+ *
+ *  @param statusID            要转发的微博ID。
+ *  @param content             添加的转发文本，必须做URLencode，内容不超过140个汉字，不填则默认为“转发微博”。
+ *  @param commentOriginStatus 是否在转发的同时发表评论，0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
+ *  @param target              callback
+ */
+-(void)postRepostStatus:(NSString *)statusID content:(NSString *)content   shouldComment:(BOOL)commentOriginStatus callbackTarget:(id<AKWeiboManagerDelegate>)target{
+    
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods postStatusesRepost:statusID statusText:content isComment:commentOriginStatus var:nil pTask:taskInfo];
+    
+}
+
+/**
+ *  评论微博
+ *
+ *  @param statusID            微博ID
+ *  @param comment             评论内容
+ *  @param commentOriginStatus 当评论转发微博时，是否评论给原微博，0：否、1：是，默认为0。
+ *  @param target              callback
+ */
+-(void)postCommentOnStatus:(NSString *)statusID comment:(NSString *)comment   shouldCommentOriginStatus:(BOOL)commentOriginStatus callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods postCommentsCreate:statusID comment:comment commentOri:commentOriginStatus var:nil pTask:taskInfo];
+
+}
+/**
+ *  回复评论
+ *
+ *  @param commentID           评论的ID
+ *  @param statusID            评论所属的微博
+ *  @param comment             回复内容
+ *  @param withoutMention      回复中是否自动加入“回复@用户名”，0：是、1：否，默认为0。
+ *  @param commentOriginStatus 当评论转发微博时，是否评论给原微博，0：否、1：是，默认为0。
+ *  @param target              callback
+ */
+-(void)postcommentReply:(NSString *)commentID ofStatus:(NSString *)statusID comment:(NSString *)comment withoutMention:(BOOL)withoutMention shouldCommentOriginStatus:(BOOL)commentOriginStatus callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods postCommentsReply:commentID comment:comment weiboId:statusID withoutMention:withoutMention commentOri:commentOriginStatus var:nil pTask:taskInfo];
+
+}
+
+
+#pragma mark - Users
+
+-(void)getFollowingListOfUser:(AKID *)userID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods getFriendshipsFriends:userID order:0 var:nil pTask:taskInfo];
+
+}
+
+-(void)getFollowerListOfUser:(AKID *)userID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+    
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods getFriendshipsFriendsFollowers:userID var:nil pTask:taskInfo];
+
+}
+
+/**
+ *  搜索用户
+ * 【注意】由于新浪未对外开放用户搜索接口，因此目前只能使用联想搜索功能，搜索范围为：V用户、粉丝500以上的达人、粉丝600以上的普通用户
+ *  search/suggestions/users
+ *  @param searchQuery 要搜索的内容
+ *  @param target      callback
+ */
+-(void)searchUser:(NSString *)searchQuery callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods getSearchSuggestionsUsers:searchQuery count:200 pTask:taskInfo];
+
+}
+
+-(void)followUser:(AKID *)userID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+    
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods postFriendshipsCreate:userID skipCheck:0 var:nil pTask:taskInfo];
+    
+}
+
+-(void)unfollowUser:(AKID *)userID callbackTarget:(id<AKWeiboManagerDelegate>)target{
+    
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    [weiboMethods postFriendshipsDestroy:userID var:nil pTask:taskInfo];
+    
+}
+
 
 -(BOOL)existUser:(NSString *)userID{
     
     //TODO: implement checking user.
     return NO;
+    
+}
+
+
+
+-(void)checkUnreadForUser:(AKUserProfile *)user callbackTarget:(id<AKWeiboManagerDelegate>)target{
+
+    AKUserTaskInfo *taskInfo = [self newTask:target];
+    AKVariableParams *params = [AKVariableParams new];
+    params.accessToken = [[[AKUserManager defaultUserManager] getAccessTokenByUserID:user.IDString] accessToken];
+//    [weiboMethods getRemindUnreadCount:user.IDString pTask:taskInfo];
+    [weiboMethods getRemindUnreadCount:user.IDString var:params pTask:taskInfo];
+    
+
+}
+
+-(void)resetUnreadCountOfType:(AKMessageType)messageType callbackTarget:(id<AKWeiboManagerDelegate>)target{
+    
+//    NSString *unreadTypeString = [self getSetCountTypeStringOfMessageType:messageType];
+    
     
 }
 
@@ -298,7 +522,7 @@ static AKWeiboManager * _currentManager;
         [userInfoDictionary setObject:pTask forKey:@"task"];
     }
     
-    
+
    
     if (methodOption == AKWBOPT_OAUTH2_ACCESS_TOKEN)
     {
@@ -315,40 +539,7 @@ static AKWeiboManager * _currentManager;
             NSString * expires_in = [result getSubStringByKey:@"expires_in"];
             NSString * uid = [result getSubStringByKey:@"uid"];
             
-            //[self.loginView setHidden:YES];
-            
-            
-//            
-//            if(![self existUser:uid ]){
-//                
-//                [ addObject:userProfile];
-//    
-//                //create user profile.
-//                //[self creatLocalProfileForUser:uid];
-//                
-//                [[AKUserManager defaultUserManager]createUserProfile:userProfile];
-//                
-//                
-//            }
-//            else{
-//                
-//                for (NSInteger i=0; i<userProfileArray.count; i++) {
-//                    if ([[[userProfileArray objectAtIndex:i] IDString] isEqualToString:uid]) {
-//                        
-//                        [userProfileArray replaceObjectAtIndex:i withObject:userProfile];
-//                        break;
-//                    }
-//                }
-//                
-//                
-//                //Update Access Token in existed profile.
-//                [[AKUserManager defaultUserManager]updateUserAccessToken:userProfile];
-//                
-//                
-//            }
-            
-            //[self getUserDetail:uid];
-            
+
             // Note: Must set acess token to sdk!
             NSLog(@"Access Token = %@", access_token);
             //[theWeibo setAccessToken:access_token];
@@ -362,38 +553,6 @@ static AKWeiboManager * _currentManager;
         // Send weibo successed!
         // ...
         NSLog(@"Weibo Send.");
-    }
-    else if (methodOption == AKWBOPT_GET_STATUSES_HOME_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_MENTIONS || methodOption == AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE){
-
-        NSDictionary *resultDictionary = (NSDictionary *)[result getObject];
-        NSArray *statusArray = (NSArray *)[resultDictionary objectForKey:@"statuses"];
-        NSMutableArray *statusObjectArray = [[NSMutableArray alloc]init];
-        for(NSDictionary *status in statusArray){
-            
-            AKWeiboStatus *statusObject = [AKWeiboStatus getStatusFromDictionary:status];
-            [statusObjectArray addObject:statusObject];
-
-        }
-        
-        [userInfoDictionary setObject:statusObjectArray forKey:@"statuses"];
-    
-    }
-    else if(methodOption == AKWBOPT_GET_FAVORITES){
-        
-        NSDictionary *resultDictionary = (NSDictionary *)[result getObject];
-        NSArray *statusArray = (NSArray *)[resultDictionary objectForKey:@"favorites"];
-        NSMutableArray *statusObjectArray = [[NSMutableArray alloc]init];
-        for(NSDictionary *status in statusArray){
-            
-            AKWeiboStatus *statusObject = [AKWeiboStatus getStatusFromDictionary:[status objectForKey:@"status"]];
-            [statusObjectArray addObject:statusObject];
-            
-        }
-        
-        [userInfoDictionary setObject:statusObjectArray forKey:@"statuses"];
-        
-    
-        
     }
     else if (methodOption == AKWBOPT_GET_USERS_SHOW){
     
@@ -455,6 +614,23 @@ static AKWeiboManager * _currentManager;
 
 
 #pragma mark - Public Static Mehtods
+
++(AKError *)getErrorFromResult:(AKParsingObject *)result{
+    
+    //Check Error
+    NSObject *object = [result getObject];
+    if([object isKindOfClass:[NSDictionary class]] && [(NSDictionary *)object objectForKey:@"error"]){
+        NSDictionary *errorDictionary = (NSDictionary *)object;
+        AKError *error = [[AKError alloc] initWithErrorCode:[(NSString *)[errorDictionary objectForKey:@"error_code"] integerValue]
+                                                      error:[errorDictionary objectForKey:@"error"]
+                                                    request:[errorDictionary objectForKey:@"request"]];
+        return error;
+        
+    }
+    
+    return nil;
+
+}
 
 +(AKAccessTokenObject *)getAccessTokenFromParsingObject:(AKParsingObject *)object{
     

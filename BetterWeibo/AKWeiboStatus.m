@@ -10,15 +10,20 @@
 #import "AKUserProfile.h"
 #import "AKImageDownloader.h"
 #import "AKImageHelper.h"
+#import "RegexKitLite.h"
+#import "AKEmotion.h"
+
+#define DEFAULT_FONT_SIZE 13.0
 
 NSString *const ATEntityPropertyNamedThumbnailImage = @"thumbnailImages";
+NSString *const AKWeiboStatusPropertyNamedFavorited = @"favorited";
 
 static NSOperationQueue *ATSharedOperationQueue() {
     static NSOperationQueue *_ATSharedOperationQueue = nil;
     if (_ATSharedOperationQueue == nil) {
         _ATSharedOperationQueue = [[NSOperationQueue alloc] init];
         // We limit the concurrency to see things easier for demo purposes. The default value NSOperationQueueDefaultMaxConcurrentOperationCount will yield better results, as it will create more threads, as appropriate for your processor
-        [_ATSharedOperationQueue setMaxConcurrentOperationCount:2];
+        [_ATSharedOperationQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
     }
     return _ATSharedOperationQueue;
 }
@@ -30,6 +35,8 @@ static NSOperationQueue *ATSharedOperationQueue() {
 
 
 @synthesize pic_urls = _pic_urls;
+@synthesize attributedText = _attributedText;
+@synthesize text = _text;
 
 -(NSArray *)pic_urls{
 
@@ -49,6 +56,173 @@ static NSOperationQueue *ATSharedOperationQueue() {
 
 }
 
+-(NSString *)text{
+    return _text;
+}
+
+-(void)setText:(NSString *)text{
+    _text = [text copy];
+    
+    if(!_text){
+        _attributedText = nil;
+        return;
+    }
+    
+//    NSString *statusString = aString;
+	
+    
+	// Building up our attributed string
+	NSMutableAttributedString *attributedStatusString = [[NSMutableAttributedString alloc] initWithString:text];
+	
+	// Defining our paragraph style for the tweet text. Starting with the shadow to make the text
+	// appear inset against the gray background.
+	NSShadow *textShadow = [[NSShadow alloc] init];
+	[textShadow setShadowColor:[NSColor colorWithDeviceWhite:1 alpha:.8]];
+	[textShadow setShadowBlurRadius:0];
+	[textShadow setShadowOffset:NSMakeSize(0, -1)];
+    
+	NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	[paragraphStyle setMinimumLineHeight:18];
+	[paragraphStyle setMaximumLineHeight:18];
+	[paragraphStyle setParagraphSpacing:0];
+	[paragraphStyle setParagraphSpacingBefore:0];
+	[paragraphStyle setTighteningFactorForTruncation:4];
+	[paragraphStyle setAlignment:NSNaturalTextAlignment];
+	[paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
+	
+	// Our initial set of attributes that are applied to the full string length
+	NSDictionary *fullAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+									[NSColor colorWithDeviceHue:.53 saturation:.13 brightness:.26 alpha:1], NSForegroundColorAttributeName,
+									textShadow, NSShadowAttributeName,
+									[NSCursor arrowCursor], NSCursorAttributeName,
+									[NSNumber numberWithFloat:0.0], NSKernAttributeName,
+									[NSNumber numberWithInt:0], NSLigatureAttributeName,
+									paragraphStyle, NSParagraphStyleAttributeName,
+									[NSFont systemFontOfSize:DEFAULT_FONT_SIZE], NSFontAttributeName, nil];
+	[attributedStatusString addAttributes:fullAttributes range:NSMakeRange(0, [text length])];
+    
+    
+	// Generate arrays of our interesting items. Links, usernames, hashtags.
+	NSArray *linkMatches = [self scanStringForLinks:text];
+	NSArray *usernameMatches = [self scanStringForUsernames:text];
+	NSArray *hashtagMatches = [self scanStringForHashtags:text];
+    NSArray *emotions = [self scanStringForEmotions:text];
+	
+	// Iterate across the string matches from our regular expressions, find the range
+	// of each match, add new attributes to that range
+	for (NSString *linkMatchedString in linkMatches) {
+        
+		NSRange range = [text rangeOfString:linkMatchedString];
+		if( range.location != NSNotFound ) {
+			// Add custom attribute of LinkMatch to indicate where our URLs are found. Could be blue
+			// or any other color.
+			NSDictionary *linkAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
+									  [NSCursor pointingHandCursor], NSCursorAttributeName,
+									  [NSColor blueColor], NSForegroundColorAttributeName,
+									  [NSFont boldSystemFontOfSize:DEFAULT_FONT_SIZE], NSFontAttributeName,
+									  linkMatchedString, @"LinkMatch",
+									  nil];
+			[attributedStatusString addAttributes:linkAttr range:range];
+            
+		}
+	}
+	
+	for (NSString *usernameMatchedString in usernameMatches) {
+        
+        NSUInteger count = 0, length = [text length];
+        NSRange range = NSMakeRange(0, length);
+        while(range.location != NSNotFound)
+        {
+            range = [text rangeOfString: usernameMatchedString options:0 range:range];
+            if(range.location != NSNotFound)
+            {
+                
+                // Add custom attribute of UsernameMatch to indicate where our usernames are found
+                NSDictionary *linkAttr2 = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                           [NSColor blackColor], NSForegroundColorAttributeName,
+                                           [NSCursor pointingHandCursor], NSCursorAttributeName,
+                                           [NSFont boldSystemFontOfSize:DEFAULT_FONT_SIZE], NSFontAttributeName,
+                                           usernameMatchedString, @"UsernameMatch",
+                                           nil];
+                [attributedStatusString addAttributes:linkAttr2 range:range];
+                
+                
+                range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
+                count++;
+            }
+        }
+        
+	}
+	
+	for (NSString *hashtagMatchedString in hashtagMatches) {
+		NSRange range = [text rangeOfString:hashtagMatchedString];
+		if( range.location != NSNotFound ) {
+			// Add custom attribute of HashtagMatch to indicate where our hashtags are found
+			NSDictionary *linkAttr3 = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                       [NSColor grayColor], NSForegroundColorAttributeName,
+                                       [NSCursor pointingHandCursor], NSCursorAttributeName,
+                                       [NSFont systemFontOfSize:DEFAULT_FONT_SIZE], NSFontAttributeName,
+                                       hashtagMatchedString, @"HashtagMatch",
+                                       nil];
+			[attributedStatusString addAttributes:linkAttr3 range:range];
+            
+		}
+	}
+    
+    for (NSString *emotionCode in emotions) {
+        
+        AKEmotion *emotion;
+        if(!( emotion = [[AKEmotion emotionDictionary]objectForKey:emotionCode])){
+            
+            continue;
+        }
+        
+		NSUInteger length = [text length];
+        NSRange range = NSMakeRange(0, length);
+        
+        //assert(range.length+range.location<=statusString.length);
+        range = [text rangeOfString: emotionCode options:0 range:range];
+        if( range.location != NSNotFound ) {
+            // Add custom attribute of HashtagMatch to indicate where our hashtags are found
+            NSTextAttachmentCell *textAttachmentCell = [[NSTextAttachmentCell alloc] initImageCell:emotion.image];
+            NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+            [textAttachment setAttachmentCell:textAttachmentCell];
+            NSAttributedString *emotionIconString = [NSAttributedString attributedStringWithAttachment:textAttachment];
+            
+            assert(range.length+range.location<=attributedStatusString.length);
+            [attributedStatusString replaceCharactersInRange:NSMakeRange(range.location, range.length) withAttributedString:emotionIconString];
+            
+            text = attributedStatusString.string;
+        }
+        
+	}
+
+    _attributedText = attributedStatusString;
+
+}
+
+-(NSString *)dateDuration{
+    if (!_created_at) {
+        return nil;
+    }
+    
+    NSTimeInterval timeInterval = -[_created_at timeIntervalSinceNow];
+    NSInteger result = 0;
+    //86400 = 60 * 60 *24
+    if((result = timeInterval/86400)>0){
+        return [NSString stringWithFormat:@"%ld天", result];
+    }
+    else if((result = timeInterval/3600)>0){
+        return [NSString stringWithFormat:@"%ld小时", result];
+    }
+    else if((result = timeInterval / 60)>0){
+        return [NSString stringWithFormat:@"%ld分", result];
+    }
+    else{
+        return [NSString stringWithFormat:@"%ld秒", (long)timeInterval];
+    }
+    
+}
 
 -(BOOL)hasImages{
 
@@ -91,10 +265,14 @@ static NSOperationQueue *ATSharedOperationQueue() {
                 NSInteger i=0;
                 
                 NSArray *pictureURLs = (self.hasImages)?self.pic_urls:self.retweeted_status.pic_urls;
-                
+                BOOL getSquareImage = (pictureURLs.count>1);
                 for(NSDictionary *url in pictureURLs){
-                    
-                    NSImage *image = [AKImageHelper getImageFromData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[url objectForKey:@"thumbnail_pic"]]]];
+                    NSString *urlString = [url objectForKey:@"thumbnail_pic"];
+                    if(getSquareImage){
+                        urlString = [urlString stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/square/"];
+                    }
+                    NSImage *image = [AKImageHelper getImageFromData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
+                    image = [AKImageHelper getSquareImageFrom:image];
                     
                     [thumbnails addObject:(image)?image:[NSNull new]];
                     i++;
@@ -121,8 +299,59 @@ static NSOperationQueue *ATSharedOperationQueue() {
         }
     }
 
-    
+}
 
+
+#pragma mark - String parsing
+
+// These regular expressions aren't the greatest. There are much better ones out there to parse URLs, @usernames
+// and hashtags out of tweets. Getting the escaping just right is a pain in the ass, so be forewarned.
+
+- (NSArray *)scanStringForLinks:(NSString *)string {
+	return [string componentsMatchedByRegex:@"https?://[a-zA-Z0-9\\-.]+(?:(?:/[a-zA-Z0-9\\-._?,'+\\&%$=~*!():@\\\\]*)+)?"];
+    
+}
+
+- (NSArray *)scanStringForUsernames:(NSString *)string {
+	NSArray *array = [string componentsMatchedByRegex:@"@[\u4e00-\u9fa5a-zA-Z0-9_-]{2,30}"];
+    NSMutableArray *copy = [NSMutableArray arrayWithArray:array];
+    NSInteger index = [array count] - 1;
+    for (id object in [array reverseObjectEnumerator]) {
+        if ([copy indexOfObject:object inRange:NSMakeRange(0, index)] != NSNotFound) {
+            [copy removeObjectAtIndex:index];
+        }
+        index--;
+    }
+    
+    return copy;
+    
+    //	return [string componentsMatchedByRegex:@"@{1}([-A-Za-z0-9_]{2,})"];
+}
+
+- (NSArray *)scanStringForHashtags:(NSString *)string {
+	return [string componentsMatchedByRegex:@"#[^#]+#"];
+    //    return [string componentsMatchedByRegex:@"[\\s]{1,}#{1}([^\\s]{2,})"];
+}
+
+
+- (NSArray *)scanStringForEmotions:(NSString *)string {
+	return [string componentsMatchedByRegex:@"\\[[\u4e00-\u9fa5a-zA-Z0-9_-]{1,10}\\]"];
+    
+}
+
+
+#pragma mark - Static Methods
+
++(NSDateFormatter *)dateFormatter{
+
+    static NSDateFormatter *gDateFormatter;
+    if(!gDateFormatter){
+        gDateFormatter = [[NSDateFormatter alloc]init];
+        gDateFormatter.dateFormat = @"EEE MMM dd HH:mm:ss ZZZ yyy";
+        gDateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    }
+    
+    return gDateFormatter;
 }
 
 +(AKWeiboStatus *)getStatusFromDictionary:(NSDictionary *)status{
@@ -162,7 +391,7 @@ static NSOperationQueue *ATSharedOperationQueue() {
     statusObject.ID = [(NSNumber *)[status objectForKey:@"id"] longLongValue];
     statusObject.mid = [(NSNumber *)[status objectForKey:@"mid"] longLongValue];
     statusObject.idstr =(NSString *)[status objectForKey:@"idstr"];
-    statusObject.created_at = (NSString *)[status objectForKey:@"created_at"];
+    statusObject.created_at = [[[self class] dateFormatter] dateFromString:(NSString *)[status objectForKey:@"created_at"]];
     statusObject.thumbnail_pic = (NSString *)[status objectForKey:@"thumbnail_pic"];
     statusObject.bmiddle_pic =(NSString *)[status objectForKey:@"bmiddle_pic"];
     statusObject.original_pic = (NSString *)[status objectForKey:@"created_at"];
@@ -197,7 +426,7 @@ static NSOperationQueue *ATSharedOperationQueue() {
     statusObject.ID = [(NSNumber *)[statusDictionary objectForKey:@"id"] longLongValue];
     statusObject.mid = [(NSNumber *)[statusDictionary objectForKey:@"mid"] longLongValue];
     statusObject.idstr =(NSString *)[statusDictionary objectForKey:@"idstr"];
-    statusObject.created_at = (NSString *)[statusDictionary objectForKey:@"created_at"];
+    statusObject.created_at = [[[self class] dateFormatter] dateFromString:(NSString *)[statusDictionary objectForKey:@"created_at"]];
     statusObject.thumbnail_pic = (NSString *)[statusDictionary objectForKey:@"thumbnail_pic"];
     statusObject.bmiddle_pic =(NSString *)[statusDictionary objectForKey:@"bmiddle_pic"];
     statusObject.original_pic = (NSString *)[statusDictionary objectForKey:@"created_at"];
