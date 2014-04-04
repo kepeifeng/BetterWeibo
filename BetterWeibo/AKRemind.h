@@ -23,19 +23,19 @@
 /**
  *新评论数
  */
-@property NSInteger cmt;
+@property NSInteger comment;
 /**
  *新私信数
  */
-@property NSInteger dm;
+@property NSInteger directMessage;
 /**
  *新提及我的微博数
  */
-@property NSInteger mention_status;
+@property NSInteger mentionStatus;
 /**
  *新提及我的评论数
  */
-@property NSInteger mention_cmt;
+@property NSInteger mentionComment;
 /**
  *微群消息未读数
  */
@@ -43,7 +43,7 @@
 /**
  *私有微群消息未读数
  */
-@property NSInteger private_group;
+@property NSInteger privateGroup;
 /**
  *新通知未读数
  */
@@ -63,6 +63,10 @@
 /**
  *{{{3}}}
  */
-@property NSInteger msgbox;
+@property NSInteger messageBox;
+
++(instancetype)getRemindFromDictionary:(NSDictionary *)dictionary;
+
+
 
 @end

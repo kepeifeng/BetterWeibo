@@ -33,6 +33,11 @@
         else if(![self creatDatabase]){
             NSLog(@"Create database failed.");
         }
+        else{
+            //Success
+            [self cleanDatabase];
+        }
+        
     }
     return self;
 }
@@ -43,15 +48,22 @@
      create table tbl1(one varchar(10), two smallint);
      */
     
-    return [cacheDB executeUpdate:@"CREATE TABLE IF NOT EXISTS data(appKey varchar(255), accessToken varchar(255), data TEXT);"];
+    return [cacheDB executeUpdate:@"CREATE TABLE IF NOT EXISTS data(date TEXT, appKey varchar(255), accessToken varchar(255), data TEXT);"];
 }
 
+-(BOOL)cleanDatabase{
+    
+    //移除三天前的数据
+    NSString *statement = @"DELETE FROM data WHERE date<date('now','-3 day','localtime')";
+    return [cacheDB executeUpdate:statement];
+    
+}
 -(BOOL)insertData:(NSData *)data appKey:(NSString *)appKey accessToken:(NSString *)accessToken{
     
-    NSString *insertStatement = @"INSERT INTO data (appKey, accessToken, data) VALUES (:appKey, :accessToken, :data)";
+    NSString *insertStatement = @"INSERT INTO data (date, appKey, accessToken, data) VALUES (datetime('now','localtime'),:appKey, :accessToken, :data)";
     NSDictionary *paramDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                      appKey,@"appKey",
-                                     accessToken,@"accessToken",
+                                     (accessToken)?accessToken:@"",@"accessToken",
                                      [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding], @"data", nil];
     return [cacheDB executeUpdate:insertStatement withParameterDictionary:paramDictionary];
     

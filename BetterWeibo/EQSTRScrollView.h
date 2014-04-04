@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #import <AppKit/AppKit.h>
+#import "AKView.h"
 typedef NS_OPTIONS(NSUInteger, BSRefreshableScrollViewSide) {
     BSRefreshableScrollViewSideNone = 0,
     BSRefreshableScrollViewSideTop = 1,
@@ -37,8 +38,8 @@ typedef NS_OPTIONS(NSUInteger, BSRefreshableScrollViewSide) {
 @property (readonly) BOOL isRefreshing;
 @property (readonly) BOOL isBottomRefreshing;
 
-@property (readonly) NSView *refreshHeader;
-@property (readonly) NSView *refreshFooter;
+@property (readonly) AKView *refreshHeader;
+@property (readonly) AKView *refreshFooter;
 @property (readonly) NSProgressIndicator *refreshSpinner;
 @property (readonly) NSView *refreshArrow;
 

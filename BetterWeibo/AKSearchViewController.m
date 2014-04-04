@@ -51,7 +51,7 @@
 
 -(void)awakeFromNib{
     
-    self.searchFieldView.backgroundType = AKViewCustomBackground;
+    self.searchFieldView.backgroundType = AKViewCustomImageBackground;
     self.searchFieldView.customBackgroundImage = [NSImage imageNamed:@"search-field"];
     self.searchFieldView.customLeftWidth = 47;
     self.searchFieldView.customRightWidth = 28;

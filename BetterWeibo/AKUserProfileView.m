@@ -146,8 +146,13 @@
         
         [self addSubview:self.followingProgrecessIndicator];
         
+        NSShadow *userProfileViewShadow = [[NSShadow alloc]init];
+        userProfileViewShadow.shadowBlurRadius = 5;
+        userProfileViewShadow.shadowColor = [NSColor colorWithCalibratedWhite:0 alpha:0.5];
+        userProfileViewShadow.shadowOffset = NSMakeSize(0, -5);
+        
 //        self.wantsLayer = YES;
-//        self.layer.backgroundColor = CGColorCreateGenericRGB(0.6, 0.6, 0.6, 1);
+        self.shadow = userProfileViewShadow;
 
     }
     return self;
@@ -208,6 +213,14 @@
     [super resizeSubviewsWithOldSize:oldSize];
 
 
+}
+
+-(NSSize)intrinsicContentSize{
+    NSSize contentSize = NSZeroSize;
+    contentSize.width = self.frame.size.width;
+    contentSize.height = self.userDescription.frame.size.height+161;
+    return contentSize;
+    
 }
 
 

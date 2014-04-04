@@ -13,6 +13,8 @@
 #import "AKWeiboManager.h"
 #import "AKTableRowView.h"
 #import "AKProfileViewController.h"
+#import "INPopoverController.h"
+#import "AKPopupStatusEditorViewController.h"
 
 #pragma mark - Constants
 
@@ -33,6 +35,9 @@
     BOOL isRepostTabActived;
     //For cell height calculation usage.
     AKTextView *_textField;
+    INPopoverController *gPopoverController;
+    NSMenu *_shareButtonContextMenu;
+    
 }
 
 @synthesize status = _status;
@@ -79,7 +84,8 @@
         [self.statusDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
         self.statusDetailView.weiboTextField.delegate = self;
         self.statusDetailView.repostedWeiboView.repostedWeiboContent.delegate = self;
-        
+        self.statusDetailView.toolbar.target = self;
+        self.statusDetailView.toolbar.action = @selector(toolbarClicked:);
         
 
         
@@ -104,16 +110,149 @@
 - (void)awakeFromNib
 {
 
-    
+    if(!_shareButtonContextMenu){
+        _shareButtonContextMenu = [[NSMenu alloc] init];
+        
+        NSMenuItem *menuItem = [[NSMenuItem alloc]initWithTitle:@"复制微博" action:@selector(copyStatusMenuClicked:) keyEquivalent:@""];
+        menuItem.target = self;
+        [_shareButtonContextMenu addItem:menuItem];
+        
+        /*
+         menuItem = [[NSMenuItem alloc] initWithTitle:@"在浏览器查看微博" action:@selector(openStatusInBrowser:) keyEquivalent:@""];
+         menuItem.target = self;
+         [_shareButtonContextMenu addItem:menuItem];
+         */
+        
+        
+    }
 
-    self.view.wantsLayer = YES;
-    self.view.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+//    self.view.wantsLayer = YES;
+//    self.view.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
     
     
     //self.view.layer.contents = [NSImage imageNamed:@"app_content_background"];
     
 }
 
+-(INPopoverController *)popoverStatusEditior{
+    
+    [self _makePopupPanelIfNeeded];
+    return gPopoverController;
+}
+
+-(void)_makePopupPanelIfNeeded{
+    
+    if(!gPopoverController){
+        AKPopupStatusEditorViewController *popupStatusEditorController = [[AKPopupStatusEditorViewController alloc] init];
+        gPopoverController = [[INPopoverController alloc] initWithContentViewController:popupStatusEditorController];
+        gPopoverController.borderColor = [NSColor colorWithWhite:0.1 alpha:1];
+        gPopoverController.color = [NSColor colorWithWhite:0.2 alpha:1];
+        gPopoverController.topHighlightColor = [NSColor colorWithWhite:0.5 alpha:1];
+        popupStatusEditorController.popoverController = gPopoverController;
+        
+    }
+    
+    
+}
+
+-(void)repostButtonClicked:(id)sender{
+    
+    //NSMatrix *toolbar = sender;
+    
+    NSButtonCell *selectedButtonCell = (NSButtonCell *)[(NSMatrix *)sender selectedCell];
+    NSRect buttonCellBounds = NSMakeRect(0, 0, selectedButtonCell.cellSize.width, selectedButtonCell.cellSize.height);
+    
+    if (self.popoverStatusEditior.popoverIsVisible) {
+        [self.popoverStatusEditior closePopover:nil];
+    } else {
+        [(AKPopupStatusEditorViewController *)self.popoverStatusEditior.contentViewController repostStatus:self.status];
+        [self.popoverStatusEditior presentPopoverFromRect:buttonCellBounds
+                                                   inView:sender
+                                  preferredArrowDirection:INPopoverArrowDirectionUp
+                                    anchorsToPositionView:YES];
+    }
+    
+}
+-(void)commentButtonClicked:(id)sender{
+    
+    //NSMatrix *toolbar = sender;
+    
+    NSButtonCell *selectedButtonCell = (NSButtonCell *)[(NSMatrix *)sender selectedCell];
+    NSRect buttonCellBounds = NSMakeRect(selectedButtonCell.cellSize.width, 0, selectedButtonCell.cellSize.width, selectedButtonCell.cellSize.height);
+    
+    if (self.popoverStatusEditior.popoverIsVisible) {
+        [self.popoverStatusEditior closePopover:nil];
+    } else {
+        
+        [(AKPopupStatusEditorViewController *)self.popoverStatusEditior.contentViewController commentOnStatus:self.status];
+        [self.popoverStatusEditior presentPopoverFromRect:buttonCellBounds
+                                                   inView:sender
+                                  preferredArrowDirection:INPopoverArrowDirectionUp
+                                    anchorsToPositionView:YES];
+    }
+    
+}
+
+-(void)favButtonClicked:(id)sender{
+    
+    
+    
+}
+
+-(void)shareButtonClicked:(id)sender{
+    
+    NSMatrix *toolbarMatrix = sender;
+    //    NSMenu *menu = [(NSButtonCell *)toolbarMatrix.selectedCell menu];
+    [_shareButtonContextMenu popUpMenuPositioningItem:nil atLocation:NSMakePoint(toolbarMatrix.frame.size.width, 0) inView:toolbarMatrix];
+}
+
+
+-(void)copyStatusMenuClicked:(id)sender{
+    
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    [pasteboard setString:self.status.text forType:NSStringPboardType];
+    
+}
+
+-(void)openStatusInBrowser:(id)sender{
+    
+    NSString *urlString = @"";
+    [[NSWorkspace sharedWorkspace]openURL:[NSURL URLWithString:urlString]];
+    
+}
+
+
+-(IBAction)toolbarClicked:(id)sender{
+    
+    NSButtonCell *clickedButton = [(NSMatrix *)sender selectedCell];
+    switch (clickedButton.tag) {
+        case 0:
+            //转发
+            [self repostButtonClicked:sender];
+            break;
+            
+        case 1:
+            //评论
+            [self commentButtonClicked:sender];
+            break;
+            
+        case 2:
+            //收藏
+            [self favButtonClicked:sender];
+            break;
+            
+        case 3:
+            //其它
+            [self shareButtonClicked:sender];
+            break;
+            
+        default:
+            break;
+    }
+    
+    
+}
 
 
 
@@ -192,7 +331,7 @@
     NSInteger minHeight = 62;
     
     if(!_textField){
-        _textField = [AKTextView new];
+        _textField = [[AKTextView alloc] initWithFrame:NSMakeRect(0, 0, tableView.bounds.size.width, 100)];
     }
     
     [_textField setFrameSize:NSMakeSize(tableView.bounds.size.width - 10 - 48 - 10 - 10, 100)];

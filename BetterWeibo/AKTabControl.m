@@ -18,8 +18,19 @@
 #import "AKPanelView.h"
 #import "AKTabViewItem.h"
 #import "AKUserButton.h"
-#import "AKUserManager.h"
 
+#import "AKStatusEditorWindowController.h"
+#import "AKRemind.h"
+#import "AKMenuItemRemindView.h"
+#import "AKMenuItemUserView.h"
+
+#define STATUS_MENU_WIDTH 180
+
+@interface AKTabControl()
+
+@property (readonly) NSMenu *statusBarMenu;
+
+@end
 
 @implementation AKTabControl{
     
@@ -37,20 +48,36 @@
     //用于表示当前用户的序号
     NSInteger currentIndex;
     
-    
-    
     NSMutableDictionary *weiboViewGroup;
     NSView *activedView;
     
     //A List of User ID string
     NSMutableArray *userIDList;
     AKUserManager *userManager;
+    
+    NSStatusItem *statusBarItem;
+    
+    NSMutableArray *_observedObjects;
+    
+    NSMenuItem *_lastHighlightedItem;
+    
+    //储存检查更新的timer
+    NSMutableDictionary *_timerDictionary;
 }
 
 
 #pragma mark - Property Synthesize
 @synthesize tabViewControllers = _tabViewControllers;
+@synthesize targetTabView = _targetTabView;
+-(void)dealloc{
+    for (AKUserProfile *user in _observedObjects) {
+        [user removeObserver:self forKeyPath:AKUserProfilePropertyNamedScreenName];
+        [user removeObserver:self forKeyPath:AKUserProfilePropertyNamedProfileImage];
+    }
+    [userManager removeListener:self];
+}
 
+#pragma mark - Initialization
 
 
 
@@ -76,12 +103,10 @@
 
         userManager = [AKUserManager defaultUserManager];
 
-//
-//        AKWeiboViewController *weiboController = [[AKWeiboViewController alloc]init];
-//        
-//        [self addViewController:weiboController];
-  
+        _timerDictionary = [NSMutableDictionary new];
         
+        [userManager addListener:self];
+
     }
     return self;
 }
@@ -114,6 +139,27 @@
 
 }
 
+#pragma mark - Properties
+
+-(NSTabView *)targetTabView{
+    return _targetTabView;
+}
+
+-(void)setTargetTabView:(NSTabView *)targetTabView{
+    _targetTabView = targetTabView;
+//    if(_targetTabView){
+//        [_targetTabView setDrawsBackground:YES];
+//        NSColor *tabBackgroundPattern = [NSColor colorWithPatternImage:[NSImage imageNamed:@"app_content_background"]];
+////        [_targetTabView set]
+//        
+//                                         
+//    }
+    
+    
+}
+
+
+
 #pragma mark - Public Methods
 
 -(BOOL)isUserExist:(NSString *)userID{
@@ -137,9 +183,9 @@
  */
 -(void)addControlGroup:(NSString *)userID{
     
-    if([self isUserExist:userID]){
-        return;
-    }
+//    if([self isUserExist:userID]){
+//        return;
+//    }
 
     NSUInteger index = [userButtonDictionary count];
     
@@ -149,12 +195,14 @@
     [userIDList addObject:userID];
     viewGroupItem.userID = userID;
     
+    AKUserProfile *userProfile = [[AKUserManager defaultUserManager]getUserProfileByUserID:userID];
+    
     //Add user image
     AKUserButton *userButton = [[AKUserButton alloc]initWithFrame:NSMakeRect(0, 0, 48, 49)];
     //userButton.avatarURL = userProfile.profile_image_url;
     userButton.tag = index;
     userButton.borderType = AKUserButtonBorderTypeGlassOutline;
-    userButton.userProfile = [[AKUserManager defaultUserManager]getUserProfileByUserID:userID];
+    userButton.userProfile = userProfile;
     userButton.userID = userID;
     [userButton setTarget:self];
     [userButton setAction:@selector(userButtonClicked:)];
@@ -203,23 +251,12 @@
     [buttonMatrix setTarget:self];
     [self addSubview:buttonMatrix];
 
-    //[buttonMatrix setFrameOrigin:NSMakePoint(
-    //(NSWidth([self bounds]) - NSWidth([buttonMatrix frame])) / 2,
-    //(NSHeight([self bounds]) - NSHeight([buttonMatrix frame])) / 2
-    //)];
-    
+
     if(index>0){
-        
-        //[buttonMatrix setFrameSize:NSMakeSize(buttonMatrix.frame.size.width, 0)];
-        
         [buttonMatrix setFrameOrigin:NSMakePoint((self.bounds.size.width - buttonMatrixSize.width)/2, userButton.frame.origin.y -10 )];
-        //[buttonMatrix setHidden:YES];
-        //[buttonMatrix setAlphaValue:0];
     }
     else{
-    
         [buttonMatrix setFrameOrigin:NSMakePoint((self.bounds.size.width - buttonMatrixSize.width)/2, self.bounds.size.height - (buttonMatrixSize.height + userButton.frame.size.height + 10 + buttonMatrixTopMargin))];
-        
     }
     
     
@@ -231,15 +268,16 @@
     
     viewGroupItem.userControlMatrix = buttonMatrix;
     
-
     
     //Add New Tab with new tabview inside in targetTabView for User
     
     NSTabViewItem *newTabViewItem = [[NSTabViewItem alloc]initWithIdentifier:[NSString stringWithFormat:@"%@",userID]];
     [self.targetTabView addTabViewItem:newTabViewItem];
+    viewGroupItem.userTabViewItem = newTabViewItem;
     
     NSTabView *userTabView = [[NSTabView alloc]init];
     
+    [userTabView setDelegate:self];
     [userTabViewDictionary setObject:userTabView forKey:userID];
     viewGroupItem.tabView = userTabView;
     
@@ -251,7 +289,7 @@
     
     //微博
     AKWeiboViewController *weiboViewController = [[AKWeiboViewController alloc]init];
-    weiboViewController.delegate = self;
+//    weiboViewController.delegate = self;
     viewGroupItem.weiboViewController = weiboViewController;
     weiboViewController.timelineType = AKFriendsTimeline;
     
@@ -260,9 +298,6 @@
 
     
     //提及
-//    AKMentionViewController *mentionViewController = [[AKMentionViewController alloc]init];
-//    [self addViewController:mentionViewController forUser:userID];
-//    viewGroupItem.mentionViewController = mentionViewController;
     AKWeiboViewController *mentionViewController = [[AKWeiboViewController alloc]init];
     mentionViewController.delegate = self;
     viewGroupItem.mentionViewController = mentionViewController;
@@ -279,8 +314,6 @@
     */
     
     //收藏
-//    AKTabViewController *favoriteViewController = [[AKFavoriteViewController alloc]init];
-//    [self addViewController:favoriteViewController forUser:userID];
     AKWeiboViewController *favoriteViewController = [[AKWeiboViewController alloc]init];
     favoriteViewController.delegate = self;
     viewGroupItem.favoriteViewController = favoriteViewController;
@@ -289,13 +322,13 @@
     [self addViewController:favoriteViewController forUser:userID];
 
     
-    
     //我
     AKProfileViewController *profileViewController = [[AKProfileViewController alloc]init];
     profileViewController.delegate = self;
     profileViewController.timelineType = AKUserTimeline;
     profileViewController.userID = [[AKID alloc] initWithIdType:AKIDTypeID text:userID key:nil];
     [self addViewController:profileViewController forUser:userID];
+    
     
     //搜索
     AKTabViewController *searchViewController = [[AKSearchViewController alloc]init];
@@ -321,28 +354,237 @@
     }
     lastControlMatrixOrigin = buttonMatrix.frame.origin;
     
+    if(_observedObjects){
+        _observedObjects = [NSMutableArray new];
+    }
+    
+    if(![_observedObjects containsObject:userProfile]){
+        
+        [userProfile addObserver:self forKeyPath:AKUserProfilePropertyNamedScreenName options:0 context:NULL];
+        [userProfile addObserver:self forKeyPath:AKUserProfilePropertyNamedProfileImage options:0 context:NULL];
+        [_observedObjects addObject:userProfile];
+        
+    }
+    
+    //Setup Status Bar
+    NSMenu *menu = self.statusBarMenu;
+    
+    //分隔线
+//    viewGroupItem.spliterMenuItem = [NSMenuItem separatorItem];
+//    [menu addItem:viewGroupItem.spliterMenuItem];
+    
+    //用户名
+    viewGroupItem.nameMenuItem = [[NSMenuItem alloc] initWithTitle:(userProfile.screen_name)?userProfile.screen_name:userProfile.IDString action:NULL keyEquivalent:@""];
+    AKMenuItemUserView *menuItemUserView = [[AKMenuItemUserView alloc] initWithFrame:NSMakeRect(0, 0, STATUS_MENU_WIDTH, 37)];
+    menuItemUserView.title = (userProfile.screen_name)?userProfile.screen_name:@"(空)";
+    menuItemUserView.image = userProfile.profileImage;
+    menuItemUserView.backgroundType = AKViewCustomImageBackground;
+    menuItemUserView.customBackgroundImage = [NSImage imageNamed:@"status_item_header_background"];
+    menuItemUserView.customLeftWidth = 5;
+    menuItemUserView.customRightWidth = 5;
+    viewGroupItem.nameMenuItem.view = menuItemUserView;
+    [menu addItem:viewGroupItem.nameMenuItem];
+    
+
+    //主页
+    viewGroupItem.homeMenuItem = [[NSMenuItem alloc] initWithTitle:@"主页" action:@selector(homeMenuItemClicked:) keyEquivalent:@""];
+    viewGroupItem.homeMenuItem.target = self;
+//    viewGroupItem.homeMenuItem.image = [NSImage imageNamed:@"menu-timeline-gray"];
+//    viewGroupItem.homeMenuItem.onStateImage = [NSImage imageNamed:@"menu-timeline-white"];
+//    viewGroupItem.homeMenuItem.offStateImage = [NSImage imageNamed:@"menu-timeline-gray"];
+    viewGroupItem.homeMenuItem.mixedStateImage = nil;
+    viewGroupItem.homeMenuItem.state = NSMixedState;
+    viewGroupItem.homeMenuItem.tag = [userID integerValue];
+    
+    AKMenuItemRemindView *homeMenuItemView =[[AKMenuItemRemindView alloc] initWithFrame:NSMakeRect(0, 0, STATUS_MENU_WIDTH, 30)];
+    homeMenuItemView.title = viewGroupItem.homeMenuItem.title;
+    homeMenuItemView.image = [NSImage imageNamed:@"status_item_tweets_icon"];
+//    homeMenuItemView.alternateImage = [NSImage imageNamed:@"menu-timeline-white"];
+    homeMenuItemView.count = 0;
+    
+    
+    viewGroupItem.homeMenuItem.view = homeMenuItemView;
+    
+    [menu addItem:viewGroupItem.homeMenuItem];
+    
+    //提及
+    viewGroupItem.mentionMenuItem = [[NSMenuItem alloc] initWithTitle:@"提及" action:@selector(mentionMenuItemClicked:) keyEquivalent:@""];
+    viewGroupItem.mentionMenuItem.target = self;
+//    viewGroupItem.mentionMenuItem.image = [NSImage imageNamed:@"menu-mentions-gray"];
+//    viewGroupItem.mentionMenuItem.onStateImage = [NSImage imageNamed:@"menu-mentions-white"];
+//    viewGroupItem.mentionMenuItem.offStateImage = [NSImage imageNamed:@"menu-mentions-gray"];
+    viewGroupItem.mentionMenuItem.mixedStateImage = nil;
+    viewGroupItem.mentionMenuItem.state = NSMixedState;
+    viewGroupItem.mentionMenuItem.tag = [userID integerValue];
+    
+    AKMenuItemRemindView *mentionMenuItemView =[[AKMenuItemRemindView alloc] initWithFrame:NSMakeRect(0, 0, STATUS_MENU_WIDTH, 30)];
+    mentionMenuItemView.title = viewGroupItem.mentionMenuItem.title;
+    mentionMenuItemView.image = [NSImage imageNamed:@"status_item_mentions_icon"];
+//    mentionMenuItemView.alternateImage = [NSImage imageNamed:@"menu-mentions-white"];
+    mentionMenuItemView.count = 0;
+    
+    viewGroupItem.mentionMenuItem.view = mentionMenuItemView;
+    
+    [menu addItem:viewGroupItem.mentionMenuItem];
+    
+    NSTimer *checkRemindTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(checkNewReminds) userInfo:nil repeats:YES];
+    
+    [_timerDictionary setObject:checkRemindTimer forKey:userID];
+    
     
 }
 
-//-(AKUserProfile *)currentUser{
-//
-//    return [userIDList objectAtIndex:currentIndex];
-//}
-
-
--(void)switchToGroupOfUser:(NSString *)userID{
+-(void)checkNewReminds{
     
-    if([userManager.currentUserID isEqualToString:userID]){
-        return;
+    NSLog(@"checkNewReminds");
+    
+    NSArray *allUserProfile = [userManager allUserProfiles];
+    
+    for(AKUserProfile *user in allUserProfile){
+        
+        [[AKWeiboManager currentManager] checkUnreadForUser:user callbackTarget:self];
     }
+    
+}
+
+
+-(void)homeMenuItemClicked:(id)sender{
+
+    NSString *userID = [NSString stringWithFormat:@"%ld",[(NSMenuItem *)sender tag]];
+    AKWeiboViewGroupItem *viewGroupItem = [weiboViewGroup objectForKey:userID];
+    [viewGroupItem.userButton performClick:viewGroupItem.userButton];
+    if(viewGroupItem.userControlMatrix.selectedCell != viewGroupItem.weiboViewController.button){
+    
+        [viewGroupItem.weiboViewController.button performClick:viewGroupItem.weiboViewController.button];
+    }
+    [NSApp activateIgnoringOtherApps:YES];
+    [[[NSApp delegate] window] makeKeyAndOrderFront:NSApp];
+//    [[self window] makeKeyAndOrderFront:self];
+    
+}
+
+-(void)mentionMenuItemClicked:(id)sender{
+    NSString *userID = [NSString stringWithFormat:@"%ld",[(NSMenuItem *)sender tag]];
+    AKWeiboViewGroupItem *viewGroupItem = [weiboViewGroup objectForKey:userID];
+    [viewGroupItem.userButton performClick:viewGroupItem.userButton];
+    if(viewGroupItem.userControlMatrix.selectedCell != viewGroupItem.mentionViewController.button){
+    
+        [viewGroupItem.mentionViewController.button performClick:viewGroupItem.mentionViewController.button];
+    }
+    [NSApp activateIgnoringOtherApps:YES];
+    [[[NSApp delegate] window] makeKeyAndOrderFront:NSApp];
+}
+
+
+-(NSMenu *)statusBarMenu{
+
+    static NSMenu *statusBarMenu;
+    if(statusBarMenu){
+        return statusBarMenu;
+    }
+    
+    NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
+    statusBarItem = [statusBar statusItemWithLength:NSVariableStatusItemLength];
+    
+    NSImage *normalImage = [NSImage imageNamed:@"menubar-icon-normal"];
+    statusBarItem.image = normalImage;
+    NSImage *alternateImage=[NSImage imageNamed:@"menubar-icon-highlight"];
+    statusBarItem.alternateImage = alternateImage;
+    statusBarItem.highlightMode = YES;
+    
+    statusBarMenu = [[NSMenu alloc] init];
+
+    statusBarMenu.delegate = self;
+    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:@"写新微博" action:@selector(newStatusMenuItemClicked:) keyEquivalent:@""];
+    menuItem.target = self;
+    AKMenuItemRemindView *newMenuItemView = [[AKMenuItemRemindView alloc] initWithFrame:NSMakeRect(0, 0, STATUS_MENU_WIDTH, 30)];
+    newMenuItemView.title = menuItem.title;
+    newMenuItemView.image = [NSImage imageNamed:@"status_item_new_tweet_icon"];
+    menuItem.view = newMenuItemView;
+    
+//    [statusBarMenu setMinimumWidth:130.0];
+    [statusBarMenu addItem:menuItem];
+    
+    statusBarItem.menu = statusBarMenu;
+    
+    return statusBarMenu;
+    
+}
+
+
+-(void)newStatusMenuItemClicked:(id)sender{
+    
+    [[AKStatusEditorWindowController sharedInstance] showWindow:self];
+    
+}
+
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+
+    if([keyPath isEqualToString:AKUserProfilePropertyNamedScreenName]){
+        AKUserProfile *user = object;
+        if(!user.screen_name){
+            return;
+        }
+        AKWeiboViewGroupItem *viewGroupItem = [weiboViewGroup objectForKey:user.IDString];
+        viewGroupItem.nameMenuItem.title = user.screen_name;
+        [(AKMenuItemUserView *)viewGroupItem.nameMenuItem.view setTitle:user.screen_name];
+    }
+    else if ([keyPath isEqualToString:AKUserProfilePropertyNamedProfileImage]){
+        AKUserProfile *user = object;
+        AKWeiboViewGroupItem *viewGroupItem = [weiboViewGroup objectForKey:user.IDString];
+        viewGroupItem.nameMenuItem.image = user.profileImage;
+        [(AKMenuItemUserView *)viewGroupItem.nameMenuItem.view setImage:user.profileImage];
+
+    }
+
+}
+
+#pragma mark - Menu Delegate
+-(void)menu:(NSMenu *)menu willHighlightItem:(NSMenuItem *)item{
+
+    if(item){
+        if(item.image){
+        
+            item.image = item.onStateImage;
+        }
+    }
+    
+    if(_lastHighlightedItem){
+        if(_lastHighlightedItem.image){
+        
+            _lastHighlightedItem.image = _lastHighlightedItem.offStateImage;
+        }
+    }
+    
+    _lastHighlightedItem = item;
+}
+
+-(void)menuDidClose:(NSMenu *)menu{
+    
+    if(_lastHighlightedItem){
+        if(_lastHighlightedItem.image){
+            
+            _lastHighlightedItem.image = _lastHighlightedItem.offStateImage;
+        }
+    }
+    _lastHighlightedItem = nil;
+}
+#pragma mark -
+
+
+-(void)updateUserControlPosition{
+    
+//    if([userManager.currentUserID isEqualToString:userID]){
+//        return;
+//    }
     
     
     //AKUserProfile *currentUser = [userIDList objectAtIndex:currentIndex];
-    NSString *currentUserID = userManager.currentUserID;
-    //AKUserProfile *targetUser = [userIDList objectAtIndex:index];
-    NSString *targetUserID = userID;
+//    NSString *currentUserID = userManager.currentUserID;
+    NSString *targetUserID = userManager.currentUserID;
     
-    userManager.currentUserID = userID;
+//    userManager.currentUserID = userID;
     
     NSInteger y = self.bounds.size.height;
     
@@ -354,17 +596,9 @@
         NSMatrix *userControlMatrix = viewGroup.userControlMatrix; //[userControlMatrixDictionary objectForKey:userProfile.IDString];
         
         NSSize newMatrixSize;
-        //如果找到当前用户的控件组
-        if([viewGroup.userID isEqualToString: currentUserID]){
-            
-            newMatrixSize = NSMakeSize(userControlMatrix.frame.size.width, 0);
-            
-            //隐藏用户边栏按钮条
-//            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
-            
-        }
+        
         //如果是目标用户的控件组
-        else if ([viewGroup.userID isEqualToString: targetUserID]){
+        if ([viewGroup.userID isEqualToString: targetUserID]){
             
             newMatrixSize = NSMakeSize(userControlMatrix.frame.size.width,
                                        userControlMatrix.cellSize.height * userControlMatrix.cells.count);
@@ -376,31 +610,40 @@
                 [(NSButtonCell *)userControlMatrix.selectedCell setState:NSOnState];
             }
             //现实用户边栏按钮条
-//            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
+            //            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
+            
+        }else{
+            
+            newMatrixSize = NSMakeSize(userControlMatrix.frame.size.width, 0);
+            
+            //隐藏用户边栏按钮条
+            //            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
             
         }
+        
+        
         
         y = y - 10 - userButton.frame.size.height;
         
         NSRect newUserButtonFrame = userButton.frame;
         newUserButtonFrame.origin.y = y;
         [userButton.animator setFrame:newUserButtonFrame];
-//        [userButton setFrameOrigin:NSMakePoint(userButton.frame.origin.x, y)];
+        //        [userButton setFrameOrigin:NSMakePoint(userButton.frame.origin.x, y)];
         
-//        y = y - 10 - userControlMatrix.frame.size.height;
+        //        y = y - 10 - userControlMatrix.frame.size.height;
         y = y - 10 - newMatrixSize.height;
         NSRect newMatrixFrame = userControlMatrix.frame;
         newMatrixFrame.origin.y = y;
         newMatrixFrame.size = newMatrixSize;
         [userControlMatrix.animator setFrame:newMatrixFrame];
-//        [userControlMatrix setFrameOrigin:NSMakePoint(userControlMatrix.frame.origin.x, y)];
-    
+        //        [userControlMatrix setFrameOrigin:NSMakePoint(userControlMatrix.frame.origin.x, y)];
+        
     }
     
     [NSAnimationContext endGrouping];
     [self.targetTabView selectTabViewItemWithIdentifier:targetUserID];
     
-
+    
     //currentIndex = index;
     
     
@@ -408,51 +651,130 @@
 }
 
 
--(void)switchToGroupAtIndex:(NSInteger)index{
-    
-    if(currentIndex == index){
-    
-        return;
-        
-    }
-    
-    AKUserProfile *currentUser = [userIDList objectAtIndex:currentIndex];
-    NSString *currentUserID = currentUser.IDString;
-    AKUserProfile *targetUser = [userIDList objectAtIndex:index];
-    NSString *targetUserID = targetUser.IDString;
-    
-    NSInteger y = self.bounds.size.height;
-    for(NSInteger i=0; i<userIDList.count; i++){
-    
-        AKUserProfile *userProfile = [userIDList objectAtIndex:i];
-        NSButton * userButton = [userButtonDictionary objectForKey:userProfile.IDString];
-        NSMatrix *userControlMatrix = [userControlMatrixDictionary objectForKey:userProfile.IDString];
-        
-        if([userProfile.IDString isEqualToString: currentUserID]){
-            
-            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
-        }
-        else if ([userProfile.IDString isEqualToString: targetUserID]){
-        
-            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
-        
-        }
-        
-        y = y - 10 - userButton.frame.size.height;
-        [userButton setFrameOrigin:NSMakePoint(userButton.frame.origin.x, y)];
-        
-        y = y - 10 - userControlMatrix.frame.size.height;
-        [userControlMatrix setFrameOrigin:NSMakePoint(userControlMatrix.frame.origin.x, y)];
-    
-    }
-    
-    [self.targetTabView selectTabViewItemWithIdentifier:targetUserID];
-    
-    currentIndex = index;
-    
+//
+//-(void)switchToGroupOfUser:(NSString *)userID{
+//    
+//    if([userManager.currentUserID isEqualToString:userID]){
+//        return;
+//    }
+//    
+//    
+//    //AKUserProfile *currentUser = [userIDList objectAtIndex:currentIndex];
+//    NSString *currentUserID = userManager.currentUserID;
+//    //AKUserProfile *targetUser = [userIDList objectAtIndex:index];
+//    NSString *targetUserID = userID;
+//    
+//    userManager.currentUserID = userID;
+//    
+//    NSInteger y = self.bounds.size.height;
+//    
+//    [NSAnimationContext beginGrouping];
+//    for(AKWeiboViewGroupItem *viewGroup in weiboViewGroup.allValues){
+//        
+//        //AKUserProfile *userProfile = [userIDList objectAtIndex:i];
+//        NSButton * userButton = viewGroup.userButton; // [userButtonDictionary objectForKey:userProfile.IDString];
+//        NSMatrix *userControlMatrix = viewGroup.userControlMatrix; //[userControlMatrixDictionary objectForKey:userProfile.IDString];
+//        
+//        NSSize newMatrixSize;
+//        //如果找到当前用户的控件组
+//        if([viewGroup.userID isEqualToString: currentUserID]){
+//            
+//            newMatrixSize = NSMakeSize(userControlMatrix.frame.size.width, 0);
+//            
+//            //隐藏用户边栏按钮条
+////            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
+//            
+//        }
+//        //如果是目标用户的控件组
+//        else if ([viewGroup.userID isEqualToString: targetUserID]){
+//            
+//            newMatrixSize = NSMakeSize(userControlMatrix.frame.size.width,
+//                                       userControlMatrix.cellSize.height * userControlMatrix.cells.count);
+//            
+//            //如果该边栏没有按钮被激活 则激活第一个按钮
+//            if(![userControlMatrix selectedCell]){
+//                [userControlMatrix selectCellAtRow:0 column:0];
+//                [(NSButtonCell *)userControlMatrix.selectedCell performClick:userControlMatrix];
+//                [(NSButtonCell *)userControlMatrix.selectedCell setState:NSOnState];
+//            }
+//            //现实用户边栏按钮条
+////            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
+//            
+//        }
+//        
+//        y = y - 10 - userButton.frame.size.height;
+//        
+//        NSRect newUserButtonFrame = userButton.frame;
+//        newUserButtonFrame.origin.y = y;
+//        [userButton.animator setFrame:newUserButtonFrame];
+////        [userButton setFrameOrigin:NSMakePoint(userButton.frame.origin.x, y)];
+//        
+////        y = y - 10 - userControlMatrix.frame.size.height;
+//        y = y - 10 - newMatrixSize.height;
+//        NSRect newMatrixFrame = userControlMatrix.frame;
+//        newMatrixFrame.origin.y = y;
+//        newMatrixFrame.size = newMatrixSize;
+//        [userControlMatrix.animator setFrame:newMatrixFrame];
+////        [userControlMatrix setFrameOrigin:NSMakePoint(userControlMatrix.frame.origin.x, y)];
+//    
+//    }
+//    
+//    [NSAnimationContext endGrouping];
+//    [self.targetTabView selectTabViewItemWithIdentifier:targetUserID];
+//    
+//
+//    //currentIndex = index;
+//    
+//    
+//    
+//}
 
-
-}
+//
+//-(void)switchToGroupAtIndex:(NSInteger)index{
+//    
+//    if(currentIndex == index){
+//    
+//        return;
+//        
+//    }
+//    
+//    AKUserProfile *currentUser = [userIDList objectAtIndex:currentIndex];
+//    NSString *currentUserID = currentUser.IDString;
+//    AKUserProfile *targetUser = [userIDList objectAtIndex:index];
+//    NSString *targetUserID = targetUser.IDString;
+//    
+//    NSInteger y = self.bounds.size.height;
+//    for(NSInteger i=0; i<userIDList.count; i++){
+//    
+//        AKUserProfile *userProfile = [userIDList objectAtIndex:i];
+//        NSButton * userButton = [userButtonDictionary objectForKey:userProfile.IDString];
+//        NSMatrix *userControlMatrix = [userControlMatrixDictionary objectForKey:userProfile.IDString];
+//        
+//        if([userProfile.IDString isEqualToString: currentUserID]){
+//            
+//            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, 0)];
+//        }
+//        else if ([userProfile.IDString isEqualToString: targetUserID]){
+//        
+//            [userControlMatrix setFrameSize:NSMakeSize(userControlMatrix.frame.size.width, userControlMatrix.cellSize.height * userControlMatrix.cells.count)];
+//        
+//        }
+//        
+//        y = y - 10 - userButton.frame.size.height;
+//        [userButton setFrameOrigin:NSMakePoint(userButton.frame.origin.x, y)];
+//        
+//        y = y - 10 - userControlMatrix.frame.size.height;
+//        [userControlMatrix setFrameOrigin:NSMakePoint(userControlMatrix.frame.origin.x, y)];
+//    
+//    }
+//    
+//    [self.targetTabView selectTabViewItemWithIdentifier:targetUserID];
+//    
+//    currentIndex = index;
+//    
+//
+//
+//}
 
 -(void)setLightIndicatorState:(BOOL)state forButton:(AKTabButtonType)buttonType userID:(NSString *)userID{
 
@@ -466,7 +788,8 @@
 
     AKUserButton *buttonClicked = (AKUserButton *)sender;
     //[self switchToGroupAtIndex:buttonClicked.tag];
-    [self switchToGroupOfUser:buttonClicked.userID];
+//    [self switchToGroupOfUser:buttonClicked.userID];
+    [userManager setCurrentUserID:buttonClicked.userID];
 
 }
 
@@ -500,7 +823,7 @@
  
     [userTabView addTabViewItem:newTabViewItem];
     
-    [newTabViewItem.view setFrame:NSMakeRect(0, 0, self.targetTabView.frame.size.width, self.targetTabView.frame.size.height)];
+    //[newTabViewItem.view setFrame:NSMakeRect(0, 0, self.targetTabView.frame.size.width, self.targetTabView.frame.size.height)];
     
 //    if(!activedView && buttonMatrix.numberOfRows == 1){
 //        [buttonMatrix selectCellAtRow:0 column:0];
@@ -511,28 +834,41 @@
 
 -(void)tabButtonClicked:(id)sender
 {
+    NSInteger clickCount = [[NSApp currentEvent] clickCount];
     
     NSString *tabViewControllerID = [(AKTabButton *)[(NSMatrix *)sender selectedCell] tag];
     AKTabViewItem *tabViewItem = (AKTabViewItem *)[tabViewItemAndControllerDictionary objectForKey:tabViewControllerID];
     [tabViewItem.tabView selectTabViewItem:tabViewItem ];
     
-
-
     if([tabViewItem.tabViewController isKindOfClass:[AKTabViewController class]]){
         
         [(AKTabViewController *)tabViewItem.tabViewController tabDidActived];
-    
+        if(clickCount == 2){
+            [(AKTabViewController *)tabViewItem.tabViewController tabButtonDoubleClicked:sender];
+        }
+        
     }
-
+    
     activedView = tabViewItem.view;
     if(self.delegate){
         [self.delegate viewDidSelected:tabViewItem.tabViewController];
     }
     
+
+
+    
 //    [(AKTabViewController *)tabViewItem.view tabDidActived];
     //tabViewItem.tabView
     
 }
+
+-(void)tabView:(NSTabView *)tabView didSelectTabViewItem:(AKTabViewItem *)tabViewItem{
+
+//    AKTabViewItem *myTabViewItem = (AKTabViewItem *)tabViewItem;
+
+    
+}
+
 
 -(void)tabViewController:(AKTabViewController *)aTabViewController tabButtonClicked:(AKTabButton *)buttonClicked{
     
@@ -578,57 +914,126 @@
 
 }
 
-
--(void)addStatuses:(NSArray *)statuses timelineType:(AKWeiboTimelineType)timelineType forUser:(NSString *)userID;{
-
-//    AKUserProfile *user = [self currentUser];
-    AKWeiboViewGroupItem *viewGroup = [weiboViewGroup objectForKey:userID];
-    AKWeiboViewController *targetWeiboViewController;
-    
-    switch (timelineType) {
-        case AKFriendsTimeline:
-            targetWeiboViewController = viewGroup.weiboViewController;
-            break;
-            
-        case AKMentionTimeline:
-            targetWeiboViewController = viewGroup.mentionViewController;
-            break;
-            
-        case AKFavoriteTimeline:
-            targetWeiboViewController = viewGroup.favoriteViewController;
-            break;
-            
-            
-        default:
-            return;
-            break;
-    }
-    
-    [targetWeiboViewController addStatuses:statuses];
-    
-}
-
-//-(void)addStatuses:(NSArray *)statuses{
 //
-//    //AKUserProfile *user = [self currentUser];
-//    AKWeiboViewGroupItem *viewGroup = [weiboViewGroup objectForKey:user.IDString];
-//    [viewGroup.weiboViewController addStatuses:statuses];
+//-(void)addStatuses:(NSArray *)statuses timelineType:(AKWeiboTimelineType)timelineType forUser:(NSString *)userID;{
+//
+////    AKUserProfile *user = [self currentUser];
+//    AKWeiboViewGroupItem *viewGroup = [weiboViewGroup objectForKey:userID];
+//    AKWeiboViewController *targetWeiboViewController;
+//    
+//    switch (timelineType) {
+//        case AKFriendsTimeline:
+//            targetWeiboViewController = viewGroup.weiboViewController;
+//            break;
+//            
+//        case AKMentionTimeline:
+//            targetWeiboViewController = viewGroup.mentionViewController;
+//            break;
+//            
+//        case AKFavoriteTimeline:
+//            targetWeiboViewController = viewGroup.favoriteViewController;
+//            break;
+//            
+//            
+//        default:
+//            return;
+//            break;
+//    }
+//    
+//    [targetWeiboViewController addStatuses:statuses];
+//    
 //}
 
-#pragma mark - AKWeiboViewControllerDelegate
--(void)WeiboViewRequestForStatuses:(AKWeiboViewController *)weiboViewController sinceWeiboID:(NSString *)sinceWeiboID maxWeiboID:(NSString *)maxWeiboID{
+#pragma mark - Weibo Manager Delegate
+
+-(void)OnDelegateComplete:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption httpHeader:(NSString *)httpHeader result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
     
-    //NSString *userID = weiboViewController.userID;
-    if(self.delegate){
-        [self.delegate WeiboViewRequestForStatuses:weiboViewController forUser:weiboViewController.userID sinceWeiboID:sinceWeiboID maxWeiboID:maxWeiboID count:30 page:1 baseApp:NO feature:0 trimUser:0];
-    
+    if(methodOption == AKWBOPT_GET_REMIND_UNREAD_COUNT){
+        
+        NSDictionary *remindDictionary = result.getObject;
+        AKUserProfile *user = (AKUserProfile *)pTask.userData;
+        AKWeiboViewGroupItem *viewGroupItem = [weiboViewGroup objectForKey:user.IDString];
+        AKRemind *remind = [AKRemind getRemindFromDictionary:remindDictionary];
+        
+        //微博
+        viewGroupItem.weiboViewController.button.lightUpIndicator = (remind.status>0);
+        
+        AKMenuItemRemindView *homeMenuItemView = (AKMenuItemRemindView *)viewGroupItem.homeMenuItem.view;
+        [homeMenuItemView setCount:remind.status];
+        if(remind.status>0){
+            homeMenuItemView.image = [NSImage imageNamed:@"status_item_tweets_unread_icon"];
+        }
+        else{
+            homeMenuItemView.image = [NSImage imageNamed:@"status_item_tweets_icon"];
+        }
+//
+//        if(!viewGroupItem.homeMenuItem.isHighlighted){
+//            viewGroupItem.homeMenuItem.image = viewGroupItem.homeMenuItem.offStateImage;
+//        }
+        
+        //提及
+        viewGroupItem.mentionViewController.button.lightUpIndicator = (remind.mentionStatus>0);
+        [(AKMenuItemRemindView *)viewGroupItem.mentionMenuItem.view setCount:remind.mentionStatus];
+        
+        AKMenuItemRemindView *mentionMenuItemView = (AKMenuItemRemindView *)viewGroupItem.mentionMenuItem.view;
+        [mentionMenuItemView setCount:remind.mentionStatus];
+        if(remind.mentionStatus>0){
+            mentionMenuItemView.image = [NSImage imageNamed:@"status_item_mentions_unread_icon"];
+        }
+        else{
+            mentionMenuItemView.image = [NSImage imageNamed:@"status_item_mentions_icon"];
+        }
+//        if(!viewGroupItem.mentionMenuItem.isHighlighted){
+//            viewGroupItem.mentionMenuItem.image = viewGroupItem.mentionMenuItem.offStateImage;
+//        }
+        
+        [viewGroupItem.userControlMatrix setNeedsDisplay:YES];
+
     }
 
 }
 
--(void)WeiboViewRequestForGroupStatuses:(AKWeiboViewController *)weiboViewController listID:(NSString *)listID sinceWeiboID:(NSString *)sinceWeiboID maxWeiboID:(NSString *)maxWeiboID{
+-(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption error:(AKError *)error result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
 
 }
 
+#pragma mark - User Manager Listener
+
+-(void)userProfileDidInserted:(AKUserProfile *)userProfile atIndex:(NSInteger)index{
+
+    [self addControlGroup:userProfile.IDString];
+    //[weiboManager addUser:accessToken];
+    [[AKWeiboManager currentManager] getUserDetail:userProfile.IDString];
+    
+}
+
+-(void)userProfileDidRemoved:(AKUserProfile *)userProfile atIndex:(NSInteger)index{
+    
+    AKWeiboViewGroupItem *viewGroupItem = [weiboViewGroup objectForKey:userProfile.IDString];
+
+    [self.targetTabView removeTabViewItem:viewGroupItem.userTabViewItem];
+    
+    [viewGroupItem.userButton removeFromSuperview];
+    [viewGroupItem.userControlMatrix removeFromSuperview];
+    
+    [self.statusBarMenu removeItem:viewGroupItem.homeMenuItem];
+    [self.statusBarMenu removeItem:viewGroupItem.mentionMenuItem];
+//    [self.statusBarMenu removeItem:viewGroupItem.spliterMenuItem];
+    
+    
+    [weiboViewGroup removeObjectForKey:userProfile.IDString];
+    
+    [self updateUserControlPosition];
+    
+    
+//    [statusBarItem]
+    
+}
+
+-(void)currentUserDidChanged{
+    
+    [self updateUserControlPosition];
+
+}
 
 @end

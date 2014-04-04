@@ -54,6 +54,7 @@ static INPopoverController *gPopoverController;
     return self;
 }
 
+
 -(void)awakeFromNib{
 
     self.userImage.borderType = AKUserButtonBorderTypeBezel;
@@ -110,6 +111,7 @@ static INPopoverController *gPopoverController;
 }
 
 
+
 -(AKWeiboStatus *)status{
 
     return _status;
@@ -158,21 +160,25 @@ static INPopoverController *gPopoverController;
 
 }
 
--(void)prepareForReuse{
 
-    [super prepareForReuse];
-    
-    [self.images setHidden:YES];
-    
-    for(NSButtonCell *cell in [self.images cells]){
-    
-        cell.image = nil;
+//
+//-(void)prepareForReuse{
+//
+//
+//    
+//    [self.images setHidden:YES];
+//    
+//    for(NSButtonCell *cell in [self.images cells]){
+//    
+//        cell.image = nil;
+//
+//        
+//    }
+//    [super prepareForReuse];
+//
+//}
 
-        
-    }
-    
 
-}
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize{
     [super resizeSubviewsWithOldSize:oldSize];
@@ -203,42 +209,64 @@ static INPopoverController *gPopoverController;
         NSSize repostedWeiboViewSize = statusViewSize;
         repostedWeiboViewSize.height = repostedWeiboViewHeight;
         
-        [self.repostedWeiboView setFrameSize:repostedWeiboViewSize];
-        [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, y)];
+        for(NSLayoutConstraint *constraint in self.repostedWeiboView.constraints){
+            if(constraint.firstAttribute == NSLayoutAttributeHeight){
+                constraint.constant = repostedWeiboViewHeight;
+            }
+        }
+        
+//        [self.repostedWeiboView setFrameSize:repostedWeiboViewSize];
+//        [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, y)];
         
 //        assert(self.repostedWeiboView.frame.size.height == repostedWeiboViewHeight);
     }
     
+ 
 
-
-    
-    [self.weiboView setFrameSize:NSMakeSize(self.weiboView.frame.size.width, weiboViewHeight)];
+    for(NSLayoutConstraint *constraint in self.weiboView.constraints){
+        if(constraint.firstAttribute == NSLayoutAttributeHeight){
+            constraint.constant = weiboViewHeight;
+        }
+    }
+//    [self.weiboView setFrame:NSMakeRect(0, 0, self.frame.size.width, weiboViewHeight )];
     
     //update reposted weibo's user alias' origin.
-    [self.userAlias setFrameOrigin:NSMakePoint(self.userAlias.frame.origin.x,
-                                               weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP)];
+//    [self.userAlias setFrameOrigin:NSMakePoint(self.userAlias.frame.origin.x,
+//                                               weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP)];
     
     //Date Duration
-    [self.dateDuration setFrameOrigin:NSMakePoint(self.dateDuration.frame.origin.x, weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP)];
+//    [self.dateDuration setFrameOrigin:NSMakePoint(self.weiboView.frame.size.width - self.dateDuration.frame.size.width - STATUS_MARGIN_RIGHT, weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP)];
     
     //User Avatar
-    [self.userImage setFrameOrigin:NSMakePoint(self.userImage.frame.origin.x, weiboViewHeight - (self.userImage.frame.size.height - self.userAlias.frame.size.height) - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP)];
+//    [self.userImage setFrameOrigin:NSMakePoint(self.userImage.frame.origin.x, weiboViewHeight - (self.userImage.frame.size.height - self.userAlias.frame.size.height) - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP)];
+    
+
 
     
     //Weibo Text
-    [self.weiboTextField setFrameSize:NSMakeSize(self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT, weiboHeight)];
-//    [self.weiboTextField adjustFrame];
-    [self.weiboTextField setFrameSize:self.weiboTextField.intrinsicContentSize];
+    for (NSLayoutConstraint *constraint in self.weiboTextField.constraints) {
+//        NSLog(@"%@", constraint);
+        if(constraint.firstAttribute == NSLayoutAttributeHeight){
+            constraint.constant = weiboHeight;
+        }else if (constraint.firstAttribute == NSLayoutAttributeWidth){
+            constraint.constant = self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT;
+        }else if(constraint.firstAttribute == NSLayoutAttributeBottom){
+//            constraint.constant = weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP - STATUS_TEXT_MARGIN_TOP - self.weiboTextField.frame.size.height;
+        }
+    }
     
-//    if([self.weiboTextField.string rangeOfString:@"［关注中非共和国局势］"].location != NSNotFound){
-//        
-//        NSLog(@"(width = %f, height = %f) (resize) ",self.frame.size.width, self.weiboTextField.frame.size.height);
-//    }
-    [self.weiboTextField setFrameOrigin:NSMakePoint(self.weiboTextField.frame.origin.x, weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP - STATUS_TEXT_MARGIN_TOP - self.weiboTextField.frame.size.height)];
+//    [self.weiboTextField setFrameSize:NSMakeSize(self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT, weiboHeight)];
+//    [self.weiboTextField adjustFrame];
+//    [self.weiboTextField setFrameSize:self.weiboTextField.intrinsicContentSize];
+    
+    
+//    [self.weiboTextField setFrameOrigin:NSMakePoint(self.weiboTextField.frame.origin.x, weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP - STATUS_TEXT_MARGIN_TOP - self.weiboTextField.frame.size.height)];
     
 
     //Images
     if(weibo.pic_urls && weibo.pic_urls.count>0){
+        
+        
         
         NSSize weiboImageMatrixSize;
         if(weibo.pic_urls.count ==1){
@@ -253,9 +281,15 @@ static INPopoverController *gPopoverController;
             
         }
         
-        
-        [self.images setFrameSize:weiboImageMatrixSize];
-        [self.images setFrameOrigin:NSMakePoint(60, STATUS_PADDING_BOTTOM)];
+        for (NSLayoutConstraint *constraint in self.images.constraints) {
+            if(constraint.firstAttribute == NSLayoutAttributeHeight){
+                constraint.constant = weiboImageMatrixSize.height;
+            }else if (constraint.firstAttribute == NSLayoutAttributeWidth){
+                constraint.constant = weiboImageMatrixSize.width;
+            }
+        }
+//        [self.images setFrameSize:weiboImageMatrixSize];
+//        [self.images setFrameOrigin:NSMakePoint(60, STATUS_PADDING_BOTTOM)];
     }
     
     //Favorite Mark
@@ -267,11 +301,8 @@ static INPopoverController *gPopoverController;
     }
     [self.favMark setFrameOrigin:favoriteMarkOrigin];
     
+    [self.toolbar setFrameOrigin:NSMakePoint(self.weiboView.frame.size.width - self.toolbar.frame.size.width - 5, 5)];
     
-
-    
-    //[self setFrameSize:NSMakeSize(self.frame.size.width, cellHeight)];
-
 }
 
 
@@ -454,7 +485,9 @@ static INPopoverController *gPopoverController;
 
 -(void)mouseEntered:(NSEvent *)theEvent{
 
-    [self.toolbar setHidden:NO];
+//    [self.toolbar setAlphaValue:0];
+//    [self.toolbar setHidden:NO];
+    [self.toolbar.animator setAlphaValue:1];
 
     
 }
@@ -464,7 +497,8 @@ static INPopoverController *gPopoverController;
     if(self.popoverStatusEditior.popoverIsVisible){
         return;
     }
-    [self.toolbar setHidden:YES];
+//    [self.toolbar setHidden:YES];
+    [self.toolbar.animator setAlphaValue:0];
 
 }
 
@@ -511,9 +545,7 @@ static INPopoverController *gPopoverController;
 
 -(void)loadImages:(NSArray *)images isForRepost:(BOOL)isForRepost{
     
-    //assert(self.images.numberOfRows == 0);
-//    NSLog(@"COUNT = ",cell.weiboTextField.stringValue);
-    
+
     NSMatrix *imageMatrix;
     if(isForRepost){
         return;

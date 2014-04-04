@@ -50,8 +50,17 @@ struct AKVariableParamsOpaque;
 @property int cursor; //first page is -1,if next_cursor == 0, page end.
 
 // variable for statuses
+/**
+ *  来源筛选类型，0：全部、1：来自微博、2：来自微群，默认为0。
+ */
 @property int filter_by_source;
+/**
+ *  作者筛选类型，0：全部、1：我关注的人、2：陌生人，默认为0。
+ */
 @property int filter_by_author;
+/**
+ *  原创筛选类型，0：全部微博、1：原创的微博，默认为0。
+ */
 @property int filter_by_type;
 /**
  *  返回值中user字段开关，0：返回完整user字段、1：user字段仅返回user_id，默认为0。

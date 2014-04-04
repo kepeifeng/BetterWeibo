@@ -8,6 +8,7 @@
 
 #import "AKImageHelper.h"
 #import "AKViewConstant.h"
+#import "AKImageButtonCell.h"
 
 @implementation AKImageHelper
 
@@ -68,17 +69,48 @@
         NSInteger i = 0;
         //第一行 第一列
         //[imageMatrix addRow];
-        for(NSImage *image in images){
+        
+        for(NSInteger rowIndex = 0; rowIndex<imageMatrix.numberOfRows; rowIndex++ ){
             
-            
-            
-            NSButtonCell *imageCell = [imageMatrix cellAtRow:(NSInteger)(i/3) column:(i%3)];
-            imageCell.tag = i;
-            imageCell.image = image;
-            
-            i++;
+            for(NSInteger columnIndex = 0; columnIndex<imageMatrix.numberOfColumns; columnIndex++){
+        
+                NSInteger cellIndex = rowIndex*imageMatrix.numberOfColumns+columnIndex;
+                NSButtonCell *imageCell = [imageMatrix cellAtRow:rowIndex column:columnIndex];
+                
+                if([imageCell isKindOfClass:[AKImageButtonCell class]]){
+                    //如果cellIndex没有超出images数组的范围
+                    if(cellIndex<images.count){
+                        //设置图片
+                        [imageCell setEnabled:YES];
+                        imageCell.tag = cellIndex;
+                        [(AKImageButtonCell *)imageCell setImageEntry:(AKStatusImageEntry *)[images objectAtIndex:cellIndex]];
+//                        imageCell.image = (NSImage *)[images objectAtIndex:cellIndex];
+                    }else{
+                        [imageCell setEnabled:NO];
+                        imageCell.image = nil;
+                    }
+
+                    
+                }else{
+                    //如果cellIndex没有超出images数组的范围
+                    if(cellIndex<images.count){
+                        //设置图片
+                        [imageCell setEnabled:YES];
+                        imageCell.tag = cellIndex;
+                        imageCell.image = (NSImage *)[images objectAtIndex:cellIndex];
+                    }else{
+                        [imageCell setEnabled:NO];
+                        imageCell.image = nil;
+                    }
+                }
+
+                
+            }
             
         }
+        
+        [imageMatrix setNeedsDisplay:YES];
+        
         
         assert(i<=9);
         

@@ -38,7 +38,7 @@
 //@property (weak) IBOutlet AKTextField *weiboTextField;
 @property IBOutlet AKTextView *weiboTextField;
 
-@property (weak) IBOutlet NSMatrix *images;
+@property (strong) IBOutlet NSMatrix *images;
 @property (weak) IBOutlet NSMatrix *toolbar;
 
 

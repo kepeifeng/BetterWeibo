@@ -39,7 +39,7 @@
 
 
 -(void)tabDidActived;
-
+-(void)tabButtonDoubleClicked:(id)sender;
 -(void)goToViewOfController:(NSViewController *)viewController;
 
 @end

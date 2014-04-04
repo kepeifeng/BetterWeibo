@@ -23,6 +23,7 @@
 @synthesize customLeftWidth = _customLeftWidth;
 @synthesize customRightWidth = _customRightWidth;
 @synthesize customBackgroundImage = _customBackgroundImage;
+@synthesize customDrawingBlock = _customDrawingBlock;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -37,20 +38,32 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
+    
 	[super drawRect:dirtyRect];
 	
+    if(self.backgroundType == AKViewCustomDrawingBlock){
+        
+        self.customDrawingBlock(dirtyRect);
+    
+    }else{
+    
+        NSDrawThreePartImage(self.bounds, _leftPartImage, _middlePartImage, _rightPartImage, NO, NSCompositeSourceOver, 1, self.isFlipped);
+    }
+    
 //    NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.5];
 //    
 //    [backgroundColor setFill];
 //    
 //    [[NSBezierPath bezierPathWithRect:self.bounds] fill];
     
-    // Drawing code here.
-    if(self.needsDisplay){
+
     
-        
-        NSDrawThreePartImage(self.bounds, _leftPartImage, _middlePartImage, _rightPartImage, NO, NSCompositeSourceOver, 1, self.isFlipped);
-    }
+    // Drawing code here.
+//    if(self.needsDisplay){
+//    
+//        
+//        NSDrawThreePartImage(self.bounds, _leftPartImage, _middlePartImage, _rightPartImage, NO, NSCompositeSourceOver, 1, self.isFlipped);
+//    }
     
 }
 
@@ -107,7 +120,7 @@
         _backgroundImage = [NSImage imageNamed:@"glassbar-shadow-bottom"];
         _leftWidth = 10;
         _rightWidth = 10;
-    }else if(_backgroundType == AKViewCustomBackground){
+    }else if(_backgroundType == AKViewCustomImageBackground){
         _backgroundImage = _customBackgroundImage;
         _leftWidth = _customLeftWidth;
         _rightWidth = _customRightWidth;
@@ -120,7 +133,7 @@
     
     NSImage *_leftPart, *_middlePart, *_rightPart;
     
-    if(!_backgroundImage || _leftWidth == 0 || _rightWidth == 0){
+    if(!_backgroundImage || _leftWidth <= 0 || _rightWidth <= 0){
         return;
     }
     

@@ -15,7 +15,9 @@ typedef NS_ENUM(NSUInteger, AKViewBackgrondType) {
     AKViewGlassWithShadowAtBottom,
     AKViewGlass,
     AKViewLightGrayGraient,
-    AKViewCustomBackground
+    AKViewCustomImageBackground,
+    AKViewCustomDrawingBlock
+    
     
 
 };
@@ -26,5 +28,6 @@ typedef NS_ENUM(NSUInteger, AKViewBackgrondType) {
 @property NSInteger customLeftWidth;
 @property NSInteger customRightWidth;
 @property NSImage *customBackgroundImage;
+@property (nonatomic, copy) void(^customDrawingBlock)(NSRect dirtyRect);
 
 @end

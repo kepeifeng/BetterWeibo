@@ -25,6 +25,7 @@
 #import "EQSTRScrollView.h"
 #import "EQSTRClipView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AKView.h"
 
 
 #define REFRESH_HEADER_HEIGHT 42.0f
@@ -111,7 +112,7 @@
 		_refreshHeader = nil;
 	}
 	
-	[self setVerticalScrollElasticity:NSScrollElasticityAllowed];
+//	[self setVerticalScrollElasticity:NSScrollElasticityAllowed];
 	
 	(void)self.contentView; // create new content view
 	
@@ -125,10 +126,12 @@
 	
 	// add header view to clipview
 	NSRect contentRect = [self.contentView.documentView frame];
-	_refreshHeader = [[NSView alloc] initWithFrame:NSMakeRect(0, 
+	_refreshHeader = [[AKView alloc] initWithFrame:NSMakeRect(0,
 															  0 - REFRESH_HEADER_HEIGHT,
 															  contentRect.size.width, 
 															  REFRESH_HEADER_HEIGHT)];
+    _refreshHeader.backgroundType = AKViewLightGrayGraient;
+
 	
 	// Create Arrow
 	NSImage *arrowImage = [NSImage imageNamed:@"arrow"];
@@ -193,9 +196,10 @@
     const NSRect indicatorViewBounds = indicatorView.bounds;
     
     
-    NSView* edgeView = [[NSView alloc] initWithFrame:NSZeroRect];
+    AKView* edgeView = [[AKView alloc] initWithFrame:NSZeroRect];
+    edgeView.backgroundType = AKViewLightGrayGraient;
     [edgeView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [edgeView setWantsLayer:YES];
+//    [edgeView setWantsLayer:YES];
     
     [edgeView addSubview:indicatorView];
     
@@ -215,7 +219,7 @@
         
         
         // set height
-        [contentView addConstraint:[NSLayoutConstraint constraintWithItem:edgeView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:indicatorViewBounds.size.height]];
+        [contentView addConstraint:[NSLayoutConstraint constraintWithItem:edgeView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:REFRESH_HEADER_HEIGHT]];
         
         if (edgeSide & BSRefreshableScrollViewSideTop) {
             // above the content view top

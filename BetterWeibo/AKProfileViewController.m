@@ -40,7 +40,7 @@
     if(self){
     
         [self loadView];
-        self.title = @"我";
+        self.title = @"用  户";
         self.button = [[AKTabButton alloc]init];
         self.button.tabButtonIcon = AKTabButtonIconUser;
         self.button.tabButtonType = AKTabButtonMiddle;
@@ -53,12 +53,21 @@
     
 }
 
+-(void)disableScrollView{
 
+    [self.scrollView setHasHorizontalScroller:NO];
+    [self.scrollView setHasVerticalScroller:NO];
+    [self.scrollView setHorizontalScrollElasticity:NSScrollElasticityNone];
+    [self.scrollView setVerticalScrollElasticity:NSScrollElasticityNone];
+    
+}
 
 -(void)awakeFromNib{
 
     
     [super awakeFromNib];
+    
+    
     
     //Sroll to Refresh
     self.scrollView.refreshBlock = ^(EQSTRScrollView *scrollView){
@@ -78,14 +87,33 @@
         
     };
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewBoundsChanged:) name:NSViewFrameDidChangeNotification object:self.view];
     
+    self.view.wantsLayer = YES;
+}
+
+-(void)viewBoundsChanged:(NSNotification *)notification{
+    NSSize userProfileViewSize = _userProfileView.intrinsicContentSize;
+    
+    [_userProfileView setFrame:NSMakeRect(0,
+                                          self.view.frame.size.height - userProfileViewSize.height,
+                                          userProfileViewSize.width,
+                                          userProfileViewSize.height)];
+    
+    for (NSLayoutConstraint *constraint in self.view.constraints) {
+        
+        if(constraint.firstItem == self.scrollView && constraint.firstAttribute == NSLayoutAttributeTop){
+            constraint.constant = userProfileViewSize.height;
+            break;
+        }
+    }
 }
 
 -(void)setupUserProfileView{
     
     //    NSView *userProfileView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, self.view.frame.size.width,
     _userProfileView = [[AKUserProfileView alloc]initWithFrame:NSMakeRect(0, 0, self.view.frame.size.width, 200)];
-    _userProfileView.wantsLayer = YES;
+//    _userProfileView.wantsLayer = YES;
 //    _userProfileView.layer.backgroundColor = CGColorCreateGenericRGB(0, 0, 0, 1);
     _userProfileView.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;
     [self.view addSubview:_userProfileView];
@@ -93,7 +121,7 @@
     
     for (NSLayoutConstraint *constraint in self.view.constraints) {
         
-        NSLog(@"%@",constraint);
+//        NSLog(@"%@",constraint);
         if(constraint.firstItem == self.scrollView && constraint.firstAttribute == NSLayoutAttributeTop){
             constraint.constant = _userProfileView.frame.size.height;
             break;
@@ -110,6 +138,17 @@
     [_userProfileView.followButton setTarget:self];
     [_userProfileView.followButton setAction:@selector(followButtonClicked:)];
     
+//    [_userProfileView setWantsLayer:YES];
+
+    
+//    _userProfileView.layer.shadowColor = CGColorCreateGenericGray(0, 1);
+//    _userProfileView.layer.shadowRadius = 5.0;
+//    _userProfileView.layer.shadowOpacity = 1;
+
+//    [_userProfileView setShadow:userProfileViewShadow];
+//    [_userProfileView setNeedsDisplay:YES];
+    
+    
 //    [_userProfileView resizeSubviewsWithOldSize:_userProfileView.frame.size];
 
 }
@@ -118,7 +157,15 @@
     
     [[AKWeiboManager currentManager] getUserDetail:self.userID callbackTarget:self];
     
-    [super tabDidActived];
+    if([self.userID.ID isEqualToString:[[AKUserManager defaultUserManager] currentUserID]]){
+        [super tabDidActived];
+    }
+    else{
+//        [self disableScrollView];
+        [self.scrollView setHidden:YES];
+    }
+    
+    
     
 }
 
@@ -144,10 +191,13 @@
     }
     
     [super OnDelegateComplete:weiboManager methodOption:methodOption httpHeader:httpHeader result:result pTask:pTask];
-    
-    
-    
 
+
+}
+
+-(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption error:(AKError *)error result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
+
+    [super OnDelegateErrored:weiboManager methodOption:methodOption error:error result:result pTask:pTask];
 }
 
 #pragma mark - Properties
@@ -168,6 +218,8 @@
         [_observedObjectArray addObject:userProfile];
         
     }
+    
+    self.title = userProfile.screen_name;
     [self updateFollowStatus];
     
     

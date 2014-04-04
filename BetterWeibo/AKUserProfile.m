@@ -10,9 +10,7 @@
 
 NSString *const AKUserProfilePropertyNamedProfileImage = @"profileImage";
 NSString *const AKUserProfilePropertyNamedIsProcessingFollowingRequest = @"isProcessingFollowingRequest";
-
-
-
+NSString *const AKUserProfilePropertyNamedScreenName = @"screen_name";
 
 static NSOperationQueue *ATSharedOperationQueue() {
     static NSOperationQueue *_ATSharedOperationQueue = nil;
@@ -38,6 +36,9 @@ static NSMutableDictionary *userDictionary;
     if(self){
     
         self.IDString = [aDecoder decodeObjectForKey:@"userID"];
+        self.screen_name = [aDecoder decodeObjectForKey:@"screen_name"];
+        self.profileImage = [aDecoder decodeObjectForKey:@"profileImage"];
+
 //        self.accessToken = [aDecoder decodeObjectForKey:@"accessToken"];
 //        self.accessTokenExpiresIn = [aDecoder decodeObjectForKey:@"expireIn"];
     
@@ -52,6 +53,8 @@ static NSMutableDictionary *userDictionary;
     
     
     [aCoder encodeObject:self.IDString forKey:@"userID"];
+    [aCoder encodeObject:self.screen_name forKey:@"screen_name"];
+    [aCoder encodeObject:self.profileImage forKey:@"profileImage"];
 //    [aCoder encodeObject:self.accessToken forKey:@"accessToken"];
 //    [aCoder encodeObject:self.accessTokenExpiresIn forKey:@"expireIn"];
 

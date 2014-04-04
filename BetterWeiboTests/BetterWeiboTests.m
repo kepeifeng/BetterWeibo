@@ -27,11 +27,9 @@
     
     weiboManager = [[AKWeiboManager alloc]initWithClientID:@"1672616342"
                                                  appSecret:@"57663124f7eb21e1207a2ee09fed507b"
-                                               redirectURL:@"http://coffeeandsandwich.com/pinwheel/authorize.php"];
+                                               redirectURL:@"http://coffeeandsandwich.com/wukong/authorize.php"];
     AKUserProfile *userProfile = [[AKUserProfile alloc]init];
     userProfile.IDString = @"2128178903";
-    userProfile.accessToken = @"2.00LYcB1CwuHMpB49be915aaf0Cmenf";
-    userProfile.accessTokenExpiresIn = @"125901";
 
     
     [weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];

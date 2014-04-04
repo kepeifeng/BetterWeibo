@@ -37,6 +37,7 @@
 
 - (IBAction)loginButtonClicked:(id)sender;
 - (IBAction)addAccountClicked:(id)sender;
+- (IBAction)preferenceMenuItemClicked:(id)sender;
 
 
 @end

@@ -90,8 +90,6 @@
     if(!self.imageView.cell){
     
         self.imageView.cell = [NSImageCell new];
-        
-    
     }
     
     [self setupTitleBar];
@@ -99,10 +97,9 @@
     [self.window makeFirstResponder:self.window.contentView];
     
     [self.window.contentView setWantsLayer:YES];
-    ((NSView *)self.window.contentView).layer.backgroundColor = CGColorCreateGenericRGB(0, 0, 0, 1);
+    ((NSView *)self.window.contentView).layer.backgroundColor = CGColorCreateGenericRGB(0.1, 0.1, 0.1, 1);
 
 }
-
 
 
 -(void)setupTitleBar{
@@ -287,10 +284,7 @@
     return _index;
 
 }
-//
-//-(void)displayImage:(NSImage *)image{
-//
-//}
+
 
 -(void)setIndex:(NSInteger)index{
 
@@ -318,7 +312,7 @@
             urlString = [urlString stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:(self.viewOrigin)?@"/large/":@"/bmiddle/"];
             
 //            self.imageView.image = nil;
-            self.image = nil;
+//            self.image = nil;
             [self startLoadingImageFromURL:[NSURL URLWithString:urlString] forIndex:index];
             [_progressIndicator startAnimation:self];
             return;
@@ -430,7 +424,9 @@
     NSMutableData *_data = [_connectionDataMap objectForKey:connection];
     
     NSImage *image = [AKImageHelper getImageFromData:_data];
-    
+    if(!image){
+        image = [NSImage imageNamed:@"image-broken"];
+    }
     [_imagesDictionary setObject:image forKey:index];
     
     if([index integerValue] == self.index){

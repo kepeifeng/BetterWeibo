@@ -21,6 +21,8 @@
         // Initialization code here.
         self.minimalHeight = 0;
         self.textContainerInset = NSMakeSize(0, 0);
+        self.textContainer.lineFragmentPadding = 0;
+        
     }
     return self;
 }
@@ -29,6 +31,7 @@
     self = [super initWithCoder:aDecoder];
     if(self){
         self.textContainerInset = NSMakeSize(0, 0);
+        self.textContainer.lineFragmentPadding = 0;
     }
     return self;
 }

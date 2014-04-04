@@ -13,6 +13,7 @@
 #import "AKRepostedWeiboView.h"
 #import "AKTextView.h"
 #import "AKUserButton.h"
+#import "AKView.h"
 
 @interface AKWeiboStatusDetailView : NSView{
 
@@ -24,7 +25,8 @@
 @property AKWeiboStatus *status;
 
 @property NSString *thumbnailImageURL;
-@property (weak) IBOutlet NSView *statusView;
+@property (weak) IBOutlet AKView *statusView;
+@property (weak) IBOutlet NSBox *spliter;
 
 //Weibo Contents
 //微博内容

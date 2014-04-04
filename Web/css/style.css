@@ -1,0 +1,31 @@
+@charset "UTF-8";
+/* CSS Document */
+body {
+  background-image: url('../image/bg.png');
+  background-repeat: repeat;
+  padding: 0;
+  margin: 0;
+}
+#gallery {
+  position: relative;
+}
+#download {
+  position: absolute;
+  right: 89px;
+  bottom: 14px;
+}
+#footer {
+  background-image: url('../image/footer_bg.png');
+  background-repeat: repeat-x;
+  height: 277px;
+}
+#footer .footer-content,
+#header,
+#content {
+  width: 838px;
+  margin: 0 auto;
+}
+#footer .footer-content {
+  text-align: center;
+  padding-top: 101px;
+}

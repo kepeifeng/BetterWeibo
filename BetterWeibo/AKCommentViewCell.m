@@ -19,7 +19,7 @@
     {
         [self.commentField setEditable:NO];
         [self.commentField setDrawsBackground:NO];
-        [self.userAvatar setBorderType:AKUserButtonBorderTypeBezel];
+        
     }
     return self;
 }
@@ -37,6 +37,7 @@
 -(void)awakeFromNib{
     [self.commentField setEditable:NO];
     [self.commentField setDrawsBackground:NO];
+    [self.userAvatar setBorderType:AKUserButtonBorderTypeBezel];
 }
 #pragma mark Drawing
 
@@ -50,21 +51,21 @@
     CGContextRef myContext = [[NSGraphicsContext currentContext] graphicsPort];
     
     //Top Line
-    NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - 0.5);
-    NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - 0.5);
-    
-    CGContextSetLineWidth(myContext, 1);
-    CGContextSetRGBStrokeColor(myContext, 1, 1, 1, 0.8);
-    CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
-    CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
-    CGContextStrokePath(myContext);
+//    NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - 0.5);
+//    NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - 0.5);
+//    
+//    CGContextSetLineWidth(myContext, 1);
+//    CGContextSetRGBStrokeColor(myContext, 1, 1, 1, 0.8);
+//    CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
+//    CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
+//    CGContextStrokePath(myContext);
     
     //Bottom Line
-    startPoint = NSMakePoint(0, 0.5);
-    endPoint = NSMakePoint(drawingRect.size.width, 0.5);
+    NSPoint startPoint = NSMakePoint(0, 0.5);
+    NSPoint endPoint = NSMakePoint(drawingRect.size.width, 0.5);
     
     CGContextSetLineWidth(myContext, 1);
-    CGContextSetRGBStrokeColor(myContext, 0.5, 0.5, 0.5, 0.5);
+    CGContextSetRGBStrokeColor(myContext, 0.8, 0.8, 0.8, 1);
     CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
     CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
     CGContextStrokePath(myContext);

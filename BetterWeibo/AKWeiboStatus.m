@@ -12,10 +12,11 @@
 #import "AKImageHelper.h"
 #import "RegexKitLite.h"
 #import "AKEmotion.h"
+#import "AKStatusImageEntry.h"
 
 #define DEFAULT_FONT_SIZE 13.0
 
-NSString *const ATEntityPropertyNamedThumbnailImage = @"thumbnailImages";
+NSString *const AKWeiboStatusPropertyNamedThumbnailImage = @"thumbnailImages";
 NSString *const AKWeiboStatusPropertyNamedFavorited = @"favorited";
 
 static NSOperationQueue *ATSharedOperationQueue() {
@@ -27,6 +28,7 @@ static NSOperationQueue *ATSharedOperationQueue() {
     }
     return _ATSharedOperationQueue;
 }
+
 
 @implementation AKWeiboStatus{
 
@@ -256,13 +258,15 @@ static NSOperationQueue *ATSharedOperationQueue() {
     
     @synchronized (self) {
         if (_thumbnailImages == nil && !self.isLoadingThumbnails) {
-            self.isLoadingThumbnails = YES;
+            @synchronized (self) {
+                self.isLoadingThumbnails = YES;
+            }
             // We would have to keep track of the block with an NSBlockOperation, if we wanted to later support cancelling operations that have scrolled offscreen and are no longer needed. That will be left as an exercise to the user.
             [ATSharedOperationQueue() addOperationWithBlock:^(void) {
                 
                 NSMutableArray *thumbnails = [NSMutableArray new];
                 
-                NSInteger i=0;
+                //NSInteger i=0;
                 
                 NSArray *pictureURLs = (self.hasImages)?self.pic_urls:self.retweeted_status.pic_urls;
                 BOOL getSquareImage = (pictureURLs.count>1);
@@ -272,34 +276,31 @@ static NSOperationQueue *ATSharedOperationQueue() {
                         urlString = [urlString stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/square/"];
                     }
                     NSImage *image = [AKImageHelper getImageFromData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
-                    image = [AKImageHelper getSquareImageFrom:image];
+                    if(image){
+                        image = [AKImageHelper getSquareImageFrom:image];
+                    }else{
+                        image = [NSImage imageNamed:@"image-broken"];
+                    }
                     
-                    [thumbnails addObject:(image)?image:[NSNull new]];
-                    i++;
+                    
+                    [thumbnails addObject:(image)?image:[NSImage imageNamed:@"image-broken"]];
+//                    i++;
                     
                 }
-                if (thumbnails != nil) {
-                    //NSImage *thumbnailImage = ATThumbnailImageFromImage(image);
-                    // We synchronize access to the image/imageLoading pair of variables
-                    @synchronized (self) {
-                        self.isLoadingThumbnails = NO;
-                        self.thumbnailImages = thumbnails;
-                        
-                        
-                    }
-
-                } else {
-                    @synchronized (self) {
-                        //self.image = [NSImage imageNamed:NSImageNameTrashFull];
-                    }
+                
+                @synchronized (self) {
+                    self.isLoadingThumbnails = NO;
+                    self.thumbnailImages = thumbnails;
+                    
+                    
                 }
 
                 
             }];
         }
     }
-
 }
+
 
 
 #pragma mark - String parsing
@@ -394,7 +395,7 @@ static NSOperationQueue *ATSharedOperationQueue() {
     statusObject.created_at = [[[self class] dateFormatter] dateFromString:(NSString *)[status objectForKey:@"created_at"]];
     statusObject.thumbnail_pic = (NSString *)[status objectForKey:@"thumbnail_pic"];
     statusObject.bmiddle_pic =(NSString *)[status objectForKey:@"bmiddle_pic"];
-    statusObject.original_pic = (NSString *)[status objectForKey:@"created_at"];
+    statusObject.original_pic = (NSString *)[status objectForKey:@"original_pic"];
     statusObject.retweeted_status = [AKWeiboStatus getStatusFromDictionary:(NSDictionary  *)[status objectForKey:@"retweeted_status"]];
     statusObject.favorited = [(NSNumber *)[status objectForKey:@"favorited"] boolValue];
     //            statusObject.geo =
@@ -405,7 +406,16 @@ static NSOperationQueue *ATSharedOperationQueue() {
     statusObject.comments_count = [(NSNumber *)[status objectForKey:@"comments_count"] integerValue];
     statusObject.attitudes_count = [(NSNumber *)[status objectForKey:@"attitudes_count"] integerValue];
     statusObject.visible = [AKWeiboVisibility getVisibilityFromDictionary:(NSDictionary *)[status objectForKey:@"visible"]];
+    
     statusObject.pic_urls = (NSArray *)[status objectForKey:@"pic_urls"];
+    
+    NSMutableArray *pictures = [NSMutableArray new];
+    for (NSDictionary *url in statusObject.pic_urls) {
+        AKStatusImageEntry *imageEntry = [AKStatusImageEntry getImageEntryFromURLString:[url objectForKey:@"thumbnail_pic"]];
+        [pictures addObject:imageEntry];
+    }
+    statusObject.pictures = pictures;
+    
     statusObject.source = (NSString *)[status objectForKey:@"source"];
     statusObject.text = (NSString *)[status objectForKey:@"text"];
     statusObject.truncated = [(NSNumber *)[status objectForKey:@"favorited"] boolValue];
@@ -441,6 +451,14 @@ static NSOperationQueue *ATSharedOperationQueue() {
     statusObject.attitudes_count = [(NSNumber *)[statusDictionary objectForKey:@"attitudes_count"] integerValue];
     statusObject.visible = [AKWeiboVisibility getVisibilityFromDictionary:(NSDictionary *)[statusDictionary objectForKey:@"visible"]];
     statusObject.pic_urls = (NSArray *)[statusDictionary objectForKey:@"pic_urls"];
+    
+    NSMutableArray *pictures = [NSMutableArray new];
+    for (NSDictionary *url in statusObject.pic_urls) {
+        AKStatusImageEntry *imageEntry = [AKStatusImageEntry getImageEntryFromURLString:[url objectForKey:@"thumbnail_pic"]];
+        [pictures addObject:imageEntry];
+    }
+    statusObject.pictures = pictures;
+    
     statusObject.source = (NSString *)[statusDictionary objectForKey:@"source"];
     statusObject.text = (NSString *)[statusDictionary objectForKey:@"text"];
     statusObject.truncated = [(NSNumber *)[statusDictionary objectForKey:@"favorited"] boolValue];

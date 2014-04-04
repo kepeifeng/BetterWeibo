@@ -66,7 +66,7 @@ static AKWeiboManager * _currentManager;
         callbackDictionary = [NSMutableDictionary new];
         cacheManager = [[AKCacheDatabaseManager alloc]init];
         userManager = [AKUserManager defaultUserManager];
-        [userManager addObserver:self selector:@selector(currentUserIDChanged:)];
+        [userManager addListener:self];
         if(userManager.currentUserID){
         
             [self setAccessToken:[userManager currentAccessToken]];
@@ -109,7 +109,7 @@ static AKWeiboManager * _currentManager;
     //https://api.weibo.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=YOUR_REGISTERED_REDIRECT_URI
     //https://api.weibo.com/oauth2/access_token?client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&grant_type=authorization_code&redirect_uri=YOUR_REGISTERED_REDIRECT_URI&code=CODE
     
-    NSString *authorizeURL =[NSString stringWithFormat:@"https://api.weibo.com/oauth2/authorize?diplay=client&client_id=%@&response_type=code&redirect_uri=%@", _clientID, [_redirectURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSString *authorizeURL =[NSString stringWithFormat:@"https://api.weibo.com/oauth2/authorize?diplay=client&forcelogin=true&client_id=%@&response_type=code&redirect_uri=%@", _clientID, [_redirectURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     [[NSWorkspace sharedWorkspace]openURL:[NSURL URLWithString:authorizeURL]];
 
@@ -122,16 +122,16 @@ static AKWeiboManager * _currentManager;
 }
 -(void)currentUserIDChanged:(NSNotification*)notification{
     
-    if(!_observedObjects){
-        _observedObjects = [NSMutableArray new];
-    }
-    AKAccessTokenObject *accessTokenObject = [userManager currentAccessToken];
-    if(![_observedObjects containsObject:accessTokenObject]){
-        [accessTokenObject addObserver:self forKeyPath:AKAccessTokenObjectPropertyNamedAccessToken options:0 context:NULL];
-        [_observedObjects addObject:accessTokenObject];
-    }
+//    if(!_observedObjects){
+//        _observedObjects = [NSMutableArray new];
+//    }
+//    AKAccessTokenObject *accessTokenObject = [userManager currentAccessToken];
+//    if(![_observedObjects containsObject:accessTokenObject]){
+//        [accessTokenObject addObserver:self forKeyPath:AKAccessTokenObjectPropertyNamedAccessToken options:0 context:NULL];
+//        [_observedObjects addObject:accessTokenObject];
+//    }
 
-    [self setAccessToken:accessTokenObject];
+//    [self setAccessToken:accessTokenObject];
 
 }
 
@@ -139,7 +139,7 @@ static AKWeiboManager * _currentManager;
     
     if([keyPath isEqualToString:AKAccessTokenObjectPropertyNamedAccessToken]){
         AKAccessTokenObject *accessTokenObject = object;
-        if (_currentAccessToken == accessTokenObject) {
+        if ([userManager currentAccessToken] == accessTokenObject) {
             [self setAccessToken:accessTokenObject];
         }
         
@@ -375,6 +375,8 @@ static AKWeiboManager * _currentManager;
 
     
     AKUserTaskInfo *taskInfo = [self newTask:target];
+    AKVariableParams *params = [AKVariableParams new];
+    params.filter_by_source = 1;
     [weiboMethods getStatusesRepostTimeline:weiboID var:nil pTask:taskInfo];
 
 }
@@ -485,6 +487,7 @@ static AKWeiboManager * _currentManager;
 -(void)checkUnreadForUser:(AKUserProfile *)user callbackTarget:(id<AKWeiboManagerDelegate>)target{
 
     AKUserTaskInfo *taskInfo = [self newTask:target];
+    taskInfo.userData = (__bridge void *)user;
     AKVariableParams *params = [AKVariableParams new];
     params.accessToken = [[[AKUserManager defaultUserManager] getAccessTokenByUserID:user.IDString] accessToken];
 //    [weiboMethods getRemindUnreadCount:user.IDString pTask:taskInfo];
@@ -536,15 +539,9 @@ static AKWeiboManager * _currentManager;
              uid            string	当前授权用户的UID。
              */
             NSString * access_token = [result getSubStringByKey:@"access_token"];
-            NSString * expires_in = [result getSubStringByKey:@"expires_in"];
-            NSString * uid = [result getSubStringByKey:@"uid"];
-            
 
             // Note: Must set acess token to sdk!
             NSLog(@"Access Token = %@", access_token);
-            //[theWeibo setAccessToken:access_token];
-
-            
             
         }
     }
@@ -561,19 +558,27 @@ static AKWeiboManager * _currentManager;
     
     }
     
+    //广播（勿移除）
     NSNotification *notification = [NSNotification notificationWithName:METHOD_OPTION_NOTIFICATION object:self userInfo:userInfoDictionary];
     
     [[NSNotificationCenter defaultCenter]postNotification:notification];
     
 
-
+    AKError *error = [AKWeiboManager getErrorFromResult:result];
+    //Callback
     if (callbackDictionary && [callbackDictionary objectForKey:pTask.taskId]) {
         AKWeiboRequestQueueItem * queueItem = [callbackDictionary objectForKey:pTask.taskId];
-        [queueItem.delegate OnDelegateComplete:self methodOption:(AKMethodAction)methodOption httpHeader:httpHeader result:result pTask:pTask];
+        
+        if(!error){
+            [queueItem.delegate OnDelegateComplete:self methodOption:(AKMethodAction)methodOption httpHeader:httpHeader result:result pTask:pTask];
+        }else{
+            [queueItem.delegate OnDelegateErrored:self methodOption:(AKMethodAction)methodOption error:error result:result pTask:pTask];
+        }
+        
         [callbackDictionary removeObjectForKey:pTask.taskId];
     }
     
-    //[self pushMethodNotification:(AKMethodAction)methodOption httpHeader:httpHeader result:result pTask:pTask];
+    
     
     
 }
@@ -663,6 +668,24 @@ static AKWeiboManager * _currentManager;
 
 }
 
+#pragma mark - User Manager Listener
+-(void)accessTokenDidUpdated:(AKUserProfile *)userProfile accessToken:(AKAccessTokenObject *)accessToken{
+
+
+    if ([userManager currentUserProfile] == userProfile) {
+        [self setAccessToken:accessToken];
+    }
+
+}
+
+-(void)currentUserDidChanged{
+    
+    if([userManager currentAccessToken]){
+    
+        [self setAccessToken:[userManager currentAccessToken]];
+    }
+
+}
 
 
 @end

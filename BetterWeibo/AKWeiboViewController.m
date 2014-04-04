@@ -33,14 +33,14 @@
 
 -(void)dealloc{
     for (AKWeiboStatus *status in _observedVisibleItems) {
-        [status removeObserver:self forKeyPath:ATEntityPropertyNamedThumbnailImage];
+        [status removeObserver:self forKeyPath:AKWeiboStatusPropertyNamedThumbnailImage];
         [status removeObserver:self forKeyPath:AKWeiboStatusPropertyNamedFavorited];
     }
 }
 
 - (id)init
 {
-    self = [super initWithNibName:@"AKWeiboViewController" bundle:nil];
+    self = [super initWithNibName:@"AKWeiboViewController" bundle:[NSBundle bundleForClass:[self class]]];
     if (self) {
 //        [self loadView];
         self.title = @"微    博";
@@ -83,9 +83,32 @@
     return self;
 }
 
++ (void)addEdgeConstraint:(NSLayoutAttribute)edge superview:(NSView *)superview subview:(NSView *)subview {
+    [superview addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                          attribute:edge
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:superview
+                                                          attribute:edge
+                                                         multiplier:1
+                                                           constant:0]];
+}
+
+-(void)loadView{
+
+    [super loadView];
+    
+    [self.view removeConstraints:self.view.constraints];
+    
+    [[self class] addEdgeConstraint:NSLayoutAttributeLeft superview:self.view  subview:self.scrollView];
+    [[self class] addEdgeConstraint:NSLayoutAttributeRight superview:self.view subview:self.scrollView];
+    [[self class] addEdgeConstraint:NSLayoutAttributeTop superview:self.view subview:self.scrollView];
+    [[self class] addEdgeConstraint:NSLayoutAttributeBottom superview:self.view subview:self.scrollView];
+    
+
+}
+
 -(void)awakeFromNib{
 
-    
     //Sroll to Refresh
     self.scrollView.refreshBlock = ^(EQSTRScrollView *scrollView){
         
@@ -107,6 +130,14 @@
     [self.tableView setTarget:self];
     [self.tableView setDoubleAction:@selector(tableViewDoubleClicked:)];
     
+    NSColor *backgroundPattern = [NSColor colorWithPatternImage:[NSImage imageNamed:@"app_content_background"]];
+    [self.scrollView setBackgroundColor:backgroundPattern];
+    
+//    [self.tableView setBackgroundColor:[NSColor clearColor]];
+
+//    [self.scrollView setFrame:self.view.bounds];
+//    [self.scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+//    
 
 
 }
@@ -119,15 +150,43 @@
 }
 
 
+
 -(void)tabDidActived{
 
+    
+    NSLog(@"tabDidActived");
     if(weiboArray.count == 0 && !self.scrollView.isRefreshing)
     {
-        
+//        [self.tableView reloadData];
         [self.scrollView.contentView scrollToPoint:NSMakePoint(0, -42)];
         [self.scrollView startLoading];
+
     }
     [super tabDidActived];
+
+}
+
+-(void)tabButtonDoubleClicked:(id)sender{
+
+    if(weiboArray.count>0){
+        
+        //Scroll to Top
+        NSPoint newScrollOrigin;
+        
+        // assume that the scrollview is an existing variable
+        if ([[self.scrollView documentView] isFlipped]) {
+            newScrollOrigin=NSMakePoint(0.0,0.0);
+        } else {
+            newScrollOrigin=NSMakePoint(0.0,NSMaxY([[self.scrollView documentView] frame])
+                                        -NSHeight([[self.scrollView contentView] bounds]));
+        }
+        
+
+        [[self.scrollView documentView] scrollPoint:newScrollOrigin];
+        
+        
+    }
+    [super tabButtonDoubleClicked:sender];
 
 }
 
@@ -188,7 +247,8 @@
 
 -(void)addStatuses:(NSArray *)statuses{
     
-    if(!statuses){
+    
+    if(!statuses || statuses.count == 0){
         return;
     }
 
@@ -200,16 +260,20 @@
     
     NSLog(@"First of New Statuses: %lld",firstOfNewStatuses.ID);
     NSLog(@"Last of Old Statuses: %lld",lastOfOldStatuses.ID);
-    
+    NSInteger insertIndex = 0;
     if(weiboArray.count==0 || lastOfNewStatuses.ID > firstOfOldStatuses.ID){
     //Insert to the begining
 //        [weiboArray insertObject:statuses atIndex:0];
+        insertIndex = 0;
         [weiboArray insertObjects:statuses atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, statuses.count)]];
+        
     
     }
     else if(firstOfNewStatuses.ID < lastOfOldStatuses.ID){
     //Insert to the last
-        [weiboArray insertObjects:statuses atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(weiboArray.count, statuses.count)]];
+        insertIndex = weiboArray.count;
+        [weiboArray addObjectsFromArray:statuses];
+//        [weiboArray insertObjects:statuses atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(weiboArray.count, statuses.count)]];
     }else{
     
         NSInteger startIndex = 0, endIndex = weiboArray.count-1;
@@ -236,16 +300,20 @@
             }
             
         }
-        
+        insertIndex = currentIndex-1;
         [weiboArray insertObjects:statuses atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(currentIndex - 1, statuses.count)]];
     
     }
     
-    [self.scrollView stopLoading];
-    [self.scrollView stopBottomLoading];
+
+    NSRect visibleRect = self.tableView.visibleRect;
+    //User -noteNumberOfRowsChanged instead of -reloadData to avoid unneccesary redraw.
+    [self.tableView noteNumberOfRowsChanged];
     
-    [self.tableView reloadData];
     
+//    [self.tableView reloadDataForRowIndexes:[[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(insertIndex, statuses.count)] columnIndexes:[[NSIndexSet alloc] initWithIndex:0]];
+//    [self.tableView scrollRectToVisible:visibleRect];
+    [self.tableView scrollRowToVisible:insertIndex];
     
     
 }
@@ -328,6 +396,8 @@
     
     
     [cell.userAlias setStringValue:weibo.user.screen_name];
+
+    
     [cell.weiboTextField.textStorage setAttributedString:weibo.attributedText];
     cell.weiboTextField.delegate  = self;
     [self updateFavoriteViewForCell:cell isFavorited:weibo.favorited];
@@ -337,9 +407,6 @@
     cell.userImage.target = self;
     cell.userImage.action = @selector(userImageClicked:);
 
-    if (weibo.thumbnail_pic) {
-
-    }
     if(cell.hasRepostedWeibo)
     {
         
@@ -354,61 +421,44 @@
     if (_observedVisibleItems == nil) {
         _observedVisibleItems = [NSMutableArray new];
     }
+    
     if (![_observedVisibleItems containsObject:weibo]) {
-        [weibo addObserver:self forKeyPath:ATEntityPropertyNamedThumbnailImage options:0 context:NULL];
-        [weibo loadThumbnailImages];
-        [weibo addObserver:self forKeyPath:AKWeiboStatusPropertyNamedFavorited options:0 context:NULL];
         [_observedVisibleItems addObject:weibo];
+        
+//        [weibo addObserver:self forKeyPath:AKWeiboStatusPropertyNamedThumbnailImage options:0 context:NULL];
+//        [weibo loadThumbnailImages];
+        [weibo addObserver:self forKeyPath:AKWeiboStatusPropertyNamedFavorited options:0 context:NULL];
+        
     }
 
     
     //如果本条微博或转发的微博中包含有图片，则加载/显示图片
     if(weibo.hasImages || (weibo.retweeted_status && weibo.retweeted_status.hasImages)){
-    
-        
-        
+
         // Use KVO to observe for changes of the thumbnail image
-        
-        // Hide/show progress based on the thumbnail image being loaded or not.
-        
         //如果本微博有图片，不过还没加载
         if (weibo.hasImages){
-            if(!weibo.thumbnailImages){
-                //        [cellView.progessIndicator setHidden:NO];
-                //        [cellView.progessIndicator startAnimation:nil];
-                //        [cellView.imageView setHidden:YES];
-            }
-            else{
-            
-                [cell loadImages:weibo.thumbnailImages];
-            
-            }
+            [cell loadImages:weibo.pictures];
+//            if(weibo.thumbnailImages){
+//                [cell loadImages:weibo.thumbnailImages];
+//            }
 
         }
         //要不然如果转发微博有带图片,不过还没加载
         else if (weibo.retweeted_status && weibo.retweeted_status.hasImages ){
-            if(!weibo.thumbnailImages){
-                //        [cellView.progessIndicator setHidden:NO];
-                //        [cellView.progessIndicator startAnimation:nil];
-                //        [cellView.imageView setHidden:YES];
-                
-            }
-            else{
+            [cell.repostedWeiboView loadImages:weibo.retweeted_status.pictures];
             
-                [cell.repostedWeiboView loadImages:weibo.thumbnailImages];
-            
-            }
-        
+//            if(weibo.thumbnailImages){
+//                [cell.repostedWeiboView loadImages:weibo.thumbnailImages];
+//            }
         }
-        
-    
+
     }
     
+    
+    
     [cell.images setHidden:!weibo.hasImages];
-    
-    //[cell.weiboTextField setFrameSize:NSMakeSize(660, 100)];
-    
-    //[cell resize];
+    [cell resize];
     return cell;
     //return nil;
 
@@ -480,7 +530,7 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:ATEntityPropertyNamedThumbnailImage]) {
+    if ([keyPath isEqualToString:AKWeiboStatusPropertyNamedThumbnailImage]) {
         // Find the row and reload it.
         // Note that KVO notifications may be sent from a background thread (in this case, we know they will be)
         // We should only update the UI on the main thread, and in addition, we use NSRunLoopCommonModes to make sure the UI updates when a modal window is up.
@@ -525,7 +575,7 @@
     if (row != NSNotFound) {
         AKWeiboStatus *entity = [weiboArray objectAtIndex:row];
         AKWeiboTableCellView *cellView = [self.tableView viewAtColumn:0 row:row makeIfNecessary:NO];
-        if (cellView) {
+        if (cellView && cellView.objectValue == object) {
             // Fade the imageView in, and fade the progress indicator out
             //[NSAnimationContext beginGrouping];
             //[[NSAnimationContext currentContext] setDuration:0.8];
@@ -533,7 +583,7 @@
 //            [cellView.imageView setAlphaValue:0];
 //            cellView.imageView.image = entity.thumbnailImage;
 //            [cellView.imageView setHidden:NO];
-
+            
             if(entity.hasImages){
                 
                 [cellView loadImages:entity.thumbnailImages];
@@ -584,6 +634,7 @@
 -(void)goToUserProfileViewOf:(AKID *)userID{
     AKProfileViewController *profileViewController = [[AKProfileViewController alloc] init];
     profileViewController.userID = userID;
+
     [self goToViewOfController:profileViewController];
 }
 
@@ -608,15 +659,34 @@
     if (methodOption == AKWBOPT_GET_STATUSES_HOME_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_MENTIONS || methodOption == AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_USER_TIMELINE){
         
         
-        NSArray *statusArray = (NSArray *)[resultDictionary objectForKey:@"statuses"];
+        [self.scrollView stopLoading];
+        [self.scrollView stopBottomLoading];
         
-        statusObjectArray = [[NSMutableArray alloc]init];
-        for(NSDictionary *status in statusArray){
+        AKError *error = [AKWeiboManager getErrorFromResult:result];
+        if(!error){
             
-            AKWeiboStatus *statusObject = [AKWeiboStatus getStatusFromDictionary:status];
-            [statusObjectArray addObject:statusObject];
+            NSArray *statusArray = (NSArray *)[resultDictionary objectForKey:@"statuses"];
+            NSObject *adInfo = [resultDictionary objectForKey:@"ad"];
+            long long adID = 0;
+            if(adInfo && [adInfo isKindOfClass:[NSDictionary class]] ){
+                adID = [(NSNumber *)[(NSDictionary*)adInfo objectForKey:@"id"] longLongValue];
+            }
             
+            statusObjectArray = [[NSMutableArray alloc]init];
+            for(NSDictionary *status in statusArray){
+                
+                AKWeiboStatus *statusObject = [AKWeiboStatus getStatusFromDictionary:status];
+                if (statusObject.text && statusObject.user && statusObject.ID !=adID) {
+                    [statusObjectArray addObject:statusObject];
+                }
+            }
+            [self addStatuses:statusObjectArray];
         }
+        else{
+        
+        }
+
+        
     }
     else if(methodOption == AKWBOPT_GET_FAVORITES){
         
@@ -625,9 +695,15 @@
         for(NSDictionary *status in statusArray){
             
             AKWeiboStatus *statusObject = [AKWeiboStatus getStatusFromDictionary:[status objectForKey:@"status"]];
-            [statusObjectArray addObject:statusObject];
+            if (statusObject.text && statusObject.user) {
+            
+                [statusObjectArray addObject:statusObject];
+            }
             
         }
+        
+        [self addStatuses:statusObjectArray];
+        
     }else if(methodOption == AKWBOPT_POST_FAVORITES_CREATE){
         
         NSDictionary *resultDictionary = [result getObject];
@@ -645,11 +721,23 @@
         
     }
     
-    [self addStatuses:statusObjectArray];
+    
     
 }
 
+-(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption error:(AKError *)error result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
+    
+    if(methodOption == AKWBOPT_GET_STATUSES_HOME_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_MENTIONS || methodOption == AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_USER_TIMELINE){
+        [self.scrollView stopLoading];
+        [self.scrollView stopBottomLoading];
+        
+    }
+
+}
+
 -(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption errCode:(NSInteger)errCode subErrCode:(NSInteger)subErrCode result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
+    
+
 
 }
 
@@ -679,5 +767,8 @@
     
 }
 
+-(void)searchForStatus:(NSString *)status{
+
+}
 
 @end

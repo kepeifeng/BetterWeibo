@@ -77,6 +77,7 @@
 -(void)setTitle:(NSString *)title{
 
     _tabTitle = title;
+    
 
 }
 
@@ -172,14 +173,7 @@
         viewControllerArray =[NSMutableArray new];
     }
     
-    //隐藏之前的SubView
-    if(viewControllerArray.count == 0){
-    
-        for(NSView* subView in self.view.subviews){
-            [subView setHidden:YES];
-        }
-        
-    }
+
     
     if([viewController isKindOfClass:[AKTabViewController class]]){
     
@@ -209,12 +203,34 @@
     }
     
     //设置新加进来的View的尺寸和位置
-    viewController.view.frame = self.view.bounds;
+    NSRect newInitFrame = self.view.bounds;
+    newInitFrame.origin.x = newInitFrame.size.width;
+    NSRect finalFrame = self.view.bounds;
+    
+    viewController.view.frame = newInitFrame;
+    viewController.view.alphaValue = 0;
     //设置View的宽度和高度为自动调整
     [viewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     //把新的View添加到当前的View中
     [self.view addSubview:viewController.view];
+    [NSAnimationContext beginGrouping];
     
+    [viewController.view.animator setFrame:finalFrame];
+    [viewController.view.animator setAlphaValue:1];
+    
+    [NSAnimationContext endGrouping];
+    
+    //隐藏之前的SubView
+    if(viewControllerArray.count == 0){
+        
+        for(NSView* subView in self.view.subviews){
+            if(subView == viewController.view){
+                continue;
+            }
+//            [subView setHidden:YES];
+        }
+        
+    }
 
     [viewControllerArray addObject:viewController];
     
@@ -237,5 +253,9 @@
 
 }
 
+
+-(void)tabButtonDoubleClicked:(id)sender{
+
+}
 
 @end

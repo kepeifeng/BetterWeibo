@@ -10,6 +10,7 @@
 #import "AKWeiboStatus.h"
 extern NSString *const AKUserProfilePropertyNamedProfileImage;
 extern NSString *const AKUserProfilePropertyNamedIsProcessingFollowingRequest;
+extern NSString *const AKUserProfilePropertyNamedScreenName;
 
 @interface AKUserProfile : NSObject<NSCoding>
 

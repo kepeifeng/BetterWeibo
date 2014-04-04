@@ -27,7 +27,7 @@
 @property (weak) IBOutlet EQSTRScrollView *scrollView;
 @property AKWeiboManager *weiboManager;
 @property AKWeiboTimelineType timelineType;
--(void)addStatuses:(NSArray *)statuses;
+//-(void)addStatuses:(NSArray *)statuses;
 //-(void)tabDidActived;
 @property (readonly) NSString *searchQuery;
 -(void)searchForStatus:(NSString *)status;

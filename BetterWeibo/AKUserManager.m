@@ -16,11 +16,12 @@
     NSMutableDictionary *_userProfiles;
     NSMutableDictionary *_userAccessTokens;
     //NSString *currentUserID;
+    NSMutableArray *_listeners;
 
 }
 @synthesize currentUserID = _currentUserID;
 //Private static variable for defaultUserManager.
-static AKUserManager * _defaultUserManager;
+
 
 - (id)init
 {
@@ -29,25 +30,8 @@ static AKUserManager * _defaultUserManager;
         _userAccessTokens = [[NSMutableDictionary alloc]init];
         _userProfiles = [[NSMutableDictionary alloc]init];
         
-        NSArray *accessTokensOnDisk = [self getAllAccessTokenFromDisk];
-        for(AKAccessTokenObject *accessTokenObject in accessTokensOnDisk){
-        
-            [_userAccessTokens setObject:accessTokenObject forKey:accessTokenObject.userID];
-            if(!self.currentUserID){
-                self.currentUserID = accessTokenObject.userID;
-            }
-        
-        }
-        
-        NSArray *userProfilesOnDisk = [self getAllUserProfile];
-        for(AKUserProfile *userProfile in userProfilesOnDisk){
-            
-            [_userProfiles setObject:userProfile forKey:userProfile.IDString];
-        
-            
-
-            
-        }
+                
+        _listeners = [NSMutableArray new];
         
         
         
@@ -69,12 +53,21 @@ static AKUserManager * _defaultUserManager;
     
     _currentUserID = currentUserID;
     //Push current id changed notification;
-    NSNotification *notification = [NSNotification notificationWithName:CURRENT_ID_CHANGED object:self userInfo:nil];
+//    NSNotification *notification = [NSNotification notificationWithName:CURRENT_ID_CHANGED object:self userInfo:nil];
+//    
+//    [[NSNotificationCenter defaultCenter]postNotification:notification];
     
-    [[NSNotificationCenter defaultCenter]postNotification:notification];
-    
-    
+    for (id<AKUserManagerListenerProtocol> listener in _listeners) {
+        if(![listener respondsToSelector:@selector(currentUserDidChanged)]){
+            continue;
+        }
+        [listener currentUserDidChanged];
+    }
 
+}
+
+-(NSUInteger)numberOfUser{
+    return [_userProfiles count];
 }
 
 -(void)addObserver:(id)observer selector:(SEL)selector{
@@ -86,7 +79,7 @@ static AKUserManager * _defaultUserManager;
 
 +(AKUserManager *)defaultUserManager{
 
-    
+    static AKUserManager * _defaultUserManager;
     if(!_defaultUserManager){
         _defaultUserManager = [[AKUserManager alloc]init];
     }
@@ -130,7 +123,7 @@ static AKUserManager * _defaultUserManager;
  *
  *  @return Pathes of all user profile files saved on disk.
  */
--(NSArray *)getAllUserProfile{
+-(NSArray *)getAllUserProfileFromDisk{
 
     NSMutableArray *userProfileArray = [[NSMutableArray alloc]initWithCapacity:5];
     
@@ -175,7 +168,7 @@ static AKUserManager * _defaultUserManager;
 
 }
 
--(void)createUserProfile:(AKUserProfile *)userProfile;{
+-(void)saveUserProfileToDisk:(AKUserProfile *)userProfile;{
 
     NSString *applicationSupportDirectory = [[NSFileManager defaultManager]applicationSupportDirectory];
     
@@ -193,7 +186,42 @@ static AKUserManager * _defaultUserManager;
     
     }
 
+
 }
+
+-(void)addUserProfile:(AKUserProfile *)userProfile{
+    
+    [_userProfiles setObject:userProfile forKey:userProfile.IDString];
+    
+    for (id<AKUserManagerListenerProtocol> listener in _listeners) {
+        if(![listener respondsToSelector:@selector(userProfileDidInserted:atIndex:)]){
+            continue;
+        }
+        [listener userProfileDidInserted:userProfile atIndex:[self.allUserProfiles indexOfObject:userProfile]];
+    }
+    if(!self.currentUserID){
+        self.currentUserID = userProfile.IDString;
+    }
+    
+}
+
+-(void)addAccessToken:(AKAccessTokenObject *)accessTokenObject{
+
+    [_userAccessTokens setObject:accessTokenObject forKey:accessTokenObject.userID];
+//    if(!self.currentUserID){
+//        self.currentUserID = accessTokenObject.userID;
+//    }
+    AKUserProfile *userProfile = [self getUserProfileByUserID:accessTokenObject.userID];
+    for (id<AKUserManagerListenerProtocol> listener in _listeners) {
+        if(![listener respondsToSelector:@selector(accessTokenDidUpdated:accessToken:)]){
+            continue;
+        }
+        [listener accessTokenDidUpdated:userProfile accessToken:accessTokenObject];
+    }
+    
+    
+}
+
 
 -(void)updateUserProfile:(AKUserProfile *)userProfile{
 
@@ -210,10 +238,34 @@ static AKUserManager * _defaultUserManager;
         
     }
     else{
+//        oldUserProfile = userProfile;
         [_userProfiles setObject:userProfile forKey:userProfile.IDString];
     }
     //保存用户资料到硬盘
-    [self createUserProfile:userProfile];
+    [self saveUserProfileToDisk:userProfile];
+    
+    if(!self.currentUserID){
+        [self setCurrentUserID:userProfile.IDString];
+    }
+    
+    if(oldUserProfile){
+    
+        for (id<AKUserManagerListenerProtocol> listener in _listeners) {
+            if(![listener respondsToSelector:@selector(userProfileDidUpdated:atIndex:)]){
+                continue;
+            }
+            
+            [listener userProfileDidUpdated:oldUserProfile atIndex:[self.allUserProfiles indexOfObject:oldUserProfile]];
+        }
+    }
+    else{
+        for (id<AKUserManagerListenerProtocol> listener in _listeners) {
+            if(![listener respondsToSelector:@selector(userProfileDidInserted:atIndex:)]){
+                continue;
+            }
+            [listener userProfileDidInserted:oldUserProfile atIndex:[self.allUserProfiles indexOfObject:userProfile]];
+        }
+    }
 
 }
 
@@ -226,11 +278,19 @@ static AKUserManager * _defaultUserManager;
         oldAccessTokenObject.scope = accessTokenObject.scope;
         oldAccessTokenObject.createAt = accessTokenObject.createAt;
     }else{
-    
+        oldAccessTokenObject = accessTokenObject;
         [_userAccessTokens setObject:accessTokenObject forKey:accessTokenObject.userID];
     }
     
-    [self saveAccessToken:accessTokenObject];
+    //[self saveAccessTokenToDisk:accessTokenObject];
+    
+    AKUserProfile *userProfile = [self getUserProfileByUserID:accessTokenObject.userID];
+    for (id<AKUserManagerListenerProtocol> listener in _listeners) {
+        if(![listener respondsToSelector:@selector(accessTokenDidUpdated:accessToken:)]){
+            continue;
+        }
+        [listener accessTokenDidUpdated:userProfile accessToken:oldAccessTokenObject];
+    }
 
 }
 
@@ -299,7 +359,7 @@ static AKUserManager * _defaultUserManager;
 }
 
 
--(void)saveAccessToken:(AKAccessTokenObject *)accessTokenObject;{
+-(void)saveAccessTokenToDisk:(AKAccessTokenObject *)accessTokenObject{
     
     NSString *applicationSupportDirectory = [[NSFileManager defaultManager]applicationSupportDirectory];
     
@@ -366,4 +426,53 @@ static AKUserManager * _defaultUserManager;
 -(AKUserProfile *)userAtIndex:(NSUInteger)index{
     return [[self allUserProfiles] objectAtIndex:index];
 }
+
+-(NSUInteger)indexOfUserProfile:(AKUserProfile *)userProfile{
+    return [[self allUserProfiles] indexOfObject:userProfile];
+}
+
+-(void)removeUserAtIndex:(NSInteger)index{
+
+    AKUserProfile *userProfile = [self userAtIndex:index];
+    
+    NSString *applicationSupportDirectory = [[NSFileManager defaultManager]applicationSupportDirectory];
+    
+    NSString *userAccountDirectory = [NSString stringWithFormat:@"%@/%@.account",applicationSupportDirectory,userProfile.IDString];
+    
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:userAccountDirectory error:&error];
+    
+    if(!error){
+        
+        
+        [_userAccessTokens removeObjectForKey:userProfile.IDString];
+        [_userProfiles removeObjectForKey:userProfile.IDString];
+        for (id<AKUserManagerListenerProtocol> listener in _listeners) {
+            if(![listener respondsToSelector:@selector(userProfileDidRemoved:atIndex:)]){
+                continue;
+            }
+            [listener userProfileDidRemoved:userProfile atIndex:index];
+        }
+    }
+    
+    if(_userProfiles.count>0){
+        [self setCurrentUserID:[[self userAtIndex:0] IDString]];
+    }else{
+        [self setCurrentUserID:nil];
+    }
+    
+
+    
+}
+
+
+#pragma mark - Listener
+-(void)addListener:(id<AKUserManagerListenerProtocol>)listener{
+    [_listeners addObject:listener];
+}
+-(void)removeListener:(id<AKUserManagerListenerProtocol>)listener{
+    [_listeners removeObject:listener];
+}
+
+
 @end

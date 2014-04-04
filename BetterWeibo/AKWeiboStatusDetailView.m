@@ -29,7 +29,7 @@
 
 -(void)dealloc{
     for (AKWeiboStatus *status in _observedObjectArray) {
-        [status removeObserver:self forKeyPath:ATEntityPropertyNamedThumbnailImage];
+        [status removeObserver:self forKeyPath:AKWeiboStatusPropertyNamedThumbnailImage];
     }
 }
 
@@ -40,6 +40,7 @@
 
 //        self.frame = frame;
         self.weiboTextField.minimalHeight = 32;
+        self.weiboTextField.drawsBackground = NO;
         
     }
     return self;
@@ -49,20 +50,49 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	[super drawRect:dirtyRect];
+	
     // Drawing code here.
+    [super drawRect:dirtyRect];
+//    
+//    NSRect drawingRect = self.bounds;
+//    
+//    NSBezierPath *backgroundPath = [NSBezierPath bezierPathWithRect:drawingRect];
+//    NSColor *backgroundColor = [NSColor whiteColor];
+//    [backgroundColor setFill];
+//    [backgroundPath fill];
+
     
-    NSRect drawingRect = self.frame;
+//    CGContextRef myContext = [[NSGraphicsContext currentContext] graphicsPort];
+//    NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - REPOST_STATUS_MARGIN_TOP + 0.5);
+//    NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - REPOST_STATUS_MARGIN_TOP + 0.5);
+//    
+//    NSColor *pathStrokeColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1];
+//    [pathStrokeColor setStroke];
+//    NSBezierPath *path = [NSBezierPath bezierPath];
+//    [path moveToPoint:startPoint];
+//    [path lineToPoint:endPoint];
+//    [path stroke];
+//    
+//    NSColor *shadowStartColor = [NSColor colorWithCalibratedWhite:0 alpha:1];
+//    NSColor *shadowEndColor = [NSColor colorWithCalibratedWhite:0 alpha:0];
+//    
+//    NSGradient *shadowGradient = [[NSGradient alloc] initWithStartingColor:shadowStartColor endingColor:shadowEndColor];
+//    
+//    NSRect gradientRect = NSMakeRect(0,
+//                                     self.statusView.frame.origin.y-5,
+//                                     self.frame.size.width,
+//                                     5);
+//    
+//    [shadowGradient drawInRect:gradientRect angle:90];
+
+
+//    CGContextSetLineWidth(myContext, 1);
+//    CGContextSetRGBStrokeColor(myContext, 0, 0, 0, 1);
+//    CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
+//    CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
+//    CGContextStrokePath(myContext);
     
-    CGContextRef myContext = [[NSGraphicsContext currentContext] graphicsPort];
-    NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - REPOST_STATUS_MARGIN_TOP + 0.5);
-    NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - REPOST_STATUS_MARGIN_TOP + 0.5);
     
-    CGContextSetLineWidth(myContext, 1);
-    CGContextSetRGBStrokeColor(myContext, 0.5, 0.5, 0.5, 0.5);
-    CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
-    CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
-    CGContextStrokePath(myContext);
 
 }
 
@@ -75,8 +105,48 @@
     
     scrollView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     
+    //不要忘了View的SuperView要wantsLayer
+    NSShadow *shadow = [[NSShadow alloc]init];
+    shadow.shadowBlurRadius = 5;
+    shadow.shadowColor = [NSColor colorWithCalibratedWhite:0 alpha:0.5];
+    shadow.shadowOffset = NSMakeSize(0, -5);
+    
+    self.wantsLayer = YES;
+    self.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+    self.statusView.layer.backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+    self.statusView.shadow = shadow;
+    
+    self.statusView.backgroundType = AKViewCustomDrawingBlock;
+    self.statusView.customDrawingBlock = ^(NSRect dirtyRect){
+        NSRect drawingRect = self.statusView.bounds;
+        
+        NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - REPOST_STATUS_MARGIN_TOP + 0.5);
+        NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - REPOST_STATUS_MARGIN_TOP + 0.5);
+        
+        NSColor *pathStrokeColor = [NSColor colorWithCalibratedWhite:0.8 alpha:1];
+        [pathStrokeColor setStroke];
+        NSBezierPath *path = [NSBezierPath bezierPath];
+        [path moveToPoint:startPoint];
+        [path lineToPoint:endPoint];
+        [path stroke];
+        
+    };
 }
-
+//
+//-(void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx{
+//    NSRect drawingRect = self.statusView.bounds;
+//
+//    NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - REPOST_STATUS_MARGIN_TOP + 0.5);
+//    NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - REPOST_STATUS_MARGIN_TOP + 0.5);
+//
+//    
+//    CGContextSetLineWidth(ctx, 1);
+//    CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 1);
+//    CGContextMoveToPoint(ctx, startPoint.x, startPoint.y);
+//    CGContextAddLineToPoint(ctx, endPoint.x, endPoint.y);
+//    CGContextStrokePath(ctx);
+//    
+//}
 
 
 
@@ -120,7 +190,7 @@
         
         
         if(![_observedObjectArray containsObject:_status]){
-            [_status addObserver:self forKeyPath:ATEntityPropertyNamedThumbnailImage options:0 context:NULL];
+            [_status addObserver:self forKeyPath:AKWeiboStatusPropertyNamedThumbnailImage options:0 context:NULL];
             [_status loadThumbnailImages];
             [_observedObjectArray addObject:_status];
         }
@@ -169,7 +239,7 @@
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:ATEntityPropertyNamedThumbnailImage]) {
+    if ([keyPath isEqualToString:AKWeiboStatusPropertyNamedThumbnailImage]) {
         // Find the row and reload it.
         // Note that KVO notifications may be sent from a background thread (in this case, we know they will be)
         // We should only update the UI on the main thread, and in addition, we use NSRunLoopCommonModes to make sure the UI updates when a modal window is up.
@@ -218,8 +288,15 @@
     NSSize statusViewSize = self.frame.size;
     NSInteger y = 0;
     
+    //Tab Bar
+    [self.tabBar setFrameOrigin:NSMakePoint((NSInteger)((statusViewSize.width - self.tabBar.frame.size.width)/2), 5)];
+    
+    y = self.tabBar.frame.origin.y + self.tabBar.frame.size.height;
+    
+
+    
     //Toolbar
-    [self.toolbar setFrameOrigin:NSMakePoint((statusViewSize.width - self.toolbar.frame.size.width)/2,  TOOLBAR_MARGIN_BOTTOM)];
+    [self.toolbar setFrameOrigin:NSMakePoint((statusViewSize.width - self.toolbar.frame.size.width)/2,  y + TOOLBAR_MARGIN_BOTTOM)];
     
     y += TOOLBAR_MARGIN_BOTTOM + self.toolbar.frame.size.height +TOOLBAR_MARGIN_TOP;
     
@@ -292,7 +369,14 @@
     
     y+=repostY;
     
+    
+    //Date
     [self.statusDateField setFrameOrigin:(NSMakePoint((statusViewSize.width-self.statusDateField.frame.size.width)/2, y+(REPOST_STATUS_MARGIN_TOP - self.statusDateField.frame.size.height)/2))];
+    
+    
+
+//    [self.spliter setFrame:NSMakeRect(0, y, statusViewSize.width, 1)];
+//    [self.spliter setNeedsDisplay:YES];
     
     y += REPOST_STATUS_MARGIN_TOP;
     statusViewSize.height = y;
@@ -300,12 +384,8 @@
     [self.statusView setFrameSize:statusViewSize];
     [self.statusView setFrameOrigin:NSMakePoint(0, self.bounds.size.height - self.statusView.frame.size.height)];
     
-    //Tab Bar
-    [self.tabBar setFrameOrigin:NSMakePoint((NSInteger)((statusViewSize.width - self.tabBar.frame.size.width)/2), (NSInteger)(self.statusView.frame.origin.y - TABBAR_MARGIN_TOP - self.tabBar.frame.size.height))];
-    
-    
     NSSize tabViewSize = self.frame.size;
-    tabViewSize.height = self.frame.size.height - self.statusView.frame.size.height - TABBAR_MARGIN_TOP - self.tabBar.frame.size.height - TABBAR_MARGIN_BOTTOM;
+    tabViewSize.height = self.frame.size.height - self.statusView.frame.size.height;
     [self.tab setFrameSize:tabViewSize];
     [self.tab setFrameOrigin:NSMakePoint(0, 0)];
     
@@ -321,11 +401,11 @@
         
     }
     
-    NSRange visibleRows = [self.commentListView rowsInRect:self.visibleRect];
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:0];
-    [self.commentListView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:visibleRows]];
-    [NSAnimationContext endGrouping];
+//    NSRange visibleRows = [self.commentListView rowsInRect:self.visibleRect];
+//    [NSAnimationContext beginGrouping];
+//    [[NSAnimationContext currentContext] setDuration:0];
+//    [self.commentListView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, <#NSUInteger len#>)]];
+//    [NSAnimationContext endGrouping];
     
     
     //[self needsDisplay];

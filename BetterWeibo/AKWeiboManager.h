@@ -28,7 +28,7 @@ typedef  NS_ENUM(NSUInteger, AKWeiboTimelineType){
     
 };
 
-@interface AKWeiboManager : NSObject <AKWeiboDelegate>
+@interface AKWeiboManager : NSObject <AKWeiboDelegate, AKUserManagerListenerProtocol>
 
 
 @property NSString *clientID;
@@ -145,10 +145,12 @@ typedef  NS_ENUM(NSUInteger, AKWeiboTimelineType){
 
 @protocol AKWeiboManagerDelegate
 
+@required
 -(void)OnDelegateComplete:(AKWeiboManager*)weiboManager methodOption:(AKMethodAction)methodOption  httpHeader:(NSString *)httpHeader result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask;
 
--(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption errCode:(NSInteger)errCode subErrCode:(NSInteger)subErrCode result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask;
+-(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption error:(AKError *)error result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask;
 
+@optional
 -(void)OnDelegateWillRelease:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption pTask:(AKUserTaskInfo *)pTask;
 
 @end

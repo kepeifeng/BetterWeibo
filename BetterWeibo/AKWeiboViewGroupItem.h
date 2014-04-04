@@ -17,6 +17,10 @@
 @interface AKWeiboViewGroupItem : NSObject
 
 @property NSString *userID;
+/**
+ *  
+ */
+@property NSTabViewItem *userTabViewItem;
 @property NSTabView *tabView;
 @property AKUserButton *userButton;
 @property NSMatrix *userControlMatrix;
@@ -24,6 +28,11 @@
 @property AKWeiboViewController *mentionViewController;
 @property AKWeiboViewController *favoriteViewController;
 
+//Status Bar Menu Items
+@property NSMenuItem *nameMenuItem;
+@property NSMenuItem *homeMenuItem;
+@property NSMenuItem *mentionMenuItem;
+@property NSMenuItem *spliterMenuItem;
 
 
 @end

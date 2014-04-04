@@ -11,7 +11,7 @@
 
 
 extern NSString *const ATEntityPropertyNamedImage;
-extern NSString *const ATEntityPropertyNamedThumbnailImage;
+extern NSString *const AKWeiboStatusPropertyNamedThumbnailImage;
 extern NSString *const AKWeiboStatusPropertyNamedFavorited;
 @class AKUserProfile;
 /**
@@ -118,6 +118,9 @@ extern NSString *const AKWeiboStatusPropertyNamedFavorited;
  *微博配图地址。多图时返回多图链接。无配图返回“[]”
  */
 @property NSArray * pic_urls;
+
+@property NSArray *pictures;
+
  /**
  *微博流内的推广微博ID
  */

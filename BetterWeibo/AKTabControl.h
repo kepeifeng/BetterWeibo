@@ -14,13 +14,13 @@
 #import "AKPanelView.h"
 #import "AKUserProfile.h"
 #import "AKWeiboViewGroupItem.h"
-
+#import "AKUserManager.h"
 //@class AKTabViewController;
 
 @protocol AKTabControlDelegate;
 //===================== AKTabControl =====================
 
-@interface AKTabControl : NSView <AKTabViewControllerDelegate,AKWeiboViewControllerDelegate>{
+@interface AKTabControl : NSView <AKTabViewControllerDelegate,AKWeiboViewControllerDelegate, NSMenuDelegate, NSTabViewDelegate, AKWeiboManagerDelegate, AKUserManagerListenerProtocol>{
 
     NSMutableArray *tabControlMatrixGroup;
     NSMutableArray *userButtonGroup;
@@ -39,8 +39,8 @@
 
 -(void)updateUser:(AKUserProfile *)userProfile;
 -(void)setAvatarForUser:(NSString *)userID URL:(NSString *)url;
--(void)addStatuses:(NSArray *)statuses;
--(void)addStatuses:(NSArray *)statuses timelineType:(AKWeiboTimelineType)timelineType forUser:(NSString *)userID;
+
+//-(void)addStatuses:(NSArray *)statuses timelineType:(AKWeiboTimelineType)timelineType forUser:(NSString *)userID;
 
 
 //-(void)addViewController:(AKTabViewController *)viewController;

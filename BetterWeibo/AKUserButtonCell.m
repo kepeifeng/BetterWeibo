@@ -14,6 +14,8 @@
 
 @synthesize borderType = _borderType;
 
+
+
 -(AKUserButtonBorderType)borderType{
     return _borderType;
 }

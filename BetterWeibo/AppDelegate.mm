@@ -10,7 +10,13 @@
 #import "AKMessageViewController.h"
 #import "AKBlockViewController.h"
 #import "AKUserManager.h"
+#import "AKPreferenceWindowController.h"
+#import "MASShortcutView+UserDefaults.h"
+#import "MASShortcut+UserDefaults.h"
+#import "MASShortcut+Monitoring.h"
+#import "AKPreferenceWindowController.h"
 #import "AKStatusEditorWindowController.h"
+
 
 @implementation AppDelegate{
 
@@ -20,8 +26,11 @@
     AKWeiboManager * weiboManager;
     NSMutableData *receivedData;
     AKUserManager *userManager;
-    NSStatusItem *statusBarItem;
+    
     NSTimer *_checkRemindTimer;
+    AKPreferenceWindowController *_preferenceWindowController;
+    
+    NSAlert *_needReauthorizeAlert;
 }
 
 
@@ -35,11 +44,31 @@
     
     weiboManager = [[AKWeiboManager alloc]initWithClientID:@"1672616342"
                                                  appSecret:@"57663124f7eb21e1207a2ee09fed507b"
-                                               redirectURL:@"http://coffeeandsandwich.com/pinwheel/authorize.php"];
+                                               redirectURL:@"http://coffeeandsandwich.com/wukong/authorize.php"];
     [AKWeiboManager setCurrentManager:weiboManager];
     
     userManager = [AKUserManager defaultUserManager];
     
+    NSArray *accessTokensOnDisk = [userManager getAllAccessTokenFromDisk];
+    
+    NSArray *userProfilesOnDisk = [userManager getAllUserProfileFromDisk];
+    
+    for(AKAccessTokenObject *accessTokenObject in accessTokensOnDisk){
+        
+        [userManager addAccessToken:accessTokenObject];
+        
+    }
+    
+    for(AKUserProfile *userProfile in userProfilesOnDisk){
+        
+        [userManager addUserProfile:userProfile];
+
+    }
+    
+
+    
+
+
     
     
     [weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];
@@ -61,14 +90,14 @@
     
         //Load Users
         [self.loginView setHidden:YES];
-        
-        for(AKAccessTokenObject *accessToken in userProfileArray){
-        
-            [tabView addControlGroup:accessToken.userID];
-            //[weiboManager addUser:accessToken];
-            [weiboManager getUserDetail:accessToken.userID];
-        
-        }
+//        
+//        for(AKAccessTokenObject *accessToken in userProfileArray){
+//        
+//            [tabView addControlGroup:accessToken.userID];
+//            //[weiboManager addUser:accessToken];
+//            [weiboManager getUserDetail:accessToken.userID];
+//        
+//        }
         
     }
     else{
@@ -78,11 +107,9 @@
 
     }
     
-    //Setup Status Bar
-    [self setupStatusBarMenu];
-    
-    //Start checking reminds
-    _checkRemindTimer = [NSTimer scheduledTimerWithTimeInterval:60*30 target:self selector:@selector(checkNewReminds) userInfo:nil repeats:YES];
+    //设置快捷键
+    [self setupShortcut];
+
     
 }
 
@@ -93,45 +120,17 @@
 
 }
 
--(void)checkNewReminds{
-
-    NSArray *allUserProfile = [userManager allUserProfiles];
+- (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode
+        contextInfo:(void *)contextInfo{
     
-    for(AKUserProfile *user in allUserProfile){
-    
-        [weiboManager checkUnreadForUser:user callbackTarget:self];
+    //重新授权
+    if (returnCode == NSAlertFirstButtonReturn) {
+        [weiboManager startOauthLogin];
     }
-
 }
 
--(void)setupStatusBarMenu{
 
-    NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
-    statusBarItem = [statusBar statusItemWithLength:NSVariableStatusItemLength];
-    
-    NSImage *normalImage = [NSImage imageNamed:@"menubar-icon-normal"];
-//    [normalImage setSize:NSMakeSize(19, 21)];
-    statusBarItem.image = normalImage;
-    NSImage *alternateImage=[NSImage imageNamed:@"menubar-icon-highlight"];
-//    alternateImage.size = NSMakeSize(19, 21);
-    statusBarItem.alternateImage = alternateImage;
-    statusBarItem.highlightMode = YES;
 
-    NSMenu *menu = [[NSMenu alloc] init];
-    
-    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:@"新微博" action:@selector(newStatusMenuItemClicked:) keyEquivalent:@""];
-    [menu addItem:menuItem];
-    
-    statusBarItem.menu = menu;
-
-}
-
--(void)newStatusMenuItemClicked:(id)sender{
-
-//    NSLog(@"newStatusMenuItemClicked:");
-    [[AKStatusEditorWindowController sharedInstance] showWindow:self];
-    
-}
 
 //微博请求处理
 -(void)weiboManagerMethodActionHandler:(NSNotification *)notification{
@@ -140,25 +139,68 @@
     AKMethodAction methodAction = [(AKMethodActionObject *)[userInfoDictionary objectForKey:@"methodOption"] methodAction];
     AKParsingObject *result = (AKParsingObject *)[userInfoDictionary objectForKey:@"result"];
     
-    NSString *userID = [userManager getUserIDByAccessToken:result.accessToken];
+    AKError *error = [AKWeiboManager getErrorFromResult:result];
+    if(error && methodAction!=AKWBOPT_GET_REMIND_UNREAD_COUNT){
+        
+        //Access Token过期
+        if(error.code == 21327 || (error.code >= 21315 && error.code <=21319) || error.code == 21332){ //这两个都是Token过期的错误代码
+            NSString *userID = [userManager getUserIDByAccessToken:result.accessToken];
+            AKUserProfile *userProfile = [userManager getUserProfileByUserID:userID];
+            
+            if(!_needReauthorizeAlert){
+            
+                _needReauthorizeAlert = [[NSAlert alloc] init];
+            }
+            [_needReauthorizeAlert addButtonWithTitle:@"重新授权"];
+            [_needReauthorizeAlert addButtonWithTitle:@"取消"];
+            [_needReauthorizeAlert setMessageText:[NSString stringWithFormat:@"「%@」授权已过期",userProfile.screen_name]];
+            [_needReauthorizeAlert setInformativeText:[NSString stringWithFormat: @"若要继续使用，请重新授权。(错误代码：%ld,错误信息：%@)" ,error.code,error.error]];
+            [_needReauthorizeAlert setAlertStyle:NSWarningAlertStyle];
+            
+            [_needReauthorizeAlert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+        }else{
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert addButtonWithTitle:@"知道了"];
+            [alert setMessageText:@"发生错误"];
+            [alert setInformativeText:[NSString stringWithFormat: @"错误代码：%ld,错误信息：%@" ,error.code,error.error]];
+            [alert setAlertStyle:NSWarningAlertStyle];
+            
+            [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+        }
+
+    }
+
+    
+//    NSString *userID = [userManager getUserIDByAccessToken:result.accessToken];
     
     if(methodAction == AKWBOPT_OAUTH2_ACCESS_TOKEN){
     
         [self.loginView setHidden:YES];
         
+        NSDictionary *resultDictionary = [result getObject];
         AKAccessTokenObject *accessTokenObject  = [AKWeiboManager getAccessTokenFromParsingObject:result];
         //把AccessToken保存到UserManager和磁盘中
-        [userManager updateUserAccessToken:accessTokenObject];
+        
 
         //在tabView中，建立该用户的UI
         if(![tabView isUserExist:accessTokenObject.userID]){
         
             AKUserProfile *userProfile = [AKUserProfile new];
-            userProfile.IDString = userID;
-            userProfile.ID = [userID longLongValue];
+            userProfile.IDString = accessTokenObject.userID;
+            userProfile.ID = [userProfile.IDString longLongValue];
             [userManager updateUserProfile:userProfile];
-            [tabView addControlGroup:accessTokenObject.userID];
-        
+            [userManager saveUserProfileToDisk:userProfile];
+            
+            [userManager updateUserAccessToken:accessTokenObject];
+            [userManager saveAccessTokenToDisk:accessTokenObject];
+//            [userManager updateUserProfile:userProfile];
+            //必须在updateUserProfile后updateAccessToken
+//            [userManager updateUserAccessToken:accessTokenObject];
+//            [tabView addControlGroup:accessTokenObject.userID];
+
+        }else{
+            
+            [userManager updateUserAccessToken:accessTokenObject];
         }
         
         //向服务器索要用户的资料
@@ -277,7 +319,17 @@
 
 }
 
+-(void)setupShortcut{
 
+    //注册快捷键
+    
+    //发新微博
+    [MASShortcut registerGlobalShortcutWithUserDefaultsKey:AKPreferenceKeyShortcutNewStatus handler:^{
+        [NSApp activateIgnoringOtherApps:YES];
+        [[AKStatusEditorWindowController sharedInstance] showWindow:self];
+    }];
+    
+}
 
 
 - (void)setupCloseButton {
@@ -293,15 +345,6 @@
 //    closeButton.target = self;
 //    closeButton.action = @selector(closeButtonClicked:);
 }
-
-
--(void)closeButtonClicked:(id)sender{
-    
-//    NSLog(@"close button clicked");
-    [self.window orderOut:sender];
-
-}
-
 - (void)setupMinimizeButton {
     INWindowButton *button = [INWindowButton windowButtonWithSize:NSMakeSize(14, 16) groupIdentifier:nil];
     button.activeImage = [NSImage imageNamed:@"minimize-active-color.tiff"];
@@ -322,6 +365,15 @@
     self.window.zoomButton = button;
 }
 
+-(void)closeButtonClicked:(id)sender{
+    
+//    NSLog(@"close button clicked");
+    [self.window orderOut:sender];
+
+}
+
+
+
 -(BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag{
 
     [self.window makeKeyAndOrderFront:sender];
@@ -338,6 +390,10 @@
     
     //Get access token.
     [weiboManager setOauth2Code:code];
+    if(_needReauthorizeAlert)
+    {
+        [NSApp endSheet:_needReauthorizeAlert.window];
+    }
     
     
     
@@ -358,6 +414,15 @@
     [weiboManager startOauthLogin];
     
     
+}
+
+- (IBAction)preferenceMenuItemClicked:(id)sender {
+    
+    if(!_preferenceWindowController){
+        _preferenceWindowController = [[AKPreferenceWindowController alloc] init];
+    }
+    
+    [_preferenceWindowController showWindow:self];
 }
 
 #pragma mark - Connection Delegate

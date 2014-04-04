@@ -19,6 +19,7 @@
 
 @synthesize tabButtonIcon = _tabButtonIcon;
 @synthesize tabButtonType = _tabButtonType;
+@synthesize lightUpIndicator = _lightUpIndicator;
 @synthesize tag = _myTag;
 
 -(id)init{
@@ -49,25 +50,27 @@
 
 }
 
+//-(void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView{
+//
+//}
 
 
 -(void)drawImage:(NSImage *)image withFrame:(NSRect)frame inView:(NSView *)controlView{
 
-    //NSLog(@"isHighlight = %ld",(long)self.isHighlighted);
-    
     BOOL isHighlight = (image == self.alternateImage);
  
     NSRect drawingRect = [self getDrawingRect];
     
     NSImage *icon = (isHighlight)?self.alternateIcon:self.icon;
-    NSPoint iconDrawingPoint = NSMakePoint((frame.size.width - icon.size.width)/2 + frame.origin.x, (frame.size.height - icon.size.height)/2 + frame.origin.y);
+    NSPoint iconDrawingPoint = NSMakePoint((frame.size.width - icon.size.width)/2 + frame.origin.x,
+                                           (frame.size.height - icon.size.height)/2 + frame.origin.y);
     
     NSRect iconDrawingRect = NSMakeRect(iconDrawingPoint.x, iconDrawingPoint.y, icon.size.width, icon.size.height);
     
+//    [image drawAtPoint:NSMakePoint(frame.origin.x, frame.origin.y+frame.size.height) fromRect:drawingRect operation:NSCompositeSourceOver fraction:1];
     [image compositeToPoint:NSMakePoint(frame.origin.x, frame.origin.y+frame.size.height) fromRect:drawingRect operation:NSCompositeSourceOver];
-
+    
     if(self.lightUpIndicator){
-        
         [lightIndicatorImage drawInRect:NSMakeRect(5, 5 + frame.origin.y, 10, 10) fromRect:NSMakeRect(0, 10, 10, 10) operation:NSCompositeSourceOver fraction:1];
     
     }
@@ -102,6 +105,17 @@
             break;
     }
 
+    
+}
+
+-(BOOL)lightUpIndicator{
+    return _lightUpIndicator;
+}
+
+-(void)setLightUpIndicator:(BOOL)lightUpIndicator{
+    _lightUpIndicator = lightUpIndicator;
+    
+    
     
 }
 
