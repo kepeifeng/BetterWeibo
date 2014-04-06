@@ -158,9 +158,12 @@
     if(weiboArray.count == 0 && !self.scrollView.isRefreshing)
     {
 //        [self.tableView reloadData];
-        [self.scrollView.contentView scrollToPoint:NSMakePoint(0, -42)];
         [self.scrollView startLoading];
+        [self.scrollView.contentView scrollToPoint:NSMakePoint(0, -42)];
 
+    }
+    else if(weiboArray.count == 0 && self.scrollView.isRefreshing){
+        [self.scrollView.contentView scrollToPoint:NSMakePoint(0, -42)];
     }
     [super tabDidActived];
 
@@ -689,6 +692,9 @@
         
     }
     else if(methodOption == AKWBOPT_GET_FAVORITES){
+        
+        [self.scrollView stopLoading];
+        [self.scrollView stopBottomLoading];
         
         NSArray *statusArray = (NSArray *)[resultDictionary objectForKey:@"favorites"];
         statusObjectArray = [[NSMutableArray alloc]init];

@@ -199,9 +199,10 @@
         }
         [listener userProfileDidInserted:userProfile atIndex:[self.allUserProfiles indexOfObject:userProfile]];
     }
-    if(!self.currentUserID){
-        self.currentUserID = userProfile.IDString;
-    }
+    
+//    if(!self.currentUserID){
+//        self.currentUserID = userProfile.IDString;
+//    }
     
 }
 
@@ -244,10 +245,8 @@
     //保存用户资料到硬盘
     [self saveUserProfileToDisk:userProfile];
     
-    if(!self.currentUserID){
-        [self setCurrentUserID:userProfile.IDString];
-    }
-    
+
+
     if(oldUserProfile){
     
         for (id<AKUserManagerListenerProtocol> listener in _listeners) {
@@ -263,9 +262,15 @@
             if(![listener respondsToSelector:@selector(userProfileDidInserted:atIndex:)]){
                 continue;
             }
-            [listener userProfileDidInserted:oldUserProfile atIndex:[self.allUserProfiles indexOfObject:userProfile]];
+            [listener userProfileDidInserted:userProfile atIndex:[self.allUserProfiles indexOfObject:userProfile]];
         }
     }
+    
+//    if(!self.currentUserID){
+//        [self setCurrentUserID:userProfile.IDString];
+//    }
+
+    
 
 }
 

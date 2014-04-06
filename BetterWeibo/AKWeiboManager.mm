@@ -120,8 +120,8 @@ static AKWeiboManager * _currentManager;
     [weiboMethods oauth2Code:code url:_redirectURL pTask:nil];
 
 }
--(void)currentUserIDChanged:(NSNotification*)notification{
-    
+//-(void)currentUserIDChanged:(NSNotification*)notification{
+
 //    if(!_observedObjects){
 //        _observedObjects = [NSMutableArray new];
 //    }
@@ -133,7 +133,7 @@ static AKWeiboManager * _currentManager;
 
 //    [self setAccessToken:accessTokenObject];
 
-}
+//}
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     
@@ -669,10 +669,16 @@ static AKWeiboManager * _currentManager;
 }
 
 #pragma mark - User Manager Listener
+
+//-(void)userProfileDidInserted:(AKUserProfile *)userProfile atIndex:(NSInteger)index{
+//
+//    
+//}
+
 -(void)accessTokenDidUpdated:(AKUserProfile *)userProfile accessToken:(AKAccessTokenObject *)accessToken{
 
 
-    if ([userManager currentUserProfile] == userProfile) {
+    if (userProfile != nil && [userManager currentUserProfile] == userProfile) {
         [self setAccessToken:accessToken];
     }
 

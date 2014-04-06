@@ -90,8 +90,6 @@
         // Initialization code here.
         self.customBackgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"tab-control.png"]];
         
-        
-        
         _tabViewControllers = [[NSMutableArray alloc]initWithCapacity:7];
         tabViewItemAndControllerDictionary = [[NSMutableDictionary alloc]init];
         userButtonDictionary = [[NSMutableDictionary alloc]init];
@@ -104,8 +102,6 @@
         userManager = [AKUserManager defaultUserManager];
 
         _timerDictionary = [NSMutableDictionary new];
-        
-        [userManager addListener:self];
 
     }
     return self;
@@ -345,13 +341,13 @@
     
     }
     
-    if(!activedView){
-    
-        [buttonMatrix selectCellAtRow:0 column:0];
-        [(NSButtonCell *)buttonMatrix.selectedCell performClick:buttonMatrix];
-        [(NSButtonCell *)buttonMatrix.selectedCell setState:NSOnState];
-        
-    }
+//    if(!activedView){
+//    
+//        [buttonMatrix selectCellAtRow:0 column:0];
+//        [(NSButtonCell *)buttonMatrix.selectedCell performClick:buttonMatrix];
+//        [(NSButtonCell *)buttonMatrix.selectedCell setState:NSOnState];
+//        
+//    }
     lastControlMatrixOrigin = buttonMatrix.frame.origin;
     
     if(_observedObjects){
@@ -427,10 +423,10 @@
     
     [menu addItem:viewGroupItem.mentionMenuItem];
     
-    NSTimer *checkRemindTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(checkNewReminds) userInfo:nil repeats:YES];
-    
-    [_timerDictionary setObject:checkRemindTimer forKey:userID];
-    
+//    NSTimer *checkRemindTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(checkNewReminds) userInfo:nil repeats:YES];
+//    
+//    [_timerDictionary setObject:checkRemindTimer forKey:userID];
+//    
     
 }
 
@@ -834,7 +830,16 @@
 
 -(void)tabButtonClicked:(id)sender
 {
-    NSInteger clickCount = [[NSApp currentEvent] clickCount];
+    
+    NSInteger clickCount = 0;
+    @try {
+        clickCount = [[NSApp currentEvent] clickCount];
+    }
+    @catch (NSException *exception) {
+        if ([exception.name isEqualToString:NSInternalInconsistencyException]) {
+            clickCount = 0;
+        }
+    }
     
     NSString *tabViewControllerID = [(AKTabButton *)[(NSMatrix *)sender selectedCell] tag];
     AKTabViewItem *tabViewItem = (AKTabViewItem *)[tabViewItemAndControllerDictionary objectForKey:tabViewControllerID];
@@ -1003,7 +1008,7 @@
 
     [self addControlGroup:userProfile.IDString];
     //[weiboManager addUser:accessToken];
-    [[AKWeiboManager currentManager] getUserDetail:userProfile.IDString];
+//    
     
 }
 
@@ -1032,7 +1037,10 @@
 
 -(void)currentUserDidChanged{
     
-    [self updateUserControlPosition];
+    if([weiboViewGroup objectForKey:userManager.currentUserID]){
+    
+        [self updateUserControlPosition];
+    }
 
 }
 

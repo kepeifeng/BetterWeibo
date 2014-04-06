@@ -40,7 +40,7 @@
 
 - (BOOL)overRefreshView;
 - (void)createHeaderView;
-- (void)viewBoundsChanged:(NSNotification*)note;
+//- (void)viewBoundsChanged:(NSNotification*)note;
 
 - (CGFloat)minimumScroll;
 
@@ -81,7 +81,12 @@
 - (void)viewDidMoveToWindow {
 	[self createHeaderView];
     [self createFooterView];
+    if(self.isRefreshing){
+        [self.contentView scrollToPoint:NSMakePoint(0, -REFRESH_HEADER_HEIGHT)];
+    }
 }
+
+
 
 - (NSClipView *)contentView {
 	NSClipView *superClipView = [super contentView];
@@ -106,10 +111,11 @@
 
 - (void)createHeaderView {
 	// delete old stuff if any
-	if (self.refreshHeader) {		
-		[_refreshHeader removeFromSuperview];
-//		[_refreshHeader release];
-		_refreshHeader = nil;
+	if (self.refreshHeader) {
+        return;
+//		[_refreshHeader removeFromSuperview];
+////		[_refreshHeader release];
+//		_refreshHeader = nil;
 	}
 	
 //	[self setVerticalScrollElasticity:NSScrollElasticityAllowed];
@@ -252,6 +258,8 @@
 - (void)createFooterView {
 	// delete old stuff if any
 	if (_refreshFooter) {
+        
+        return;
 		[_refreshFooter removeFromSuperview];
         //		[_refreshHeader release];
 		_refreshFooter = nil;
@@ -281,7 +289,7 @@
 		if (self._overRefreshView && ! self.isRefreshing) {
 			[self startLoading];
 		}
-        else if(self._overBottomRefreshView && !self.isBottomRefreshing){
+        else if(self._overBottomRefreshView && !self.isBottomRefreshing && !self.isRefreshing){
             [self startBottomLoading];
         }
 	}
@@ -302,19 +310,21 @@
 		
 	} else {
 		
+        BOOL bottomReadyToRefresh = [self overBottomRefreshView];
+        if(bottomReadyToRefresh){
+            self._overBottomRefreshView = YES;
+        }
+        else{
+            self._overBottomRefreshView = NO;
+        }
+        
 		// point arrow down
 		self._arrowLayer.transform = CATransform3DMakeRotation(M_PI * 2, 0, 0, 1);
 		self._overRefreshView = NO;
 		
 	}
     
-    BOOL bottomReadyToRefresh = [self overBottomRefreshView];
-    if(bottomReadyToRefresh){
-        self._overBottomRefreshView = YES;
-    }
-    else{
-        self._overBottomRefreshView = NO;
-    }
+    
     
     
 	

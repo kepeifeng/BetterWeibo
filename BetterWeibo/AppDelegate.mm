@@ -31,6 +31,8 @@
     AKPreferenceWindowController *_preferenceWindowController;
     
     NSAlert *_needReauthorizeAlert;
+    
+    NSAlert *_pendingAuthorizeAlert;
 }
 
 
@@ -49,6 +51,8 @@
     
     userManager = [AKUserManager defaultUserManager];
     
+    [userManager addListener:tabView];
+    
     NSArray *accessTokensOnDisk = [userManager getAllAccessTokenFromDisk];
     
     NSArray *userProfilesOnDisk = [userManager getAllUserProfileFromDisk];
@@ -62,13 +66,14 @@
     for(AKUserProfile *userProfile in userProfilesOnDisk){
         
         [userManager addUserProfile:userProfile];
+        if(!userManager.currentUserID){
+            userManager.currentUserID = userProfile.IDString;
+        }
+        
+        [[AKWeiboManager currentManager] getUserDetail:userProfile.IDString];
 
     }
     
-
-    
-
-
     
     
     [weiboManager addMethodActionObserver:self selector:@selector(weiboManagerMethodActionHandler:)];
@@ -87,30 +92,18 @@
     NSArray *userProfileArray = [userManager allAccessTokens];
     
     if(userProfileArray && userProfileArray.count>0){
-    
         //Load Users
         [self.loginView setHidden:YES];
-//        
-//        for(AKAccessTokenObject *accessToken in userProfileArray){
-//        
-//            [tabView addControlGroup:accessToken.userID];
-//            //[weiboManager addUser:accessToken];
-//            [weiboManager getUserDetail:accessToken.userID];
-//        
-//        }
-        
     }
     else{
-    
         //Display Login View
         [self.loginView setHidden:NO];
-
     }
     
     //设置快捷键
     [self setupShortcut];
-
     
+
 }
 
 -(void)awakeFromNib{
@@ -120,13 +113,33 @@
 
 }
 
+-(void)displayPenddingAuthorizeAlert{
+    if(!_pendingAuthorizeAlert){
+//        [NSAlert alertWithMessageText:<#(NSString *)#> defaultButton:<#(NSString *)#> alternateButton:<#(NSString *)#> otherButton:<#(NSString *)#> informativeTextWithFormat:<#(NSString *), ...#>]
+        _pendingAuthorizeAlert = [NSAlert alertWithMessageText:@"等待授权..." defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@"请在浏览器中完成授权"];
+    }
+    [weiboManager startOauthLogin];
+    [_pendingAuthorizeAlert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+    
+
+}
+
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode
         contextInfo:(void *)contextInfo{
     
-    //重新授权
-    if (returnCode == NSAlertFirstButtonReturn) {
-        [weiboManager startOauthLogin];
+    if(alert == _needReauthorizeAlert){
+        
+        [NSApp endSheet:_needReauthorizeAlert.window];
+        
+        //重新授权
+        if (returnCode == NSAlertFirstButtonReturn) {
+            //        [weiboManager startOauthLogin];
+            [self displayPenddingAuthorizeAlert];
+        }
+        
     }
+
+
 }
 
 
@@ -188,11 +201,16 @@
             AKUserProfile *userProfile = [AKUserProfile new];
             userProfile.IDString = accessTokenObject.userID;
             userProfile.ID = [userProfile.IDString longLongValue];
-            [userManager updateUserProfile:userProfile];
-            [userManager saveUserProfileToDisk:userProfile];
             
             [userManager updateUserAccessToken:accessTokenObject];
             [userManager saveAccessTokenToDisk:accessTokenObject];
+            
+            [userManager updateUserProfile:userProfile];
+            [userManager saveUserProfileToDisk:userProfile];
+            
+            if(!userManager.currentUserID){
+                userManager.currentUserID = userProfile.IDString;
+            }
 //            [userManager updateUserProfile:userProfile];
             //必须在updateUserProfile后updateAccessToken
 //            [userManager updateUserAccessToken:accessTokenObject];
@@ -390,10 +408,11 @@
     
     //Get access token.
     [weiboManager setOauth2Code:code];
-    if(_needReauthorizeAlert)
+    if(_pendingAuthorizeAlert)
     {
-        [NSApp endSheet:_needReauthorizeAlert.window];
+        [NSApp endSheet:_pendingAuthorizeAlert.window];
     }
+    
     
     
     
@@ -404,9 +423,8 @@
 
 
 - (IBAction)loginButtonClicked:(id)sender {
-    
 
-    [weiboManager startOauthLogin];
+    [self displayPenddingAuthorizeAlert];
 }
 
 - (IBAction)addAccountClicked:(id)sender {
