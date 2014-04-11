@@ -283,8 +283,10 @@ static AKWeiboManager * _currentManager;
     params.accessToken = [[[AKUserManager defaultUserManager] getAccessTokenByUserID:user.IDString] accessToken];
     if(!images || images.count==0){
         [weiboMethods postStatusesUpdate:status var:params pTask:taskInfo];
+    }else{
+    
+        [weiboMethods postStatusesUpload:status filePath:images var:params pTask:taskInfo];
     }
-    [weiboMethods postStatusesUpload:status filePath:images var:params pTask:taskInfo];
 
 }
 

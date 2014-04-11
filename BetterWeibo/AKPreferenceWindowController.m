@@ -226,8 +226,10 @@ NSString *const AKPreferenceKeyShortcutNewStatus = @"keyShortcutNewStatus";
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    
     if([keyPath isEqualToString:AKUserProfilePropertyNamedProfileImage]){
         [self performSelectorOnMainThread:@selector(_reloadRowForEntity:) withObject:object waitUntilDone:NO];
+        
     }else if([keyPath isEqualToString:AKUserProfilePropertyNamedScreenName]){
         [self performSelectorOnMainThread:@selector(_reloadRowForEntity:) withObject:object waitUntilDone:NO];
     }

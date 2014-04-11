@@ -15,7 +15,7 @@
 
 
 
-@interface AKStatusEditorWindowController : NSWindowController<NSOpenSavePanelDelegate,AKStatusTextViewDelegate, AKImageSelectorDelegate, AKWeiboManagerDelegate, AKEmotionTableControllerDelegate>
+@interface AKStatusEditorWindowController : NSWindowController<NSOpenSavePanelDelegate,AKStatusTextViewDelegate, AKImageSelectorDelegate, AKWeiboManagerDelegate, AKEmotionTableControllerDelegate,AKUserManagerListenerProtocol>
 
 @property (readonly) INAppStoreWindow * myWindow;
 

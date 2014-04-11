@@ -102,7 +102,6 @@
 		046091A9181F99C000F20F2D /* pinwheel.png in Resources */ = {isa = PBXBuildFile; fileRef = 046091A8181F99C000F20F2D /* pinwheel.png */; };
 		0470D661185C304D00DA4742 /* app_content_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D65F185C304D00DA4742 /* app_content_background.png */; };
 		0470D662185C304D00DA4742 /* app_content_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D660185C304D00DA4742 /* app_content_background@2x.png */; };
-		0470D667185C53AF00DA4742 /* navbar_back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0470D663185C53AF00DA4742 /* navbar_back_button.png */; };
 		04942D8F17F8336900459F28 /* AKTabButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 04942D8E17F8336900459F28 /* AKTabButton.m */; };
 		04942DAC17F83AC400459F28 /* favorites_selected_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 04942D9017F83AC400459F28 /* favorites_selected_tab.png */; };
 		04942DAD17F83AC400459F28 /* favorites_selected_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04942D9117F83AC400459F28 /* favorites_selected_tab@2x.png */; };
@@ -3520,7 +3519,7 @@
 		044F3C7317F710E200344173 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Kent Peifeng Ke";
 				TargetAttributes = {
 					044F3C9B17F710E200344173 = {
@@ -3671,7 +3670,6 @@
 				04324CAD17FA81180021809E /* AKBlockViewController.xib in Resources */,
 				04942DAF17F83AC400459F28 /* favorites_tab@2x.png in Resources */,
 				37D639AE18C0735500292774 /* j_org.gif in Resources */,
-				0470D667185C53AF00DA4742 /* navbar_back_button.png in Resources */,
 				044F3CD217F72BC500344173 /* minimize-activenokey-color.tiff in Resources */,
 				04CC0B2B18EBC7A800F7E7AB /* status_item_mentions_unread_icon@2x.png in Resources */,
 				37D639A818C0735500292774 /* hatea_org.gif in Resources */,

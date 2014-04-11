@@ -44,7 +44,7 @@
     self = [super initWithWindowNibName:windowNibName];
     if(self){
     
-        
+        [[AKUserManager defaultUserManager] addListener:self];
     
     }
     return self;
@@ -88,6 +88,24 @@
     
     [self adjustPosition];
     
+    [self refreshUserList];
+    
+    [self setRandomTestStatus];
+    
+    NSShadow *textShadow = [[NSShadow alloc] init];
+    textShadow.shadowBlurRadius = 0;
+    textShadow.shadowColor = [NSColor whiteColor];
+    textShadow.shadowOffset = NSMakeSize(1, -1);
+    self.countField.shadow = textShadow;
+}
+
+/**
+ *  刷新用户列表中的内容
+ */
+-(void)refreshUserList{
+    
+    [self.userSelector.menu removeAllItems];
+    
     NSArray *users = [[AKUserManager defaultUserManager] allUserProfiles];
     
     NSInteger index = 0;
@@ -100,25 +118,17 @@
         menuItem.image = smallAvatarImage;
         //NSLog(@"UserProfileImageSize:(%f,%f)",user.profileImage.size.width,user.profileImage.size.height);
         menuItem.tag = index;
-
+        
         [self.userSelector.menu addItem:menuItem];
         
         //选中当前用户
-        if([[AKUserManager defaultUserManager] currentUserProfile]==user){
-
+        if([[AKUserManager defaultUserManager] currentUserProfile] == user){
+            
             [self.userSelector selectItem:menuItem];
-        
+            
         }
         index++;
     }
-    
-    [self setRandomTestStatus];
-    
-    NSShadow *textShadow = [[NSShadow alloc] init];
-    textShadow.shadowBlurRadius = 0;
-    textShadow.shadowColor = [NSColor whiteColor];
-    textShadow.shadowOffset = NSMakeSize(1, -1);
-    self.countField.shadow = textShadow;
 }
 
 -(BOOL)isFreezing{
@@ -317,7 +327,7 @@
     }
 
     NSInteger count = 140 - self.statusTextView.string.length;
-    if(count<0){
+    if(self.statusTextView.string.length<=0 || count<0){
         NSBeep();
         return;
     }
@@ -583,24 +593,36 @@
 
 }
 
--(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption errCode:(NSInteger)errCode subErrCode:(NSInteger)subErrCode result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
-    
+-(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption error:(AKError *)error result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
+
     if(methodOption == AKWBOPT_POST_STATUSES_UPDATE || methodOption == AKWBOPT_POST_STATUSES_UPLOAD){
-    
+        
         NSBeep();
         //解除冻结
         [self setFreezing:NO];
-    
+        
     }
-
-
+    
 }
+
 
 -(void)OnDelegateWillRelease:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption pTask:(AKUserTaskInfo *)pTask{
 
 
 }
 
+#pragma mark - User Manager Listener
+-(void)userProfileDidInserted:(AKUserProfile *)userProfile atIndex:(NSInteger)index{
+    [self refreshUserList];
+}
+
+-(void)userProfileDidRemoved:(AKUserProfile *)userProfile atIndex:(NSInteger)index{
+    [self refreshUserList];
+}
+
+-(void)userProfileDidUpdated:(AKUserProfile *)userProfile atIndex:(NSInteger)index{
+    [self refreshUserList];
+}
 
 @end
 

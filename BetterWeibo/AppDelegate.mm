@@ -46,7 +46,7 @@
     
     weiboManager = [[AKWeiboManager alloc]initWithClientID:@"1672616342"
                                                  appSecret:@"57663124f7eb21e1207a2ee09fed507b"
-                                               redirectURL:@"http://coffeeandsandwich.com/wukong/authorize.php"];
+                                               redirectURL:@"http://coffeeandsandwich.com/wukong/authorize.html"];
     [AKWeiboManager setCurrentManager:weiboManager];
     
     userManager = [AKUserManager defaultUserManager];
@@ -163,12 +163,13 @@
             if(!_needReauthorizeAlert){
             
                 _needReauthorizeAlert = [[NSAlert alloc] init];
+                [_needReauthorizeAlert addButtonWithTitle:@"重新授权"];
+                [_needReauthorizeAlert addButtonWithTitle:@"取消"];
+                [_needReauthorizeAlert setMessageText:[NSString stringWithFormat:@"「%@」授权已过期",userProfile.screen_name]];
+                [_needReauthorizeAlert setInformativeText:[NSString stringWithFormat: @"若要继续使用，请重新授权。(错误代码：%ld,错误信息：%@)" ,error.code,error.error]];
+                [_needReauthorizeAlert setAlertStyle:NSWarningAlertStyle];
+
             }
-            [_needReauthorizeAlert addButtonWithTitle:@"重新授权"];
-            [_needReauthorizeAlert addButtonWithTitle:@"取消"];
-            [_needReauthorizeAlert setMessageText:[NSString stringWithFormat:@"「%@」授权已过期",userProfile.screen_name]];
-            [_needReauthorizeAlert setInformativeText:[NSString stringWithFormat: @"若要继续使用，请重新授权。(错误代码：%ld,错误信息：%@)" ,error.code,error.error]];
-            [_needReauthorizeAlert setAlertStyle:NSWarningAlertStyle];
             
             [_needReauthorizeAlert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
         }else{
@@ -219,6 +220,7 @@
         }else{
             
             [userManager updateUserAccessToken:accessTokenObject];
+            [userManager saveAccessTokenToDisk:accessTokenObject];
         }
         
         //向服务器索要用户的资料

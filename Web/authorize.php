@@ -2,7 +2,7 @@
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>正在跳转...</title>
-		
+		<link rel="stylesheet" href="css/auth.css" />
 		<script>
 			
 			var QueryString = function () {
@@ -38,6 +38,11 @@
 	</head>
 	<body>
 	
+	<div id="content">
+		<p><img src="stamp.png" alt="Bebo" /></p>
+		<h2>您现在可以关闭本页面了</h2>
+		<h3 id="countdownMessage">（将在10秒后尝试自动关闭）</h3>
+	</div>
 	
 	</body>
 </html>
