@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D33" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AKWeiboViewController">
@@ -13,21 +13,21 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
-        <customView id="1" customClass="AKPanelView">
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="1">
             <rect key="frame" x="0.0" y="0.0" width="555" height="388"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="265" horizontalPageScroll="10" verticalLineScroll="265" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="allowed" translatesAutoresizingMaskIntoConstraints="NO" id="xNJ-dZ-GMy" customClass="EQSTRScrollView">
+                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="49" horizontalPageScroll="10" verticalLineScroll="49" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="allowed" translatesAutoresizingMaskIntoConstraints="NO" id="xNJ-dZ-GMy" customClass="EQSTRScrollView">
                     <rect key="frame" x="0.0" y="0.0" width="555" height="388"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="T8Q-fk-CDl" customClass="EQSTRClipView">
                         <rect key="frame" x="0.0" y="0.0" width="555" height="388"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="265" rowSizeStyle="automatic" viewBased="YES" id="dTs-sz-RrF">
-                                <rect key="frame" x="0.0" y="0.0" width="555" height="388"/>
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="49" rowSizeStyle="automatic" viewBased="YES" id="dTs-sz-RrF">
+                                <rect key="frame" x="0.0" y="0.0" width="555" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.95686274509803926" green="0.95686274509803926" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
@@ -44,317 +44,20 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                         <prototypeCellViews>
-                                            <tableCellView identifier="weiboItem" id="bdM-Af-qhh" customClass="AKWeiboTableCellView">
-                                                <rect key="frame" x="0.0" y="0.0" width="555" height="265"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <subviews>
-                                                    <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OCG-pq-jrb">
-                                                        <rect key="frame" x="187" y="164" width="41" height="41"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="fav_mark" id="Lqz-IW-Dgl"/>
-                                                    </imageView>
-                                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="m7b-5M-F6z" customClass="AKRepostedWeiboView">
-                                                        <rect key="frame" x="0.0" y="183" width="555" height="82"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                        <subviews>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b4j-wD-8kF">
-                                                                <rect key="frame" x="17" y="45" width="312" height="17"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="用户名" id="Tgd-r1-bJW">
-                                                                    <font key="font" metaFont="systemBold"/>
-                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bM0-A3-zKB">
-                                                                <rect key="frame" x="333" y="45" width="66" height="17"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="64天" id="U8l-7C-U8D">
-                                                                    <font key="font" metaFont="system"/>
-                                                                    <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
-                                                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qyn-Dg-5kX" customClass="AKTextView">
-                                                                <rect key="frame" x="19" y="20" width="163" height="20"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            </customView>
-                                                            <matrix verticalHuggingPriority="750" fixedFrame="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyj-QC-u9f">
-                                                                <rect key="frame" x="19" y="9" width="143" height="143"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                <size key="cellSize" width="45" height="45"/>
-                                                                <size key="intercellSpacing" width="4" height="4"/>
-                                                                <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="QeB-6t-VLZ" customClass="AKImageButtonCell">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="system"/>
-                                                                </buttonCell>
-                                                                <cells>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="1eJ-lJ-uIm" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="z4V-Cl-v90" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="HMI-Li-Ydh" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="GrA-tg-Y4I" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="bgI-2n-vym" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="Hch-yh-kPe" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="Ii4-Wp-5FC" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="DqO-Et-b4k" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" imageScaling="proportionallyUpOrDown" inset="2" id="fS2-VI-HLF" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                </cells>
-                                                            </matrix>
-                                                        </subviews>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="82" id="IB7-gE-Pvl"/>
-                                                        </constraints>
-                                                        <connections>
-                                                            <outlet property="repostedWeiboContent" destination="Qyn-Dg-5kX" id="ynf-LY-phI"/>
-                                                            <outlet property="repostedWeiboDateDuration" destination="bM0-A3-zKB" id="khJ-tN-XAy"/>
-                                                            <outlet property="repostedWeiboImageMatrix" destination="dyj-QC-u9f" id="NJX-cr-hyR"/>
-                                                            <outlet property="repostedWeiboUserAlias" destination="b4j-wD-8kF" id="K9U-yi-Lzt"/>
-                                                        </connections>
-                                                    </customView>
-                                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="un5-Rp-Ybd">
-                                                        <rect key="frame" x="0.0" y="0.0" width="555" height="184"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                        <subviews>
-                                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbS-B3-XgM">
-                                                                <rect key="frame" x="62" y="152" width="415" height="17"/>
-                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="17" id="xTU-qV-fBN"/>
-                                                                </constraints>
-                                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="用户名" id="Qs6-AU-qZM">
-                                                                    <font key="font" metaFont="systemBold"/>
-                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cH7-mG-ZnJ">
-                                                                <rect key="frame" x="491" y="147" width="56" height="17"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="52" id="ebP-rk-LeQ"/>
-                                                                    <constraint firstAttribute="height" constant="17" id="fcg-jc-tJK"/>
-                                                                </constraints>
-                                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="126天" id="VjY-Ns-VP8">
-                                                                    <font key="font" metaFont="system"/>
-                                                                    <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
-                                                            <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWI-69-lBX" customClass="AKTextView">
-                                                                <rect key="frame" x="68" y="125" width="477" height="22"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="22" id="V8w-3o-Cm5"/>
-                                                                </constraints>
-                                                            </customView>
-                                                            <matrix verticalHuggingPriority="750" misplaced="YES" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alE-1t-O9g">
-                                                                <rect key="frame" x="58" y="4" width="143" height="143"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="80" id="qGr-Vn-WTa"/>
-                                                                    <constraint firstAttribute="height" constant="80" id="uDY-Kr-Wzn"/>
-                                                                </constraints>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                <size key="cellSize" width="80" height="80"/>
-                                                                <size key="intercellSpacing" width="4" height="4"/>
-                                                                <buttonCell key="prototype" type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="Lep-3f-hDx" customClass="AKImageButtonCell">
-                                                                    <behavior key="behavior" lightByContents="YES"/>
-                                                                    <font key="font" metaFont="system"/>
-                                                                </buttonCell>
-                                                                <cells>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="UGo-5g-fM8" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="s9o-WM-JEm" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="O2D-00-gvZ" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="ci0-Ul-eNr" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="hLU-10-gfx" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="SSk-JF-tQo" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="sLs-Zd-DXh" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="mJb-x0-e5V" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="Mgc-rM-yeb" customClass="AKImageButtonCell">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                </cells>
-                                                            </matrix>
-                                                            <matrix verticalHuggingPriority="750" misplaced="YES" alphaValue="0.0" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEY-3a-yLo">
-                                                                <rect key="frame" x="271" y="5" width="140" height="29"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="140" id="iyb-ph-35T"/>
-                                                                    <constraint firstAttribute="height" constant="29" id="oY1-AB-DgM"/>
-                                                                </constraints>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                <size key="cellSize" width="35" height="29"/>
-                                                                <buttonCell key="prototype" type="bevel" title="Radio" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="31R-Pj-Bbc">
-                                                                    <behavior key="behavior" lightByContents="YES"/>
-                                                                    <font key="font" metaFont="system"/>
-                                                                </buttonCell>
-                                                                <cells>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_weibo" imagePosition="overlaps" alignment="center" alternateImage="weibo-toolbar-active_weibo" lineBreakMode="charWrapping" inset="2" id="gmw-aM-DoI">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_comment" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_comment" lineBreakMode="charWrapping" tag="1" inset="2" id="re4-m1-hhN">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" bezelStyle="regularSquare" image="weibo-toolbar-normal_fav" imagePosition="overlaps" alignment="left" alternateImage="weibo-toolbar-active_fav" lineBreakMode="charWrapping" tag="2" inset="2" id="yO7-IS-yv7">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                            <connections>
-                                                                                <action selector="favButtonClicked:" target="-2" id="AO6-hL-rYD"/>
-                                                                            </connections>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                    <column>
-                                                                        <buttonCell type="bevel" title="Radio" bezelStyle="regularSquare" image="weibo-toolbar-normal_share" imagePosition="only" alignment="left" alternateImage="weibo-toolbar-active_share" lineBreakMode="charWrapping" tag="3" inset="2" id="2mR-Lm-bZF">
-                                                                            <behavior key="behavior" lightByContents="YES"/>
-                                                                            <font key="font" metaFont="system"/>
-                                                                        </buttonCell>
-                                                                    </column>
-                                                                </cells>
-                                                                <connections>
-                                                                    <action selector="toolbarClicked:" target="bdM-Af-qhh" id="vlF-dX-3z0"/>
-                                                                </connections>
-                                                            </matrix>
-                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zar-7A-pI6" customClass="AKUserButton">
-                                                                <rect key="frame" x="10" y="10" width="48" height="50"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="48" id="1Ju-cD-XqT"/>
-                                                                    <constraint firstAttribute="height" constant="48" id="dRf-yD-roH"/>
-                                                                </constraints>
-                                                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="M23-6z-Bqt">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="system"/>
-                                                                </buttonCell>
-                                                            </button>
-                                                        </subviews>
-                                                        <constraints>
-                                                            <constraint firstAttribute="trailing" secondItem="fEY-3a-yLo" secondAttribute="trailing" constant="5" id="0tb-m7-ong"/>
-                                                            <constraint firstAttribute="bottom" secondItem="alE-1t-O9g" secondAttribute="bottom" constant="20" id="6yR-6S-fEb"/>
-                                                            <constraint firstItem="cH7-mG-ZnJ" firstAttribute="top" secondItem="un5-Rp-Ybd" secondAttribute="top" constant="20" id="7Dl-xc-NCZ"/>
-                                                            <constraint firstAttribute="trailing" secondItem="fWI-69-lBX" secondAttribute="trailing" constant="10" id="7W0-Ub-DcD"/>
-                                                            <constraint firstItem="zar-7A-pI6" firstAttribute="top" secondItem="un5-Rp-Ybd" secondAttribute="top" constant="20" id="BPF-2I-mdw"/>
-                                                            <constraint firstItem="fWI-69-lBX" firstAttribute="top" secondItem="sbS-B3-XgM" secondAttribute="bottom" constant="5" id="G0L-fP-PDE"/>
-                                                            <constraint firstItem="fWI-69-lBX" firstAttribute="leading" secondItem="un5-Rp-Ybd" secondAttribute="leading" constant="68" id="UGV-Oe-ggT"/>
-                                                            <constraint firstItem="alE-1t-O9g" firstAttribute="leading" secondItem="un5-Rp-Ybd" secondAttribute="leading" constant="60" id="deS-Hm-Oqc"/>
-                                                            <constraint firstItem="zar-7A-pI6" firstAttribute="leading" secondItem="un5-Rp-Ybd" secondAttribute="leading" constant="10" id="h6A-s3-v7r"/>
-                                                            <constraint firstAttribute="trailing" secondItem="sbS-B3-XgM" secondAttribute="trailing" constant="80" id="hQf-Wo-T7N"/>
-                                                            <constraint firstAttribute="trailing" secondItem="cH7-mG-ZnJ" secondAttribute="trailing" constant="10" id="kxs-1u-14f"/>
-                                                            <constraint firstAttribute="bottom" secondItem="fEY-3a-yLo" secondAttribute="bottom" constant="5" id="oY3-xa-LWy"/>
-                                                            <constraint firstItem="sbS-B3-XgM" firstAttribute="top" secondItem="un5-Rp-Ybd" secondAttribute="top" constant="20" id="qeq-1d-2zR"/>
-                                                            <constraint firstAttribute="height" constant="79" id="vsO-Q3-iAk"/>
-                                                            <constraint firstItem="sbS-B3-XgM" firstAttribute="leading" secondItem="un5-Rp-Ybd" secondAttribute="leading" constant="64" id="zrg-ac-aVH"/>
-                                                        </constraints>
-                                                    </customView>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="un5-Rp-Ybd" secondAttribute="bottom" id="2of-yj-aCL"/>
-                                                    <constraint firstAttribute="trailing" secondItem="m7b-5M-F6z" secondAttribute="trailing" id="97J-Rs-AMY"/>
-                                                    <constraint firstItem="un5-Rp-Ybd" firstAttribute="leading" secondItem="bdM-Af-qhh" secondAttribute="leading" id="AVV-fl-atD"/>
-                                                    <constraint firstItem="m7b-5M-F6z" firstAttribute="top" secondItem="bdM-Af-qhh" secondAttribute="top" id="LjE-A9-XTk"/>
-                                                    <constraint firstItem="m7b-5M-F6z" firstAttribute="leading" secondItem="bdM-Af-qhh" secondAttribute="leading" id="Wun-8E-bre"/>
-                                                    <constraint firstAttribute="trailing" secondItem="un5-Rp-Ybd" secondAttribute="trailing" id="tFB-bJ-27o"/>
-                                                </constraints>
-                                                <connections>
-                                                    <outlet property="commentButton" destination="re4-m1-hhN" id="a2h-YD-pe4"/>
-                                                    <outlet property="dateDuration" destination="cH7-mG-ZnJ" id="i1l-7s-dLz"/>
-                                                    <outlet property="favButton" destination="yO7-IS-yv7" id="gvy-Fp-KIn"/>
-                                                    <outlet property="favMark" destination="OCG-pq-jrb" id="xpf-oD-0xh"/>
-                                                    <outlet property="images" destination="alE-1t-O9g" id="7zv-Ha-n52"/>
-                                                    <outlet property="repostButton" destination="gmw-aM-DoI" id="Gl7-8c-FRl"/>
-                                                    <outlet property="repostedWeiboView" destination="m7b-5M-F6z" id="gTT-Hp-rzh"/>
-                                                    <outlet property="shareButton" destination="2mR-Lm-bZF" id="JYj-c8-gIq"/>
-                                                    <outlet property="toolbar" destination="fEY-3a-yLo" id="g0B-oy-c1y"/>
-                                                    <outlet property="userAlias" destination="sbS-B3-XgM" id="sCY-cp-Ezo"/>
-                                                    <outlet property="userImage" destination="zar-7A-pI6" id="1Rq-eG-o4q"/>
-                                                    <outlet property="weiboTextField" destination="fWI-69-lBX" id="9Mv-dK-QhI"/>
-                                                    <outlet property="weiboView" destination="un5-Rp-Ybd" id="KzW-wD-s4w"/>
-                                                </connections>
-                                            </tableCellView>
                                             <tableCellView identifier="loadMoreCell" id="T4d-tZ-6nf" customClass="AKLoadMoreCell">
-                                                <rect key="frame" x="0.0" y="265" width="555" height="49"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="555" height="49"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="57A-kx-XS3">
                                                         <rect key="frame" x="167" y="7" width="82" height="32"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <animations/>
                                                         <buttonCell key="cell" type="push" title="LOAD" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5Ks-lw-sD5">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                     </button>
                                                 </subviews>
+                                                <animations/>
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
@@ -365,15 +68,19 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
+                    <animations/>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="bKe-2Y-fgw">
                         <rect key="frame" x="0.0" y="-16" width="0.0" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="Kfz-K5-Hd7">
                         <rect key="frame" x="-15" y="17" width="16" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </scroller>
                 </scrollView>
             </subviews>
@@ -383,17 +90,7 @@
                 <constraint firstItem="xNJ-dZ-GMy" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="ZWK-vC-x3C"/>
                 <constraint firstItem="xNJ-dZ-GMy" firstAttribute="top" secondItem="1" secondAttribute="top" id="mnb-yt-oPn"/>
             </constraints>
+            <animations/>
         </customView>
     </objects>
-    <resources>
-        <image name="fav_mark" width="41" height="41"/>
-        <image name="weibo-toolbar-active_comment" width="35" height="29"/>
-        <image name="weibo-toolbar-active_fav" width="35" height="29"/>
-        <image name="weibo-toolbar-active_share" width="35" height="29"/>
-        <image name="weibo-toolbar-active_weibo" width="35" height="29"/>
-        <image name="weibo-toolbar-normal_comment" width="35" height="29"/>
-        <image name="weibo-toolbar-normal_fav" width="35" height="29"/>
-        <image name="weibo-toolbar-normal_share" width="35" height="29"/>
-        <image name="weibo-toolbar-normal_weibo" width="35" height="29"/>
-    </resources>
 </document>

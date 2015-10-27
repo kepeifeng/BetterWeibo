@@ -1,0 +1,508 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		008AD86FCF1F975D0FDEAB1E0CFC22CF /* NSDocument+INAppStoreWindowFixes.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9064D9D587BAD614ECC59C3E1FBB28 /* NSDocument+INAppStoreWindowFixes.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		0CD158BBDF5F2D18E3C9150207153C73 /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 093A3C1A593F16E7B714595AD03AA880 /* INWindowButton.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
+		301A51F3DF4293B11B3DC2934B09CA97 /* INAppStoreWindowSwizzling.h in Headers */ = {isa = PBXBuildFile; fileRef = 1489615685EFFCFFD08ED041101CEBEB /* INAppStoreWindowSwizzling.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		603A1D0CC41E15F882C0D996DF4BB41C /* INAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D4434F3518C2FBF0F52130117F98D06 /* INAppStoreWindow.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
+		B3D841B05C4DF45792ADE906B37D315B /* INAppStoreWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CEEC988B8BC0EC9E58645C66BEE8E5 /* INAppStoreWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B9FC72D103DBEA4676EEC22F71806B72 /* INAppStoreWindowCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D65771155CF7D299CE59293256E555A /* INAppStoreWindowCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BC6C4627FF784690CB29ED9D2E53E69A /* INWindowButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A3B4B7E7D17F12F847A461D76757A9A4 /* INWindowButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BD40472F2A20BA3BA07A192275AC3969 /* INAppStoreWindow-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C73408ECF5BAFF38DFB440ABDB23E1A /* INAppStoreWindow-dummy.m */; };
+		CA207ADFA06AA9063CC0E59BFAB571EA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */; };
+		CAAC4D7BD7754400D3F0C7D89A08ECAC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */; };
+		D99A12D135268BC18CACAD7CEB99F6EB /* NSDocument+INAppStoreWindowFixes.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A19349D0FF535F9CC44AD19853CF4F6 /* NSDocument+INAppStoreWindowFixes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DB4416BCE5239589D75108601DCE5E7A /* INWindowBackgroundView+CoreUIRendering.h in Headers */ = {isa = PBXBuildFile; fileRef = 078784182D62754C0C386F2DE322B41B /* INWindowBackgroundView+CoreUIRendering.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E1BCCE8413F78F7CE6EC39C6F26D2E23 /* Pods-Wukong-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A638849898E727D7A59E2DDEADA01B /* Pods-Wukong-dummy.m */; };
+		EFD17556764C8DE3ACE7892D20484EE9 /* INWindowBackgroundView+CoreUIRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FF88927F77505EE385AD4EF74F1845 /* INWindowBackgroundView+CoreUIRendering.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		FD08DA22BB7BB7D18CF65E19884228BB /* INAppStoreWindowSwizzling.c in Sources */ = {isa = PBXBuildFile; fileRef = BCBA0820C52813EED481CB8EE1E52454 /* INAppStoreWindowSwizzling.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1EB5B42E947783A1C648EB4B65A11185 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7586845D1B48F94FEBDE2E36FDE37A4C;
+			remoteInfo = INAppStoreWindow;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		078784182D62754C0C386F2DE322B41B /* INWindowBackgroundView+CoreUIRendering.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "INWindowBackgroundView+CoreUIRendering.h"; path = "INAppStoreWindow/Extensions/INWindowBackgroundView+CoreUIRendering.h"; sourceTree = "<group>"; };
+		093A3C1A593F16E7B714595AD03AA880 /* INWindowButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = INWindowButton.m; path = INAppStoreWindow/INWindowButton.m; sourceTree = "<group>"; };
+		1489615685EFFCFFD08ED041101CEBEB /* INAppStoreWindowSwizzling.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = INAppStoreWindowSwizzling.h; path = INAppStoreWindow/Extensions/INAppStoreWindowSwizzling.h; sourceTree = "<group>"; };
+		1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		1E69FEF975CEFF8B6955F997A05700FC /* Pods-Wukong-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Wukong-frameworks.sh"; sourceTree = "<group>"; };
+		211E12F890C79A70C803A6092F0E8C37 /* INAppStoreWindow-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "INAppStoreWindow-prefix.pch"; sourceTree = "<group>"; };
+		29CEEC988B8BC0EC9E58645C66BEE8E5 /* INAppStoreWindow.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = INAppStoreWindow.h; path = INAppStoreWindow/INAppStoreWindow.h; sourceTree = "<group>"; };
+		2CF98C71FF4A7898BD8042D994090DE4 /* libINAppStoreWindow.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libINAppStoreWindow.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D4434F3518C2FBF0F52130117F98D06 /* INAppStoreWindow.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = INAppStoreWindow.m; path = INAppStoreWindow/INAppStoreWindow.m; sourceTree = "<group>"; };
+		3D65771155CF7D299CE59293256E555A /* INAppStoreWindowCompatibility.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = INAppStoreWindowCompatibility.h; path = INAppStoreWindow/INAppStoreWindowCompatibility.h; sourceTree = "<group>"; };
+		47A638849898E727D7A59E2DDEADA01B /* Pods-Wukong-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Wukong-dummy.m"; sourceTree = "<group>"; };
+		4F9736FB79083F831ECC93116E1CE41F /* Pods-Wukong-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Wukong-acknowledgements.markdown"; sourceTree = "<group>"; };
+		59B2F33BF0D0D4FD4DAD70F72FE20605 /* Pods-Wukong.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Wukong.release.xcconfig"; sourceTree = "<group>"; };
+		68FF88927F77505EE385AD4EF74F1845 /* INWindowBackgroundView+CoreUIRendering.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "INWindowBackgroundView+CoreUIRendering.m"; path = "INAppStoreWindow/Extensions/INWindowBackgroundView+CoreUIRendering.m"; sourceTree = "<group>"; };
+		6A19349D0FF535F9CC44AD19853CF4F6 /* NSDocument+INAppStoreWindowFixes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSDocument+INAppStoreWindowFixes.h"; path = "INAppStoreWindow/Extensions/NSDocument+INAppStoreWindowFixes.h"; sourceTree = "<group>"; };
+		75BD72202323317379A340D5ECC2EEE7 /* Pods-Wukong-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Wukong-acknowledgements.plist"; sourceTree = "<group>"; };
+		7C73408ECF5BAFF38DFB440ABDB23E1A /* INAppStoreWindow-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "INAppStoreWindow-dummy.m"; sourceTree = "<group>"; };
+		8B6213CFCC8145AD6B41212911D4F8E9 /* Pods-Wukong.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Wukong.debug.xcconfig"; sourceTree = "<group>"; };
+		A3B4B7E7D17F12F847A461D76757A9A4 /* INWindowButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = INWindowButton.h; path = INAppStoreWindow/INWindowButton.h; sourceTree = "<group>"; };
+		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BCBA0820C52813EED481CB8EE1E52454 /* INAppStoreWindowSwizzling.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = INAppStoreWindowSwizzling.c; path = INAppStoreWindow/Extensions/INAppStoreWindowSwizzling.c; sourceTree = "<group>"; };
+		DB1D82DC7FEE599C4AF61D418F033A7D /* Pods-Wukong-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Wukong-resources.sh"; sourceTree = "<group>"; };
+		E7AE2FCE50E672E6ADF187CF9B4CE264 /* INAppStoreWindow.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = INAppStoreWindow.xcconfig; sourceTree = "<group>"; };
+		EE9064D9D587BAD614ECC59C3E1FBB28 /* NSDocument+INAppStoreWindowFixes.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSDocument+INAppStoreWindowFixes.m"; path = "INAppStoreWindow/Extensions/NSDocument+INAppStoreWindowFixes.m"; sourceTree = "<group>"; };
+		F35707770087E559A2D1E33616E51AEE /* libPods-Wukong.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wukong.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		026338468B970742B129B9498A42153E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA207ADFA06AA9063CC0E59BFAB571EA /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8432693D9496DC34B0FB5B76BE800D18 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAAC4D7BD7754400D3F0C7D89A08ECAC /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		097C9C6523C0480EE1DD1BDFA4A45014 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9CB770EFE0CF4B475B1246FC81E7040D /* Pods-Wukong */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		14896A0D2E940F5A0F7B97E8468E30E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2CF98C71FF4A7898BD8042D994090DE4 /* libINAppStoreWindow.a */,
+				F35707770087E559A2D1E33616E51AEE /* libPods-Wukong.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		28C17CEF104526ACA07B6EEE217EC43E /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
+		39E9EE8210D861DFD82346C1F5EB7218 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28C17CEF104526ACA07B6EEE217EC43E /* OS X */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		503F090F1C249E709995E9FC275C0311 /* CoreUIRendering */ = {
+			isa = PBXGroup;
+			children = (
+				078784182D62754C0C386F2DE322B41B /* INWindowBackgroundView+CoreUIRendering.h */,
+				68FF88927F77505EE385AD4EF74F1845 /* INWindowBackgroundView+CoreUIRendering.m */,
+			);
+			name = CoreUIRendering;
+			sourceTree = "<group>";
+		};
+		5B55CA3DFF4717D56A60C2E581853F68 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E7AE2FCE50E672E6ADF187CF9B4CE264 /* INAppStoreWindow.xcconfig */,
+				7C73408ECF5BAFF38DFB440ABDB23E1A /* INAppStoreWindow-dummy.m */,
+				211E12F890C79A70C803A6092F0E8C37 /* INAppStoreWindow-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/INAppStoreWindow";
+			sourceTree = "<group>";
+		};
+		60FE5FDA5328B90EDCF1FAA9FA873148 /* NSDocumentFixes */ = {
+			isa = PBXGroup;
+			children = (
+				6A19349D0FF535F9CC44AD19853CF4F6 /* NSDocument+INAppStoreWindowFixes.h */,
+				EE9064D9D587BAD614ECC59C3E1FBB28 /* NSDocument+INAppStoreWindowFixes.m */,
+			);
+			name = NSDocumentFixes;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
+				39E9EE8210D861DFD82346C1F5EB7218 /* Frameworks */,
+				9EF123E2AC68E49F7FC2491273859D87 /* Pods */,
+				14896A0D2E940F5A0F7B97E8468E30E7 /* Products */,
+				097C9C6523C0480EE1DD1BDFA4A45014 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		85C1324406F3EC4302CA68BF5CAD57CB /* INAppStoreWindow */ = {
+			isa = PBXGroup;
+			children = (
+				29CEEC988B8BC0EC9E58645C66BEE8E5 /* INAppStoreWindow.h */,
+				3D4434F3518C2FBF0F52130117F98D06 /* INAppStoreWindow.m */,
+				3D65771155CF7D299CE59293256E555A /* INAppStoreWindowCompatibility.h */,
+				A3B4B7E7D17F12F847A461D76757A9A4 /* INWindowButton.h */,
+				093A3C1A593F16E7B714595AD03AA880 /* INWindowButton.m */,
+				C432F58E29BACB606766865377651BBB /* Core */,
+				503F090F1C249E709995E9FC275C0311 /* CoreUIRendering */,
+				60FE5FDA5328B90EDCF1FAA9FA873148 /* NSDocumentFixes */,
+				5B55CA3DFF4717D56A60C2E581853F68 /* Support Files */,
+				E3B8970A405941E19886E5A80E75E678 /* Swizzling */,
+			);
+			path = INAppStoreWindow;
+			sourceTree = "<group>";
+		};
+		9CB770EFE0CF4B475B1246FC81E7040D /* Pods-Wukong */ = {
+			isa = PBXGroup;
+			children = (
+				4F9736FB79083F831ECC93116E1CE41F /* Pods-Wukong-acknowledgements.markdown */,
+				75BD72202323317379A340D5ECC2EEE7 /* Pods-Wukong-acknowledgements.plist */,
+				47A638849898E727D7A59E2DDEADA01B /* Pods-Wukong-dummy.m */,
+				1E69FEF975CEFF8B6955F997A05700FC /* Pods-Wukong-frameworks.sh */,
+				DB1D82DC7FEE599C4AF61D418F033A7D /* Pods-Wukong-resources.sh */,
+				8B6213CFCC8145AD6B41212911D4F8E9 /* Pods-Wukong.debug.xcconfig */,
+				59B2F33BF0D0D4FD4DAD70F72FE20605 /* Pods-Wukong.release.xcconfig */,
+			);
+			name = "Pods-Wukong";
+			path = "Target Support Files/Pods-Wukong";
+			sourceTree = "<group>";
+		};
+		9EF123E2AC68E49F7FC2491273859D87 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				85C1324406F3EC4302CA68BF5CAD57CB /* INAppStoreWindow */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C432F58E29BACB606766865377651BBB /* Core */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		E3B8970A405941E19886E5A80E75E678 /* Swizzling */ = {
+			isa = PBXGroup;
+			children = (
+				BCBA0820C52813EED481CB8EE1E52454 /* INAppStoreWindowSwizzling.c */,
+				1489615685EFFCFFD08ED041101CEBEB /* INAppStoreWindowSwizzling.h */,
+			);
+			name = Swizzling;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		1AA4327CDFB70A551A3E1C45AA4F4867 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3D841B05C4DF45792ADE906B37D315B /* INAppStoreWindow.h in Headers */,
+				B9FC72D103DBEA4676EEC22F71806B72 /* INAppStoreWindowCompatibility.h in Headers */,
+				301A51F3DF4293B11B3DC2934B09CA97 /* INAppStoreWindowSwizzling.h in Headers */,
+				DB4416BCE5239589D75108601DCE5E7A /* INWindowBackgroundView+CoreUIRendering.h in Headers */,
+				BC6C4627FF784690CB29ED9D2E53E69A /* INWindowButton.h in Headers */,
+				D99A12D135268BC18CACAD7CEB99F6EB /* NSDocument+INAppStoreWindowFixes.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		13229D2E0652295CFA80E68E83F76138 /* Pods-Wukong */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 464FB72DFB7CC7044E492D2FE05A9725 /* Build configuration list for PBXNativeTarget "Pods-Wukong" */;
+			buildPhases = (
+				9DD99BA48E3ACA8B7E318119EE7820CD /* Sources */,
+				026338468B970742B129B9498A42153E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				443E66DD192FC446E30537DAC743CAB0 /* PBXTargetDependency */,
+			);
+			name = "Pods-Wukong";
+			productName = "Pods-Wukong";
+			productReference = F35707770087E559A2D1E33616E51AEE /* libPods-Wukong.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		7586845D1B48F94FEBDE2E36FDE37A4C /* INAppStoreWindow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7374923B86120DBC1AB3EC9E6D28F3BD /* Build configuration list for PBXNativeTarget "INAppStoreWindow" */;
+			buildPhases = (
+				49DDA744527FBDBE75776FEBF7B4002F /* Sources */,
+				8432693D9496DC34B0FB5B76BE800D18 /* Frameworks */,
+				1AA4327CDFB70A551A3E1C45AA4F4867 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = INAppStoreWindow;
+			productName = INAppStoreWindow;
+			productReference = 2CF98C71FF4A7898BD8042D994090DE4 /* libINAppStoreWindow.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 14896A0D2E940F5A0F7B97E8468E30E7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7586845D1B48F94FEBDE2E36FDE37A4C /* INAppStoreWindow */,
+				13229D2E0652295CFA80E68E83F76138 /* Pods-Wukong */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		49DDA744527FBDBE75776FEBF7B4002F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD40472F2A20BA3BA07A192275AC3969 /* INAppStoreWindow-dummy.m in Sources */,
+				603A1D0CC41E15F882C0D996DF4BB41C /* INAppStoreWindow.m in Sources */,
+				FD08DA22BB7BB7D18CF65E19884228BB /* INAppStoreWindowSwizzling.c in Sources */,
+				EFD17556764C8DE3ACE7892D20484EE9 /* INWindowBackgroundView+CoreUIRendering.m in Sources */,
+				0CD158BBDF5F2D18E3C9150207153C73 /* INWindowButton.m in Sources */,
+				008AD86FCF1F975D0FDEAB1E0CFC22CF /* NSDocument+INAppStoreWindowFixes.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9DD99BA48E3ACA8B7E318119EE7820CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1BCCE8413F78F7CE6EC39C6F26D2E23 /* Pods-Wukong-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		443E66DD192FC446E30537DAC743CAB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = INAppStoreWindow;
+			target = 7586845D1B48F94FEBDE2E36FDE37A4C /* INAppStoreWindow */;
+			targetProxy = 1EB5B42E947783A1C648EB4B65A11185 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1F9B98C836E93974C88312ED9E8C0ABE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4FDFA10BD33AA50194C7B6CB74AF985E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		560A79F529560913BBD9A34B486BB8DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 59B2F33BF0D0D4FD4DAD70F72FE20605 /* Pods-Wukong.release.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		75292FD098F00B08D5148CF46E9755FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B6213CFCC8145AD6B41212911D4F8E9 /* Pods-Wukong.debug.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		AA84A9C4D0BB512D9982A773F0FEB134 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7AE2FCE50E672E6ADF187CF9B4CE264 /* INAppStoreWindow.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/INAppStoreWindow/INAppStoreWindow-prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F00113C415CFB8F9D7EF084939FCDD7E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7AE2FCE50E672E6ADF187CF9B4CE264 /* INAppStoreWindow.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/INAppStoreWindow/INAppStoreWindow-prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FDFA10BD33AA50194C7B6CB74AF985E /* Debug */,
+				1F9B98C836E93974C88312ED9E8C0ABE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		464FB72DFB7CC7044E492D2FE05A9725 /* Build configuration list for PBXNativeTarget "Pods-Wukong" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75292FD098F00B08D5148CF46E9755FC /* Debug */,
+				560A79F529560913BBD9A34B486BB8DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7374923B86120DBC1AB3EC9E6D28F3BD /* Build configuration list for PBXNativeTarget "INAppStoreWindow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F00113C415CFB8F9D7EF084939FCDD7E /* Debug */,
+				AA84A9C4D0BB512D9982A773F0FEB134 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

@@ -13,6 +13,9 @@
 #import "AKImageHelper.h"
 #import "INPopoverController.h"
 #import "AKPopupStatusEditorViewController.h"
+#import "FlippedView.h"
+#import "AKImageButtonCell.h"
+#import "AKWeiboStatusControlView.h"
 
 @interface AKWeiboTableCellView()
 
@@ -26,6 +29,8 @@
     AKImageViewer *_imageViewer;
     
     NSMenu *_shareButtonContextMenu;
+    
+//    NSView * _weiboView;
 
 }
 
@@ -41,6 +46,7 @@ static INPopoverController *gPopoverController;
     if (self) {
 
         self.userImage.borderType = AKUserButtonBorderTypeBezel;
+        [self initialSetup];
     }
     return self;
 }
@@ -54,28 +60,78 @@ static INPopoverController *gPopoverController;
     return self;
 }
 
-
--(void)awakeFromNib{
-
+-(void)initialSetup{
+    
+    _repostedWeiboView = [[AKRepostedWeiboView alloc] initWithFrame:self.bounds];
+    [self addSubview:_repostedWeiboView];
+    
+    _weiboView = [[FlippedView alloc] initWithFrame:self.bounds];
+    
+    [self addSubview:_weiboView];
+    
+    _userImage = [[AKUserButton alloc] initWithFrame:NSMakeRect(USER_AVATAR_MARGIN_LEFT, 0, USER_AVATAR_SIZE, USER_AVATAR_SIZE)];
+    [_weiboView addSubview:_userImage];
+    
+    _userAlias = [[NSTextField alloc] initWithFrame:NSMakeRect(CGRectGetMaxX(_userImage.frame) + USER_AVATAR_MARGIN_RIGHT, 0, 200, 20)];
+    _userAlias.bordered = NO;
+    _userAlias.drawsBackground = NO;
+    _userAlias.editable = NO;
+    [_weiboView addSubview:_userAlias];
+    
+    AKTextView * textField = [[AKTextView alloc] initWithFrame:NSMakeRect(CGRectGetMaxX(_userImage.frame) + USER_AVATAR_MARGIN_RIGHT,
+                                                                          CGRectGetMaxY(_userAlias.frame) + 5,
+                                                                          CGRectGetWidth(_weiboView.frame) - (CGRectGetMaxX(_userImage.frame) + USER_AVATAR_MARGIN_RIGHT + STATUS_MARGIN_RIGHT),
+                                                                          50)];
+    textField.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    textField.drawsBackground = NO;
+    self.weiboTextField = textField;
+    
+    [_weiboView addSubview:textField];
+    
     self.userImage.borderType = AKUserButtonBorderTypeBezel;
     [self.weiboTextField setDrawsBackground:NO];
     [self.weiboTextField setEditable:NO];
     [self.weiboTextField setSelectable:YES];
+//    self.weiboTextField.bordered = NO;
+    self.weiboTextField.font = [NSFont systemFontOfSize:14.0f];
+    
+    
+    _images = [[NSMatrix alloc] initWithFrame:NSMakeRect(0, 0, 140, 140) mode:NSRadioModeMatrix cellClass:[AKImageButtonCell class] numberOfRows:3 numberOfColumns:3];
+    _images.hidden = YES;
+    [_weiboView addSubview:_images];
+    
+    
+    _toolbar = [[AKWeiboStatusControlView alloc] init];
+    _toolbar.target = self;
+    _toolbar.action = @selector(toolbarClicked:);
+    [self addSubview:_toolbar];
+    
     if(!_shareButtonContextMenu){
         _shareButtonContextMenu = [[NSMenu alloc] init];
-
+        
         NSMenuItem *menuItem = [[NSMenuItem alloc]initWithTitle:@"复制微博" action:@selector(copyStatusMenuClicked:) keyEquivalent:@""];
         menuItem.target = self;
         [_shareButtonContextMenu addItem:menuItem];
-
+        
         /*
-        menuItem = [[NSMenuItem alloc] initWithTitle:@"在浏览器查看微博" action:@selector(openStatusInBrowser:) keyEquivalent:@""];
-        menuItem.target = self;
-        [_shareButtonContextMenu addItem:menuItem];
-        */
+         menuItem = [[NSMenuItem alloc] initWithTitle:@"在浏览器查看微博" action:@selector(openStatusInBrowser:) keyEquivalent:@""];
+         menuItem.target = self;
+         [_shareButtonContextMenu addItem:menuItem];
+         */
         
         
     }
+    
+}
+
+
+-(BOOL)isFlipped{
+    return YES;
+}
+
+-(void)awakeFromNib{
+
+
 }
 
 
@@ -83,26 +139,28 @@ static INPopoverController *gPopoverController;
 {
 	[super drawRect:dirtyRect];
     
+//    return;
+    
     NSRect drawingRect = self.frame;
     
     CGContextRef myContext = [[NSGraphicsContext currentContext] graphicsPort];
     
     //Top Line
-    NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - 0.5);
-    NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - 0.5);
-    
-    CGContextSetLineWidth(myContext, 1);
-    CGContextSetRGBStrokeColor(myContext, 1, 1, 1, 0.8);
-    CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
-    CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
-    CGContextStrokePath(myContext);
+//    NSPoint startPoint = NSMakePoint(0, drawingRect.size.height - 0.5);
+//    NSPoint endPoint = NSMakePoint(drawingRect.size.width, drawingRect.size.height - 0.5);
+//    
+//    CGContextSetLineWidth(myContext, 1);
+//    CGContextSetRGBStrokeColor(myContext, 1, 1, 1, 0.8);
+//    CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
+//    CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
+//    CGContextStrokePath(myContext);
     
     //Bottom Line
-    startPoint = NSMakePoint(0, 0.5);
-    endPoint = NSMakePoint(drawingRect.size.width, 0.5);
+    NSPoint startPoint = NSMakePoint(0, 0.5);
+    NSPoint endPoint = NSMakePoint(drawingRect.size.width, 0.5);
     
     CGContextSetLineWidth(myContext, 1);
-    CGContextSetRGBStrokeColor(myContext, 0.5, 0.5, 0.5, 0.5);
+    CGContextSetRGBStrokeColor(myContext, 0.5, 0.5, 0.5, 0.2);
     CGContextMoveToPoint(myContext, startPoint.x, startPoint.y);
     CGContextAddLineToPoint(myContext, endPoint.x, endPoint.y);
     CGContextStrokePath(myContext);
@@ -189,6 +247,8 @@ static INPopoverController *gPopoverController;
 
 -(void)resize{
     
+//    return;
+    
     CGFloat repostedWeiboHeight;
     CGFloat weiboHeight;
     CGFloat repostedWeiboViewHeight;
@@ -197,7 +257,11 @@ static INPopoverController *gPopoverController;
     AKWeiboStatus *weibo = self.objectValue;
     
     assert(weibo);
-    CGFloat cellHeight = [AKWeiboTableCellView caculateWeiboCellHeight:weibo forWidth:self.frame.size.width repostedWeiboHeight:&repostedWeiboHeight repostedWeiboViewHeight:&repostedWeiboViewHeight weiboHeight:&weiboHeight weiboViewHeight:&weiboViewHeight];
+    CGFloat cellHeight = [AKWeiboTableCellView caculateWeiboCellHeight:weibo forWidth:self.frame.size.width
+                                                   repostedWeiboHeight:&repostedWeiboHeight
+                                               repostedWeiboViewHeight:&repostedWeiboViewHeight
+                                                           weiboHeight:&weiboHeight
+                                                       weiboViewHeight:&weiboViewHeight];
     
     NSInteger y = weiboViewHeight;
     
@@ -209,26 +273,37 @@ static INPopoverController *gPopoverController;
         NSSize repostedWeiboViewSize = statusViewSize;
         repostedWeiboViewSize.height = repostedWeiboViewHeight;
         
-        for(NSLayoutConstraint *constraint in self.repostedWeiboView.constraints){
-            if(constraint.firstAttribute == NSLayoutAttributeHeight){
-                constraint.constant = repostedWeiboViewHeight;
-            }
-        }
+//        for(NSLayoutConstraint *constraint in self.repostedWeiboView.constraints){
+//            if(constraint.firstAttribute == NSLayoutAttributeHeight){
+//                constraint.constant = repostedWeiboViewHeight;
+//            }
+//        }
         
-//        [self.repostedWeiboView setFrameSize:repostedWeiboViewSize];
-//        [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, y)];
+        [self.repostedWeiboView setFrameSize:repostedWeiboViewSize];
+        [self.repostedWeiboView setFrameOrigin:NSMakePoint(0, 0)];
         
 //        assert(self.repostedWeiboView.frame.size.height == repostedWeiboViewHeight);
     }
     
  
 
-    for(NSLayoutConstraint *constraint in self.weiboView.constraints){
-        if(constraint.firstAttribute == NSLayoutAttributeHeight){
-            constraint.constant = weiboViewHeight;
-        }
+//    for(NSLayoutConstraint *constraint in self.weiboView.constraints){
+//        if(constraint.firstAttribute == NSLayoutAttributeHeight){
+//            constraint.constant = weiboViewHeight;
+//        }
+//    }
+    
+    //Favorite Mark
+    NSPoint favoriteMarkOrigin = NSMakePoint(self.weiboView.frame.size.width - self.favMark.frame.size.width, weiboViewHeight - self.favMark.frame.size.height);;
+    if(weibo.retweeted_status){
+        
+        favoriteMarkOrigin.y += 10;
+        
     }
-//    [self.weiboView setFrame:NSMakeRect(0, 0, self.frame.size.width, weiboViewHeight )];
+    [self.favMark setFrameOrigin:favoriteMarkOrigin];
+    
+    
+    [self.weiboView setFrame:NSMakeRect(0, repostedWeiboViewHeight+10, self.frame.size.width, weiboViewHeight )];
     
     //update reposted weibo's user alias' origin.
 //    [self.userAlias setFrameOrigin:NSMakePoint(self.userAlias.frame.origin.x,
@@ -244,16 +319,20 @@ static INPopoverController *gPopoverController;
 
     
     //Weibo Text
-    for (NSLayoutConstraint *constraint in self.weiboTextField.constraints) {
-//        NSLog(@"%@", constraint);
-        if(constraint.firstAttribute == NSLayoutAttributeHeight){
-            constraint.constant = weiboHeight;
-        }else if (constraint.firstAttribute == NSLayoutAttributeWidth){
-            constraint.constant = self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT;
-        }else if(constraint.firstAttribute == NSLayoutAttributeBottom){
-//            constraint.constant = weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP - STATUS_TEXT_MARGIN_TOP - self.weiboTextField.frame.size.height;
-        }
-    }
+    NSRect weiboTextFrame = self.weiboTextField.frame;
+    weiboTextFrame.size.width = self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT;
+    weiboTextFrame.size.height = weiboHeight;
+    self.weiboTextField.frame = weiboTextFrame;
+//    for (NSLayoutConstraint *constraint in self.weiboTextField.constraints) {
+////        NSLog(@"%@", constraint);
+//        if(constraint.firstAttribute == NSLayoutAttributeHeight){
+//            constraint.constant = weiboHeight;
+//        }else if (constraint.firstAttribute == NSLayoutAttributeWidth){
+//            constraint.constant = self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT;
+//        }else if(constraint.firstAttribute == NSLayoutAttributeBottom){
+////            constraint.constant = weiboViewHeight - USER_ALIAS_HEIGHT - STATUS_MARGIN_TOP - STATUS_TEXT_MARGIN_TOP - self.weiboTextField.frame.size.height;
+//        }
+//    }
     
 //    [self.weiboTextField setFrameSize:NSMakeSize(self.frame.size.width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT - STATUS_MARGIN_RIGHT, weiboHeight)];
 //    [self.weiboTextField adjustFrame];
@@ -281,26 +360,18 @@ static INPopoverController *gPopoverController;
             
         }
         
-        for (NSLayoutConstraint *constraint in self.images.constraints) {
-            if(constraint.firstAttribute == NSLayoutAttributeHeight){
-                constraint.constant = weiboImageMatrixSize.height;
-            }else if (constraint.firstAttribute == NSLayoutAttributeWidth){
-                constraint.constant = weiboImageMatrixSize.width;
-            }
-        }
-//        [self.images setFrameSize:weiboImageMatrixSize];
-//        [self.images setFrameOrigin:NSMakePoint(60, STATUS_PADDING_BOTTOM)];
+//        for (NSLayoutConstraint *constraint in self.images.constraints) {
+//            if(constraint.firstAttribute == NSLayoutAttributeHeight){
+//                constraint.constant = weiboImageMatrixSize.height;
+//            }else if (constraint.firstAttribute == NSLayoutAttributeWidth){
+//                constraint.constant = weiboImageMatrixSize.width;
+//            }
+//        }
+        [self.images setFrameSize:weiboImageMatrixSize];
+        [self.images setFrameOrigin:NSMakePoint(CGRectGetMaxX(self.userImage.frame) + USER_AVATAR_MARGIN_RIGHT, CGRectGetMaxY(weiboTextFrame)+10)];
     }
     
-    //Favorite Mark
-    NSPoint favoriteMarkOrigin = NSMakePoint(self.weiboView.frame.size.width - self.favMark.frame.size.width, weiboViewHeight - self.favMark.frame.size.height);;
-    if(weibo.retweeted_status){
-    
-        favoriteMarkOrigin.y += 10;
-    
-    }
-    [self.favMark setFrameOrigin:favoriteMarkOrigin];
-    
+
     [self.toolbar setFrameOrigin:NSMakePoint(self.weiboView.frame.size.width - self.toolbar.frame.size.width - 5, 5)];
     
 }
@@ -343,10 +414,10 @@ static INPopoverController *gPopoverController;
     float _repostedWeiboViewHeight = 0;
     float _weiboViewHeight = 0;
     
-    static AKTextView *_textField;
-    if(!_textField){
-        _textField = [[AKTextView alloc]initWithFrame:NSMakeRect(0, 0, width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
-    }
+//    static AKTextView *_textField;
+//    if(!_textField){
+//        _textField = [[AKTextView alloc]initWithFrame:NSMakeRect(0, 0, width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
+//    }
     
     if(weibo.retweeted_status){
         
@@ -386,10 +457,12 @@ static INPopoverController *gPopoverController;
         
         assert(weibo.retweeted_status.text);
 
-        [_textField setFrameSize:NSMakeSize(width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
-//        [_textField setStringValue:weibo.retweeted_status.text];
-        [_textField.textStorage setAttributedString:weibo.retweeted_status.attributedText];
-        *repostedWeiboHeight = _textField.intrinsicContentSize.height;
+//        [_textField setFrameSize:NSMakeSize(width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
+////        [_textField setStringValue:weibo.retweeted_status.text];
+//        [_textField.textStorage setAttributedString:weibo.retweeted_status.attributedText];
+            
+        CGRect retweetedStatusTextRect = [weibo.retweeted_status.attributedText boundingRectWithSize:NSMakeSize(width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000) options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)];
+        *repostedWeiboHeight = retweetedStatusTextRect.size.height;
         
         _repostedWeiboViewHeight += *repostedWeiboHeight;
         _repostedWeiboViewHeight += STATUS_TEXT_MARGIN_TOP;
@@ -430,16 +503,10 @@ static INPopoverController *gPopoverController;
     //Weibo Content
     
     
-    
-    //[self.weiboTextField setFrameSize:self.weiboTextField.intrinsicContentSize];
-    
-    [_textField setFrameSize:NSMakeSize(width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT -STATUS_MARGIN_RIGHT, 1000)];
-    
+    CGRect weiboTextRect = [weibo.attributedText boundingRectWithSize:NSMakeSize(width - USER_AVATAR_MARGIN_LEFT - USER_AVATAR_SIZE - USER_AVATAR_MARGIN_RIGHT -STATUS_MARGIN_RIGHT, 1000) options:(NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin)];
     assert(weibo.text);
-//    [_textField setStringValue:weibo.text];
-    [_textField.textStorage setAttributedString:weibo.attributedText];
     
-    *weiboHeight = _textField.intrinsicContentSize.height;
+    *weiboHeight = CGRectGetHeight(weiboTextRect);
 //    if([weibo.text rangeOfString:@"民航局长李家祥"].location != NSNotFound){
 //    
 //        NSLog(@"width = %f, height = %f (calculate) ",width, *weiboHeight);
@@ -475,7 +542,7 @@ static INPopoverController *gPopoverController;
     cellHeight = _repostedWeiboViewHeight + _weiboViewHeight;
     //[self setFrameSize:NSMakeSize(self.frame.size.width, cellHeight)];
     
-    return cellHeight;
+    return (int)cellHeight;
 
 }
 

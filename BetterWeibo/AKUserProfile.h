@@ -64,7 +64,7 @@ extern NSString *const AKUserProfilePropertyNamedScreenName;
 /**
  *用户描述信息
  */
-@property NSString * description;
+@property NSString * userDescription;
 /**
  *个性化域名
  */

@@ -10,9 +10,10 @@
 #import "RegexKitLite.h"
 #import "AKEmotion.h"
 
-#define DEFAULT_FONT_SIZE 13.0
+#define DEFAULT_FONT_SIZE 14.0
 
 @implementation AKTextView
+@dynamic delegate;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -53,7 +54,9 @@
 
 -(void)setStringValue:(NSString *)aString{
 
-    //[super setStringValue:aString];
+    [super setString:aString];
+    
+    return;
     
     NSString *statusString = aString;
 	
@@ -63,10 +66,12 @@
 	
 	// Defining our paragraph style for the tweet text. Starting with the shadow to make the text
 	// appear inset against the gray background.
+/*
 	NSShadow *textShadow = [[NSShadow alloc] init];
 	[textShadow setShadowColor:[NSColor colorWithDeviceWhite:1 alpha:.8]];
 	[textShadow setShadowBlurRadius:0];
 	[textShadow setShadowOffset:NSMakeSize(0, -1)];
+*/
     
 	NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[paragraphStyle setMinimumLineHeight:18];
@@ -80,7 +85,7 @@
 	// Our initial set of attributes that are applied to the full string length
 	NSDictionary *fullAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
 									[NSColor colorWithDeviceHue:.53 saturation:.13 brightness:.26 alpha:1], NSForegroundColorAttributeName,
-									textShadow, NSShadowAttributeName,
+//									textShadow, NSShadowAttributeName,
 									[NSCursor arrowCursor], NSCursorAttributeName,
 									[NSNumber numberWithFloat:0.0], NSKernAttributeName,
 									[NSNumber numberWithInt:0], NSLigatureAttributeName,
@@ -185,6 +190,7 @@
 	}
     
     [self.textStorage setAttributedString:attributedStatusString];
+//    self.attributedString;
 
 }
 

@@ -70,6 +70,7 @@
     
     
     //Sroll to Refresh
+/*
     self.scrollView.refreshBlock = ^(EQSTRScrollView *scrollView){
         
         NSString *sinceWeiboID = (weiboArray.count>0)?((AKWeiboStatus *)[weiboArray firstObject]).idstr:nil;
@@ -86,6 +87,7 @@
         [[AKWeiboManager currentManager] getStatusForUser:self.userID sinceWeiboID:nil maxWeiboID:maxWeiboID count:30 page:1 baseApp:NO feature:0 trimUser:0 timelineType:self.timelineType callbackTarget:self];
         
     };
+*/
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewBoundsChanged:) name:NSViewFrameDidChangeNotification object:self.view];
     

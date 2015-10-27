@@ -1,0 +1,1 @@
+../../../INAppStoreWindow/INAppStoreWindow/Extensions/NSDocument+INAppStoreWindowFixes.h

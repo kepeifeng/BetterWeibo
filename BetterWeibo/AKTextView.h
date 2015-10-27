@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, AKAttributeType){
 @interface AKTextView : NSTextView
 -(void)adjustFrame;
 
-@property id<AKTextViewDelegate> delegate;
+@property (nullable, assign) id<AKTextViewDelegate, NSTextViewDelegate> delegate;
 @property NSInteger minimalHeight;
 
 -(void)setStringValue:(NSString *)aString;

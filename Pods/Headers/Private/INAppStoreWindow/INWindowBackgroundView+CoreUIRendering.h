@@ -1,0 +1,1 @@
+../../../INAppStoreWindow/INAppStoreWindow/Extensions/INWindowBackgroundView+CoreUIRendering.h

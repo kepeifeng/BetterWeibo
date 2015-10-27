@@ -26,25 +26,25 @@
 
 //Weibo Contents
 //微博内容
-@property (weak) IBOutlet NSView *weiboView;
-@property (weak) IBOutlet AKUserButton *userImage;
-@property (weak) IBOutlet NSTextField *userAlias;
-@property (weak) IBOutlet NSImageView *favMark;
-@property (weak) IBOutlet NSTextField *dateDuration;
-@property (weak) IBOutlet NSButtonCell *repostButton;
-@property (weak) IBOutlet NSButtonCell *commentButton;
-@property (weak) IBOutlet NSButtonCell *favButton;
-@property (weak) IBOutlet NSButtonCell *shareButton;
+@property (strong) IBOutlet NSView *weiboView;
+@property (strong) IBOutlet AKUserButton *userImage;
+@property (strong) IBOutlet NSTextField *userAlias;
+@property (strong) IBOutlet NSImageView *favMark;
+@property (strong) IBOutlet NSTextField *dateDuration;
+@property (strong) IBOutlet NSButtonCell *repostButton;
+@property (strong) IBOutlet NSButtonCell *commentButton;
+@property (strong) IBOutlet NSButtonCell *favButton;
+@property (strong) IBOutlet NSButtonCell *shareButton;
 //@property (weak) IBOutlet AKTextField *weiboTextField;
 @property IBOutlet AKTextView *weiboTextField;
 
 @property (strong) IBOutlet NSMatrix *images;
-@property (weak) IBOutlet NSMatrix *toolbar;
+@property (strong) IBOutlet NSMatrix *toolbar;
 
 
 //Reposted Weibo
 //转发微博
-@property (weak) IBOutlet AKRepostedWeiboView *repostedWeiboView;
+@property (strong) IBOutlet AKRepostedWeiboView *repostedWeiboView;
 //@property (weak) IBOutlet NSTextField *repostedWeiboDateDuration;
 //@property (weak) IBOutlet NSTextField *repostedWeiboUserAlias;
 //@property (weak) IBOutlet AKTextField *repostedWeiboContent;

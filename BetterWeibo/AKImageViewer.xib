@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13D28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+        <deployment version="1070" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AKImageViewer">
@@ -21,52 +21,51 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="图片" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="dWH-Hy-E9g" customClass="INAppStoreWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <rect key="contentRect" x="90" y="130" width="480" height="340"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" id="HwI-MD-VcM" customClass="AKImageViewerWindow">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="340"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IY4-rL-XEN">
                         <rect key="frame" x="0.0" y="55" width="480" height="285"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" id="SKU-xa-siv">
                             <rect key="frame" x="0.0" y="0.0" width="480" height="285"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rJd-U9-ah4" customClass="NSImageView">
                                     <rect key="frame" x="0.0" y="0.0" width="480" height="285"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <animations/>
                                 </view>
                             </subviews>
+                            <animations/>
                             <color key="backgroundColor" name="shadowColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
+                        <animations/>
                         <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="OhS-gq-oeH">
                             <rect key="frame" x="0.0" y="269" width="480" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
+                            <animations/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="dHi-pW-0GE">
-                            <rect key="frame" x="464" y="0.0" width="16" height="285"/>
+                            <rect key="frame" x="465" y="0.0" width="15" height="285"/>
                             <autoresizingMask key="autoresizingMask"/>
+                            <animations/>
                         </scroller>
                     </scrollView>
-                    <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="wkU-YG-o5z">
-                        <rect key="frame" x="140" y="189" width="200" height="12"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="200" id="dIF-au-lzP"/>
-                        </constraints>
+                    <progressIndicator wantsLayer="YES" maxValue="100" doubleValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="wkU-YG-o5z">
+                        <rect key="frame" x="0.0" y="328" width="480" height="12"/>
+                        <animations/>
                     </progressIndicator>
                     <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PLw-UQ-xar">
                         <rect key="frame" x="106" y="108" width="269" height="175"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hvj-Fl-Kqz">
                                 <rect key="frame" x="18" y="95" width="233" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="message" id="ybT-oV-V5n">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -75,7 +74,7 @@
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ia2-H7-G4r">
                                 <rect key="frame" x="93" y="28" width="82" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="重试" bezelStyle="rounded" alignment="center" refusesFirstResponder="YES" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SsY-Tu-Gw1">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -89,14 +88,14 @@
                             <constraint firstAttribute="height" constant="175" id="ERL-cH-zH0"/>
                             <constraint firstAttribute="width" constant="269" id="yd1-Z4-e8h"/>
                         </constraints>
+                        <animations/>
                     </customView>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="DQd-tv-N0j" customClass="AKView">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="55"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <matrix focusRingType="none" verticalHuggingPriority="750" misplaced="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e43-9N-yik">
                                 <rect key="frame" x="82" y="13" width="316" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 <size key="cellSize" width="32" height="32"/>
                                 <size key="intercellSpacing" width="4" height="2"/>
@@ -115,7 +114,7 @@
                                         </buttonCell>
                                     </column>
                                     <column>
-                                        <buttonCell type="bevel" title=">" bezelStyle="regularSquare" image="right_button" imagePosition="only" alignment="center" alternateImage="right_button_highlight" refusesFirstResponder="YES" inset="2" id="242-dc-iSI">
+                                        <buttonCell type="bevel" title="&gt;" bezelStyle="regularSquare" image="right_button" imagePosition="only" alignment="center" alternateImage="right_button_highlight" refusesFirstResponder="YES" inset="2" id="242-dc-iSI">
                                             <behavior key="behavior" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                             <connections>
@@ -149,21 +148,24 @@
                             <constraint firstAttribute="height" constant="55" id="G0K-Ux-byi"/>
                             <constraint firstAttribute="centerY" secondItem="e43-9N-yik" secondAttribute="centerY" id="zgW-dC-8uh"/>
                         </constraints>
+                        <animations/>
                     </customView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="DQd-tv-N0j" secondAttribute="bottom" id="94D-dl-dVw"/>
                     <constraint firstAttribute="trailing" secondItem="IY4-rL-XEN" secondAttribute="trailing" id="BhI-mC-pjY"/>
                     <constraint firstItem="IY4-rL-XEN" firstAttribute="top" secondItem="HwI-MD-VcM" secondAttribute="top" id="MKb-Q6-ha8"/>
+                    <constraint firstItem="wkU-YG-o5z" firstAttribute="top" secondItem="HwI-MD-VcM" secondAttribute="top" id="PAK-ug-2O7"/>
                     <constraint firstAttribute="centerX" secondItem="PLw-UQ-xar" secondAttribute="centerX" id="TLT-sw-FXQ"/>
-                    <constraint firstAttribute="centerY" secondItem="wkU-YG-o5z" secondAttribute="centerY" constant="25" id="WIl-5e-rmo"/>
                     <constraint firstItem="IY4-rL-XEN" firstAttribute="leading" secondItem="HwI-MD-VcM" secondAttribute="leading" id="YBl-9T-gf9"/>
+                    <constraint firstItem="wkU-YG-o5z" firstAttribute="leading" secondItem="HwI-MD-VcM" secondAttribute="leading" id="YXa-2d-XyZ"/>
                     <constraint firstAttribute="bottom" secondItem="IY4-rL-XEN" secondAttribute="bottom" constant="55" id="Z3D-xW-bGi"/>
+                    <constraint firstAttribute="trailing" secondItem="wkU-YG-o5z" secondAttribute="trailing" id="ZGR-4a-DOh"/>
                     <constraint firstItem="DQd-tv-N0j" firstAttribute="leading" secondItem="HwI-MD-VcM" secondAttribute="leading" id="eyo-cd-RIl"/>
                     <constraint firstAttribute="trailing" secondItem="DQd-tv-N0j" secondAttribute="trailing" id="puz-fc-8RL"/>
-                    <constraint firstAttribute="centerX" secondItem="wkU-YG-o5z" secondAttribute="centerX" id="tOo-DZ-NKy"/>
                     <constraint firstAttribute="centerY" secondItem="PLw-UQ-xar" secondAttribute="centerY" constant="25" id="y72-tG-49z"/>
                 </constraints>
+                <animations/>
                 <connections>
                     <outlet property="delegate" destination="-2" id="zvW-Ov-F3P"/>
                 </connections>

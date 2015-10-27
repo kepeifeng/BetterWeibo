@@ -1,0 +1,30 @@
+PODS:
+  - INAppStoreWindow (1.5):
+    - INAppStoreWindow/Core (= 1.5)
+    - INAppStoreWindow/CoreUIRendering (= 1.5)
+    - INAppStoreWindow/NSDocumentFixes (= 1.5)
+    - INAppStoreWindow/Swizzling (= 1.5)
+  - INAppStoreWindow/Core (1.5)
+  - INAppStoreWindow/CoreUIRendering (1.5):
+    - INAppStoreWindow/Swizzling
+  - INAppStoreWindow/NSDocumentFixes (1.5):
+    - INAppStoreWindow/Swizzling
+  - INAppStoreWindow/Swizzling (1.5):
+    - INAppStoreWindow/Core
+
+DEPENDENCIES:
+  - INAppStoreWindow (from `https://github.com/indragiek/INAppStoreWindow`)
+
+EXTERNAL SOURCES:
+  INAppStoreWindow:
+    :git: https://github.com/indragiek/INAppStoreWindow
+
+CHECKOUT OPTIONS:
+  INAppStoreWindow:
+    :commit: f91d83f42c159c9f64f4f37bfe1514ca94a651cf
+    :git: https://github.com/indragiek/INAppStoreWindow
+
+SPEC CHECKSUMS:
+  INAppStoreWindow: 8ce9e7cee05f1d90df78598a94a24a60b6bab317
+
+COCOAPODS: 0.39.0

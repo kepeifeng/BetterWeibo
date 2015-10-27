@@ -76,7 +76,8 @@
         
                 NSInteger cellIndex = rowIndex*imageMatrix.numberOfColumns+columnIndex;
                 NSButtonCell *imageCell = [imageMatrix cellAtRow:rowIndex column:columnIndex];
-                
+                imageCell.bordered = NO;
+                [imageCell setTitle:@""];
                 if([imageCell isKindOfClass:[AKImageButtonCell class]]){
                     //如果cellIndex没有超出images数组的范围
                     if(cellIndex<images.count){

@@ -177,7 +177,7 @@ static NSMutableDictionary *userDictionary;
     userProfile.bi_followers_count =[(NSNumber *)[userProfileDictionary objectForKey:@"bi_followers_count"] integerValue];
     userProfile.city = (NSString *)[userProfileDictionary objectForKey:@"city"];
     userProfile.created_at =(NSString *)[userProfileDictionary objectForKey:@"created_at"];
-    userProfile.description = (NSString *)[userProfileDictionary objectForKey:@"description"];
+    userProfile.userDescription = (NSString *)[userProfileDictionary objectForKey:@"description"];
     userProfile.domain = (NSString *)[userProfileDictionary objectForKey:@"domain"];
     userProfile.favourites_count = [(NSNumber *)[userProfileDictionary objectForKey:@"favourites_count"] integerValue];
     userProfile.follow_me = [(NSNumber *)[userProfileDictionary objectForKey:@"follow_me"] boolValue];

@@ -245,7 +245,7 @@
     self.varifiedInfo.stringValue = userProfile.verified_reason;
     self.userAvatar.userProfile = userProfile;
 //    self.userAvatar.image = userProfile.profileImage;
-    self.userDescription.stringValue = userProfile.description;
+    self.userDescription.stringValue = userProfile.userDescription;
     self.numberOfFollower.title = [NSString stringWithFormat:@"%ld",userProfile.followers_count];
     self.numberOfFollowing.title = [NSString stringWithFormat:@"%ld",userProfile.friends_count];
     self.numberOfStatuses.title = [NSString stringWithFormat:@"%ld",userProfile.statuses_count];

@@ -72,8 +72,6 @@
 		044F3C9F17F710E200344173 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 044F3C7E17F710E200344173 /* Cocoa.framework */; };
 		044F3CA717F710E200344173 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 044F3CA517F710E200344173 /* InfoPlist.strings */; };
 		044F3CA917F710E300344173 /* BetterWeiboTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F3CA817F710E300344173 /* BetterWeiboTests.m */; };
-		044F3CBB17F7205600344173 /* INAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F3CB817F7205600344173 /* INAppStoreWindow.m */; };
-		044F3CBC17F7205600344173 /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 044F3CBA17F7205600344173 /* INWindowButton.m */; };
 		044F3CCD17F72BC500344173 /* close-active-color.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 044F3CBF17F72BC500344173 /* close-active-color.tiff */; };
 		044F3CCE17F72BC500344173 /* close-activenokey-color.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 044F3CC017F72BC500344173 /* close-activenokey-color.tiff */; };
 		044F3CCF17F72BC500344173 /* close-inactive-disabled-color.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 044F3CC117F72BC500344173 /* close-inactive-disabled-color.tiff */; };
@@ -204,6 +202,8 @@
 		370DE80418DC6C6400BCC297 /* menubar-icon-highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 370DE80018DC6C6400BCC297 /* menubar-icon-highlight@2x.png */; };
 		370DE80518DC6C6400BCC297 /* menubar-icon-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 370DE80118DC6C6400BCC297 /* menubar-icon-normal.png */; };
 		370DE80618DC6C6400BCC297 /* menubar-icon-normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 370DE80218DC6C6400BCC297 /* menubar-icon-normal@2x.png */; };
+		3712B70A1BDF2A3E00AAB0E0 /* FlippedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712B7091BDF2A3E00AAB0E0 /* FlippedView.m */; settings = {ASSET_TAGS = (); }; };
+		3712B71C1BDF54E500AAB0E0 /* AKWeiboStatusControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712B71B1BDF54E500AAB0E0 /* AKWeiboStatusControlView.m */; settings = {ASSET_TAGS = (); }; };
 		3724A6A5184B5CA70013880C /* AKLoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A6A4184B5CA70013880C /* AKLoadMoreCell.m */; };
 		3724A6A8184B8DE10013880C /* AKWeiboViewGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3724A6A7184B8DE10013880C /* AKWeiboViewGroupItem.m */; };
 		37315E8B180122890077E6F4 /* PXListDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37315E80180122890077E6F4 /* PXListDocumentView.m */; };
@@ -393,6 +393,7 @@
 		37E81A8B1828CF0800D88B33 /* libFMDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E81A8A1828CF0800D88B33 /* libFMDB.a */; };
 		37E81A931828D1DD00D88B33 /* AKWeiboManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37E81A921828D1DD00D88B33 /* AKWeiboManager.mm */; };
 		37EE93E518C42C6C00979073 /* sent.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 37EE93E418C42C6C00979073 /* sent.aiff */; };
+		C527843AD56E66E40D4AF411 /* libPods-Wukong.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCACFEB03A5E0FA13DF2E0FE /* libPods-Wukong.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -486,10 +487,6 @@
 		044F3CA417F710E200344173 /* BetterWeiboTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BetterWeiboTests-Info.plist"; sourceTree = "<group>"; };
 		044F3CA617F710E200344173 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		044F3CA817F710E300344173 /* BetterWeiboTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BetterWeiboTests.m; sourceTree = "<group>"; };
-		044F3CB717F7205600344173 /* INAppStoreWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindow.h; sourceTree = "<group>"; };
-		044F3CB817F7205600344173 /* INAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAppStoreWindow.m; sourceTree = "<group>"; };
-		044F3CB917F7205600344173 /* INWindowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INWindowButton.h; sourceTree = "<group>"; };
-		044F3CBA17F7205600344173 /* INWindowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INWindowButton.m; sourceTree = "<group>"; };
 		044F3CBF17F72BC500344173 /* close-active-color.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "close-active-color.tiff"; sourceTree = "<group>"; };
 		044F3CC017F72BC500344173 /* close-activenokey-color.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "close-activenokey-color.tiff"; sourceTree = "<group>"; };
 		044F3CC117F72BC500344173 /* close-inactive-disabled-color.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "close-inactive-disabled-color.tiff"; sourceTree = "<group>"; };
@@ -1198,10 +1195,15 @@
 		04F45BCC18B2120600B2730A /* AKTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTextView.m; sourceTree = "<group>"; };
 		04F45BCE18B2121F00B2730A /* AKTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTextView.h; sourceTree = "<group>"; };
 		04FC668918B863240065730E /* close-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close-button.png"; sourceTree = "<group>"; };
+		0EC1FB09BF212DE2B2072C9E /* Pods-Wukong.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wukong.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wukong/Pods-Wukong.release.xcconfig"; sourceTree = "<group>"; };
 		370DE7FF18DC6C6400BCC297 /* menubar-icon-highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon-highlight.png"; sourceTree = "<group>"; };
 		370DE80018DC6C6400BCC297 /* menubar-icon-highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon-highlight@2x.png"; sourceTree = "<group>"; };
 		370DE80118DC6C6400BCC297 /* menubar-icon-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon-normal.png"; sourceTree = "<group>"; };
 		370DE80218DC6C6400BCC297 /* menubar-icon-normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon-normal@2x.png"; sourceTree = "<group>"; };
+		3712B7081BDF2A3E00AAB0E0 /* FlippedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlippedView.h; sourceTree = "<group>"; };
+		3712B7091BDF2A3E00AAB0E0 /* FlippedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippedView.m; sourceTree = "<group>"; };
+		3712B71A1BDF54E500AAB0E0 /* AKWeiboStatusControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKWeiboStatusControlView.h; sourceTree = "<group>"; };
+		3712B71B1BDF54E500AAB0E0 /* AKWeiboStatusControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKWeiboStatusControlView.m; sourceTree = "<group>"; };
 		3724A6A3184B5CA70013880C /* AKLoadMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLoadMoreCell.h; sourceTree = "<group>"; };
 		3724A6A4184B5CA70013880C /* AKLoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLoadMoreCell.m; sourceTree = "<group>"; };
 		3724A6A6184B8DE10013880C /* AKWeiboViewGroupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKWeiboViewGroupItem.h; sourceTree = "<group>"; };
@@ -1451,6 +1453,8 @@
 		37E81A911828D19700D88B33 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
 		37E81A921828D1DD00D88B33 /* AKWeiboManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AKWeiboManager.mm; sourceTree = "<group>"; };
 		37EE93E418C42C6C00979073 /* sent.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = sent.aiff; sourceTree = "<group>"; };
+		DCACFEB03A5E0FA13DF2E0FE /* libPods-Wukong.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wukong.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDF9E163BE398DF420704059 /* Pods-Wukong.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wukong.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Wukong/Pods-Wukong.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1471,6 +1475,7 @@
 				04608F39181F673000F20F2D /* libHttpEngine.a in Frameworks */,
 				04C76311180CFAFD00C9E540 /* QuartzCore.framework in Frameworks */,
 				044F3C7F17F710E200344173 /* Cocoa.framework in Frameworks */,
+				C527843AD56E66E40D4AF411 /* libPods-Wukong.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1653,6 +1658,7 @@
 				044F3C7D17F710E200344173 /* Frameworks */,
 				049C292E18E949CD00F2D696 /* Wukong.app */,
 				049C292F18E949CD00F2D696 /* BetterWeiboTests.xctest */,
+				E0B21B8BBA9393411011E60D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1674,6 +1680,7 @@
 				044F3C7E17F710E200344173 /* Cocoa.framework */,
 				044F3C9D17F710E200344173 /* XCTest.framework */,
 				044F3C8017F710E200344173 /* Other Frameworks */,
+				DCACFEB03A5E0FA13DF2E0FE /* libPods-Wukong.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1733,17 +1740,6 @@
 				044F3CA517F710E200344173 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		044F3CBE17F7206600344173 /* INAppStoreWindow */ = {
-			isa = PBXGroup;
-			children = (
-				044F3CB717F7205600344173 /* INAppStoreWindow.h */,
-				044F3CB817F7205600344173 /* INAppStoreWindow.m */,
-				044F3CB917F7205600344173 /* INWindowButton.h */,
-				044F3CBA17F7205600344173 /* INWindowButton.m */,
-			);
-			name = INAppStoreWindow;
 			sourceTree = "<group>";
 		};
 		044F3CDB17F72BCA00344173 /* Resources */ = {
@@ -3308,7 +3304,6 @@
 				0494354B18ED6A1500888090 /* DASelectableToolbarController */,
 				37A4194418C88E6C00B6C3B9 /* INPopoverController */,
 				37315E8F180122930077E6F4 /* PSList */,
-				044F3CBE17F7206600344173 /* INAppStoreWindow */,
 				04C7630D180CF12D00C9E540 /* ScrollToRefresh */,
 				0494354A18ED69F400888090 /* 按钮 | AKButton */,
 				37A6A1CF18C9C58E00A263E4 /* 用户名感应 | User Name Sence View */,
@@ -3321,6 +3316,10 @@
 				0494354C18ED6A3E00888090 /* 快捷菜单视图 | Status Menu Item View */,
 				0494356C18ED85A500888090 /* AKToolBarItemView.h */,
 				0494356D18ED85A500888090 /* AKToolBarItemView.m */,
+				3712B7081BDF2A3E00AAB0E0 /* FlippedView.h */,
+				3712B7091BDF2A3E00AAB0E0 /* FlippedView.m */,
+				3712B71A1BDF54E500AAB0E0 /* AKWeiboStatusControlView.h */,
+				3712B71B1BDF54E500AAB0E0 /* AKWeiboStatusControlView.m */,
 			);
 			name = "控件 | Custom Controls";
 			sourceTree = "<group>";
@@ -3476,6 +3475,15 @@
 			name = sound;
 			sourceTree = "<group>";
 		};
+		E0B21B8BBA9393411011E60D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EDF9E163BE398DF420704059 /* Pods-Wukong.debug.xcconfig */,
+				0EC1FB09BF212DE2B2072C9E /* Pods-Wukong.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3483,9 +3491,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 044F3CAC17F710E300344173 /* Build configuration list for PBXNativeTarget "Wukong" */;
 			buildPhases = (
+				2129D29110198B392214186A /* Check Pods Manifest.lock */,
 				044F3C7717F710E200344173 /* Sources */,
 				044F3C7817F710E200344173 /* Frameworks */,
 				044F3C7917F710E200344173 /* Resources */,
+				C2D7340BB605E9AE1DEEB3B7 /* Embed Pods Frameworks */,
+				97B72222A7BB944B76BD5FEB /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3842,6 +3853,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2129D29110198B392214186A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		97B72222A7BB944B76BD5FEB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Wukong/Pods-Wukong-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C2D7340BB605E9AE1DEEB3B7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Wukong/Pods-Wukong-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		044F3C7717F710E200344173 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -3851,6 +3910,7 @@
 				04F45BCF18B2135A00B2730A /* AKTextView.m in Sources */,
 				374D25E81858C03500641C9C /* AKImageViewer.m in Sources */,
 				37BC385018499A2300DF4C00 /* AKProfileViewController.m in Sources */,
+				3712B70A1BDF2A3E00AAB0E0 /* FlippedView.m in Sources */,
 				042DC86918B755AB008618B9 /* AKImageSelector.m in Sources */,
 				04E323C618DE987300159E2C /* AKStatusBarMenu.m in Sources */,
 				37AE1653182FE036002AB9B4 /* AKUserProfile.m in Sources */,
@@ -3861,6 +3921,7 @@
 				374DB52A18817D2B00758142 /* AKEmotion.m in Sources */,
 				3742575B182529CA00902403 /* AKCacheDatabaseManager.m in Sources */,
 				04518B2D18EB065D00941EDF /* AKMenuItemRemindView.m in Sources */,
+				3712B71C1BDF54E500AAB0E0 /* AKWeiboStatusControlView.m in Sources */,
 				0494354918ED69DF00888090 /* MASShortcutView.m in Sources */,
 				043BB9DE18AF2DE000022381 /* AKWeiboCommentTableView.m in Sources */,
 				379348DD1876B10B00DD4CF6 /* AKImageDownloader.m in Sources */,
@@ -3885,11 +3946,9 @@
 				044F3C9217F710E200344173 /* AppDelegate.mm in Sources */,
 				37A4195A18C89CD100B6C3B9 /* AKPopupStatusEditorViewController.m in Sources */,
 				040D747317FBD75500600F54 /* AKWeiboDetailViewController.m in Sources */,
-				044F3CBC17F7205600344173 /* INWindowButton.m in Sources */,
 				04324CAC17FA81180021809E /* AKBlockViewController.m in Sources */,
 				04B3A7501823B9330034B5EC /* AKUserManager.m in Sources */,
 				37A4195418C88E6C00B6C3B9 /* INPopoverWindowFrame.m in Sources */,
-				044F3CBB17F7205600344173 /* INAppStoreWindow.m in Sources */,
 				043D8BB317F814010096609C /* AKTabControl.m in Sources */,
 				37350B221849979F00F25500 /* AKSearchViewController.m in Sources */,
 				3724A6A5184B5CA70013880C /* AKLoadMoreCell.m in Sources */,
@@ -4059,6 +4118,7 @@
 		};
 		044F3CAD17F710E300344173 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EDF9E163BE398DF420704059 /* Pods-Wukong.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4069,7 +4129,7 @@
 				INFOPLIST_FILE = "BetterWeibo/BetterWeibo-Info.plist";
 				LIBRARY_SEARCH_PATHS = $SOURCE_ROOT/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
@@ -4078,6 +4138,7 @@
 		};
 		044F3CAE17F710E300344173 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EC1FB09BF212DE2B2072C9E /* Pods-Wukong.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4088,7 +4149,7 @@
 				INFOPLIST_FILE = "BetterWeibo/BetterWeibo-Info.plist";
 				LIBRARY_SEARCH_PATHS = $SOURCE_ROOT/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;

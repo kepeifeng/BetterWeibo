@@ -235,7 +235,7 @@
         oldUserProfile.profile_image_url = userProfile.profile_image_url;
         oldUserProfile.avatar_hd = userProfile.avatar_hd;
         oldUserProfile.avatar_large = userProfile.avatar_large;
-        oldUserProfile.description = userProfile.description;
+        oldUserProfile.userDescription = userProfile.userDescription;
         
     }
     else{

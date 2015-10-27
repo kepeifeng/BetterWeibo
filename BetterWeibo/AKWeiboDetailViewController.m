@@ -342,7 +342,7 @@
     CGFloat cellHeight = _textField.intrinsicContentSize.height + 5 + 27 + 10;
     
     
-    return (cellHeight>minHeight)?cellHeight:minHeight;
+    return (int)((cellHeight>minHeight)?cellHeight:minHeight);
     
     //return 100;
 

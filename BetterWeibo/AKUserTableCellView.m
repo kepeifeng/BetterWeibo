@@ -46,7 +46,7 @@
     
     self.userAlisaTextField.stringValue = userProfile.screen_name;
     self.userAvatar.userProfile = userProfile;
-    self.userDescription.stringValue = [NSString stringWithFormat:@"简介：%@",userProfile.description];
+    self.userDescription.stringValue = [NSString stringWithFormat:@"简介：%@",userProfile.userDescription];
     self.numberOfFollowerField.stringValue = [NSString stringWithFormat:@"粉丝数：%ld",userProfile.followers_count];
 
     

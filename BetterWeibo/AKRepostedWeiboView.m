@@ -11,6 +11,8 @@
 #import "AKViewConstant.h"
 #import "AKImageViewer.h"
 #import "AKImageHelper.h"
+#import "AKImageButtonCell.h"
+
 
 @interface AKRepostedWeiboView()
 
@@ -44,10 +46,41 @@ static NSImage *_repostedWeiboViewBackground;
     if (self) {
         // Initialization code here.
         [self _makeMessageTextField];
+        [self initialSetup];
     }
     return self;
 }
 
+-(BOOL)isFlipped{
+    return YES;
+}
+
+-(void)initialSetup{
+    
+    _repostedWeiboDateDuration = [[NSTextField alloc] initWithFrame:NSMakeRect(CGRectGetWidth(self.frame) - 100, 10, 100, 20)];
+    _repostedWeiboDateDuration.bordered = NO;
+    _repostedWeiboDateDuration.drawsBackground = NO;
+    _repostedWeiboDateDuration.editable = NO;
+    _repostedWeiboDateDuration.alignment = NSTextAlignmentRight;
+    [self addSubview:_repostedWeiboDateDuration];
+    
+    _repostedWeiboUserAlias = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 10, 100, 20)];
+    _repostedWeiboUserAlias.bordered = NO;
+    _repostedWeiboUserAlias.drawsBackground = NO;
+    _repostedWeiboUserAlias.editable = NO;
+    
+    [self addSubview:_repostedWeiboUserAlias];
+    
+    
+    _repostedWeiboContent = [[AKTextView alloc] initWithFrame:NSMakeRect(10, CGRectGetMaxY(_repostedWeiboUserAlias.frame), CGRectGetWidth(self.frame) - 20, 50)];
+    _repostedWeiboContent.drawsBackground = NO;
+    _repostedWeiboContent.editable = NO;
+    [self addSubview:_repostedWeiboContent];
+    
+    _repostedWeiboImageMatrix = [[NSMatrix alloc] initWithFrame:NSMakeRect(0, 0, 140, 140) mode:NSRadioModeMatrix cellClass:[AKImageButtonCell class] numberOfRows:3 numberOfColumns:3];
+    [self addSubview:_repostedWeiboImageMatrix];
+    
+}
 -(void)_makeMessageTextField{
 
     _messageTextField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 15, 100, 20)];
@@ -77,17 +110,17 @@ static NSImage *_repostedWeiboViewBackground;
 -(void)drawBackground:(NSRect)rect{
 
     NSImage *repostedWeiboViewBackground = [AKRepostedWeiboView backgroundImage];
-    
+
     NSRect repostedWeiboDrawingRect = rect;
     
     //Top
-    [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y + repostedWeiboDrawingRect.size.height - 8, repostedWeiboDrawingRect.size.width, 8) fromRect:NSMakeRect(0, 49, 81, 8) operation:NSCompositeSourceOver fraction:1];
+    [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y, repostedWeiboDrawingRect.size.width, 8) fromRect:NSMakeRect(0, 49, 81, 8) operation:NSCompositeSourceOver fraction:1 respectFlipped:YES hints:nil];
     //Middle Part
-    [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y + 14, repostedWeiboDrawingRect.size.width, repostedWeiboDrawingRect.size.height - 8 - 14) fromRect:NSMakeRect(0, 14, 81, 34) operation:NSCompositeSourceOver fraction:1];
+    [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y + 8, repostedWeiboDrawingRect.size.width, repostedWeiboDrawingRect.size.height - 8 - 14) fromRect:NSMakeRect(0, 14, 81, 34) operation:NSCompositeSourceOver fraction:1 respectFlipped:YES hints:nil];
     //Bottom Part - Arrow
-    [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y, 50, 14) fromRect:NSMakeRect(0, 0, 50, 14) operation:NSCompositeSourceOver fraction:1];
+    [repostedWeiboViewBackground drawInRect:NSMakeRect(0, repostedWeiboDrawingRect.origin.y + repostedWeiboDrawingRect.size.height - 14, 50, 14) fromRect:NSMakeRect(0, 0, 50, 14) operation:NSCompositeSourceOver fraction:1 respectFlipped:YES hints:nil];
     //Bottom Right Part
-    [repostedWeiboViewBackground drawInRect:NSMakeRect(50, repostedWeiboDrawingRect.origin.y, repostedWeiboDrawingRect.size.width - 50, 14) fromRect:NSMakeRect(50, 0, 31, 14) operation:NSCompositeSourceOver fraction:1];
+    [repostedWeiboViewBackground drawInRect:NSMakeRect(50, repostedWeiboDrawingRect.origin.y + repostedWeiboDrawingRect.size.height - 14, repostedWeiboDrawingRect.size.width - 50, 14) fromRect:NSMakeRect(50, 0, 31, 14) operation:NSCompositeSourceOver fraction:1 respectFlipped:YES hints:nil];
     
 
 
@@ -223,6 +256,8 @@ static NSImage *_repostedWeiboViewBackground;
         return;
     }
     
+
+    
     if(!_repostedStatus.user){
         
         NSInteger bottomArrowHeight = 11;
@@ -236,6 +271,23 @@ static NSImage *_repostedWeiboViewBackground;
                                                  messageFieldSize.height);
         return;
     }
+    
+    //User Alias
+    [self.repostedWeiboUserAlias setFrameOrigin:NSMakePoint(self.repostedWeiboContent.frame.origin.x, 10)];
+    
+    //Date Duration
+    [self.repostedWeiboDateDuration setFrameOrigin:NSMakePoint(statusViewSize.width-self.repostedWeiboDateDuration.frame.size.width - STATUS_MARGIN_RIGHT, 10)];
+    
+    repostY += self.repostedWeiboUserAlias.frame.size.height;
+    
+    
+    //Text
+    [self.repostedWeiboContent setFrameSize:NSMakeSize(statusViewSize.width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
+    [self.repostedWeiboContent setFrameSize:self.repostedWeiboContent.intrinsicContentSize];
+    
+    [self.repostedWeiboContent setFrameOrigin:NSMakePoint(REPOST_STATUS_PADDING_LEFT, repostY)];
+    
+    repostY+=self.repostedWeiboContent.frame.size.height + STATUS_TEXT_MARGIN_TOP;
     
     //Images
     if(_repostedStatus.pic_urls && _repostedStatus.pic_urls.count>0)
@@ -262,21 +314,10 @@ static NSImage *_repostedWeiboViewBackground;
         
     }
     
-    //Text
-    [self.repostedWeiboContent setFrameSize:NSMakeSize(statusViewSize.width - REPOST_STATUS_PADDING_LEFT - REPOST_STATUS_PADDING_RIGHT, 1000)];
-    [self.repostedWeiboContent setFrameSize:self.repostedWeiboContent.intrinsicContentSize];
+
     
-    [self.repostedWeiboContent setFrameOrigin:NSMakePoint(REPOST_STATUS_PADDING_LEFT, repostY)];
-    
-    repostY+=self.repostedWeiboContent.frame.size.height + STATUS_TEXT_MARGIN_TOP;
-    
-    //User Alias
-    [self.repostedWeiboUserAlias setFrameOrigin:NSMakePoint(self.repostedWeiboContent.frame.origin.x, repostY)];
-    
-    //Date Duration
-    [self.repostedWeiboDateDuration setFrameOrigin:NSMakePoint(statusViewSize.width-self.repostedWeiboDateDuration.frame.size.width - STATUS_MARGIN_RIGHT, repostY)];
-    
-    repostY += self.repostedWeiboUserAlias.frame.size.height;
+
+
     
     repostY += REPOST_STATUS_PADDING_TOP;
     

@@ -110,6 +110,7 @@
 -(void)awakeFromNib{
 
     //Sroll to Refresh
+
     self.scrollView.refreshBlock = ^(EQSTRScrollView *scrollView){
         
         NSString *sinceWeiboID = (weiboArray.count>0)?((AKWeiboStatus *)[weiboArray firstObject]).idstr:nil;
@@ -126,6 +127,7 @@
         [[AKWeiboManager currentManager] getStatusForUser:nil sinceWeiboID:nil maxWeiboID:maxWeiboID count:30 page:1 baseApp:NO feature:0 trimUser:0 timelineType:self.timelineType callbackTarget:self];
 
     };
+
     
     [self.tableView setTarget:self];
     [self.tableView setDoubleAction:@selector(tableViewDoubleClicked:)];
@@ -150,11 +152,19 @@
 }
 
 
+-(void)startLoading{
+    NSString *sinceWeiboID = (weiboArray.count>0)?((AKWeiboStatus *)[weiboArray firstObject]).idstr:nil;
+    
+    [[AKWeiboManager currentManager] getStatusForUser:nil sinceWeiboID:sinceWeiboID maxWeiboID:nil count:30 page:1 baseApp:NO feature:0 trimUser:0 timelineType:self.timelineType callbackTarget:self];
+    
+}
 
 -(void)tabDidActived{
 
     
     NSLog(@"tabDidActived");
+//    [self startLoading];
+
     if(weiboArray.count == 0 && !self.scrollView.isRefreshing)
     {
 //        [self.tableView reloadData];
@@ -165,6 +175,7 @@
     else if(weiboArray.count == 0 && self.scrollView.isRefreshing){
         [self.scrollView.contentView scrollToPoint:NSMakePoint(0, -42)];
     }
+
     [super tabDidActived];
 
 }
@@ -394,6 +405,12 @@
     }
     
     AKWeiboTableCellView *cell = [tableView makeViewWithIdentifier:@"weiboItem" owner:self];
+    
+    if(!cell){
+    
+        cell = [[AKWeiboTableCellView alloc] initWithFrame:(NSMakeRect(0,0,CGRectGetWidth(tableView.bounds), 60))];
+        cell.identifier = @"weiboItem";
+    }
 
     AKWeiboStatus *weibo = weiboArray[row];
     
@@ -401,6 +418,7 @@
     [cell.userAlias setStringValue:weibo.user.screen_name];
 
     
+//    [cell.weiboTextField setStringValue:weibo.text];
     [cell.weiboTextField.textStorage setAttributedString:weibo.attributedText];
     cell.weiboTextField.delegate  = self;
     [self updateFavoriteViewForCell:cell isFavorited:weibo.favorited];
@@ -504,6 +522,8 @@
 
 
 -(CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row{
+    
+//    return 50;
 
     //NSLog(@"heightOfRow");
     AKWeiboStatus *weibo = weiboArray[row];
@@ -662,8 +682,10 @@
     if (methodOption == AKWBOPT_GET_STATUSES_HOME_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_MENTIONS || methodOption == AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_USER_TIMELINE){
         
         
+
         [self.scrollView stopLoading];
         [self.scrollView stopBottomLoading];
+
         
         AKError *error = [AKWeiboManager getErrorFromResult:result];
         if(!error){
@@ -693,8 +715,10 @@
     }
     else if(methodOption == AKWBOPT_GET_FAVORITES){
         
+
         [self.scrollView stopLoading];
         [self.scrollView stopBottomLoading];
+
         
         NSArray *statusArray = (NSArray *)[resultDictionary objectForKey:@"favorites"];
         statusObjectArray = [[NSMutableArray alloc]init];
@@ -734,8 +758,10 @@
 -(void)OnDelegateErrored:(AKWeiboManager *)weiboManager methodOption:(AKMethodAction)methodOption error:(AKError *)error result:(AKParsingObject *)result pTask:(AKUserTaskInfo *)pTask{
     
     if(methodOption == AKWBOPT_GET_STATUSES_HOME_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_MENTIONS || methodOption == AKWBOPT_GET_STATUSES_PUBLIC_TIMELINE || methodOption == AKWBOPT_GET_STATUSES_USER_TIMELINE){
+
         [self.scrollView stopLoading];
         [self.scrollView stopBottomLoading];
+
         
     }
 

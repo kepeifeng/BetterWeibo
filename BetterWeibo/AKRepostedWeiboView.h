@@ -16,10 +16,10 @@
 @property AKWeiboStatus * repostedStatus;
 
 
-@property (weak) IBOutlet NSTextField *repostedWeiboDateDuration;
-@property (weak) IBOutlet NSTextField *repostedWeiboUserAlias;
-@property IBOutlet AKTextView *repostedWeiboContent;
-@property (weak) IBOutlet NSMatrix *repostedWeiboImageMatrix;
+@property (nonatomic, strong) IBOutlet NSTextField *repostedWeiboDateDuration;
+@property (nonatomic, strong) IBOutlet NSTextField *repostedWeiboUserAlias;
+@property (nonatomic, strong) IBOutlet AKTextView *repostedWeiboContent;
+@property (strong) IBOutlet NSMatrix *repostedWeiboImageMatrix;
 
 -(void)loadImages:(NSArray *)images;
 

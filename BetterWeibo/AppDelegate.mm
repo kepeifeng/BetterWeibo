@@ -281,14 +281,15 @@
     self.window.centerFullScreenButton = YES;
     self.window.titleBarHeight = 46.0;
     self.window.verticallyCenterTitle = YES;
-    self.window.titleTextLeftMargin = 23.0;
+//    self.window.titleTextLeftMargin = 23.0;
     self.window.titleTextColor = [NSColor colorWithCalibratedWhite:0.88 alpha:1];
     NSShadow *shadow = [[NSShadow alloc] init];
     shadow.shadowBlurRadius = 0;
     shadow.shadowColor = [NSColor blackColor];
     shadow.shadowOffset = NSMakeSize(-1, 1);
     self.window.titleTextShadow = shadow;
-    self.window.titleBarDrawingBlock = ^(BOOL drawsAsMainWindow, CGRect drawingRect, CGPathRef clippingPath) {
+    
+    self.window.titleBarDrawingBlock = ^(BOOL drawsAsMainWindow, CGRect drawingRect,CGRectEdge edge, CGPathRef clippingPath) {
         
         NSImage *windowImage ;
         
@@ -353,36 +354,34 @@
 
 
 - (void)setupCloseButton {
-    INWindowButton *closeButton = [INWindowButton windowButtonWithSize:NSMakeSize(14, 16) groupIdentifier:nil];
-    closeButton.activeImage = [NSImage imageNamed:@"close-active-color.tiff"];
-    closeButton.activeNotKeyWindowImage = [NSImage imageNamed:@"close-activenokey-color.tiff"];
-    closeButton.inactiveImage = [NSImage imageNamed:@"close-inactive-disabled-color.tiff"];
-    closeButton.pressedImage = [NSImage imageNamed:@"close-pd-color.tiff"];
-    closeButton.rolloverImage = [NSImage imageNamed:@"close-rollover-color.tiff"];
-    
-    self.window.closeButton = closeButton;
+//    INWindowButton *closeButton = [INWindowButton windowButtonWithSize:NSMakeSize(14, 16) groupIdentifier:nil];
+//    closeButton.activeImage = [NSImage imageNamed:@"close-active-color.tiff"];
+//    closeButton.activeNotKeyWindowImage = [NSImage imageNamed:@"close-activenokey-color.tiff"];
+//    closeButton.inactiveImage = [NSImage imageNamed:@"close-inactive-disabled-color.tiff"];
+//    closeButton.pressedImage = [NSImage imageNamed:@"close-pd-color.tiff"];
+//    closeButton.rolloverImage = [NSImage imageNamed:@"close-rollover-color.tiff"];
 //    
-//    closeButton.target = self;
-//    closeButton.action = @selector(closeButtonClicked:);
+//    self.window.closeButton = closeButton;
+
 }
 - (void)setupMinimizeButton {
-    INWindowButton *button = [INWindowButton windowButtonWithSize:NSMakeSize(14, 16) groupIdentifier:nil];
-    button.activeImage = [NSImage imageNamed:@"minimize-active-color.tiff"];
-    button.activeNotKeyWindowImage = [NSImage imageNamed:@"minimize-activenokey-color.tiff"];
-    button.inactiveImage = [NSImage imageNamed:@"minimize-inactive-disabled-color.tiff"];
-    button.pressedImage = [NSImage imageNamed:@"minimize-pd-color.tiff"];
-    button.rolloverImage = [NSImage imageNamed:@"minimize-rollover-color.tiff"];
-    self.window.minimizeButton = button;
+//    INWindowButton *button = [INWindowButton windowButtonWithSize:NSMakeSize(14, 16) groupIdentifier:nil];
+//    button.activeImage = [NSImage imageNamed:@"minimize-active-color.tiff"];
+//    button.activeNotKeyWindowImage = [NSImage imageNamed:@"minimize-activenokey-color.tiff"];
+//    button.inactiveImage = [NSImage imageNamed:@"minimize-inactive-disabled-color.tiff"];
+//    button.pressedImage = [NSImage imageNamed:@"minimize-pd-color.tiff"];
+//    button.rolloverImage = [NSImage imageNamed:@"minimize-rollover-color.tiff"];
+//    self.window.minimizeButton = button;
 }
 
 - (void)setupZoomButton {
-    INWindowButton *button = [INWindowButton windowButtonWithSize:NSMakeSize(14, 16) groupIdentifier:nil];
-    button.activeImage = [NSImage imageNamed:@"zoom-active-color.tiff"];
-    button.activeNotKeyWindowImage = [NSImage imageNamed:@"zoom-activenokey-color.tiff"];
-    button.inactiveImage = [NSImage imageNamed:@"zoom-inactive-disabled-color.tiff"];
-    button.pressedImage = [NSImage imageNamed:@"zoom-pd-color.tiff"];
-    button.rolloverImage = [NSImage imageNamed:@"zoom-rollover-color.tiff"];
-    self.window.zoomButton = button;
+//    INWindowButton *button = [INWindowButton windowButtonWithSize:NSMakeSize(14, 16) groupIdentifier:nil];
+//    button.activeImage = [NSImage imageNamed:@"zoom-active-color.tiff"];
+//    button.activeNotKeyWindowImage = [NSImage imageNamed:@"zoom-activenokey-color.tiff"];
+//    button.inactiveImage = [NSImage imageNamed:@"zoom-inactive-disabled-color.tiff"];
+//    button.pressedImage = [NSImage imageNamed:@"zoom-pd-color.tiff"];
+//    button.rolloverImage = [NSImage imageNamed:@"zoom-rollover-color.tiff"];
+//    self.window.zoomButton = button;
 }
 
 -(void)closeButtonClicked:(id)sender{
